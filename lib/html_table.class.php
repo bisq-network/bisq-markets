@@ -13,6 +13,7 @@ class html_table {
     public $row_id_field;
     public $row_id_mask = '%s';
     public $timestamptz_col_names = array( 'timest' => 1, 'timestamp' => 1, 'datetime' => 1 );
+    public $timestampjs_col_names = array();
     
     function odd_even_style_css( $row_color = '#eeeeee', $row_color_alt = '#dddddd' ) {
         return "tr.odd { background-color: $row_color; }\n" .
@@ -61,6 +62,9 @@ class html_table {
             if( is_numeric( $val ) && @$this->timestamptz_col_names[$key] ) {
                 $val = self::format_timestamp( $val );
             }
+            else if( is_numeric( $val ) && @$this->timestampjs_col_names[$key] ) {
+                $val = self::format_timestamp_js( $val );
+            }
             
             if( is_bool( $val )) {
                 $val = $val ? 'Yes' : 'No';
@@ -81,6 +85,13 @@ class html_table {
         $val_t = date('Y-m-d H:i:s T', $val );
         return "<time datetime='$val_t' epoch='$val'>$val_t</time>";
     }
+
+    static public function format_timestamp_js( $val ) {
+        $val = $val/1000;  // js uses milliseconds instead of seconds.
+        $val_t = date('Y-m-d H:i:s T', $val );
+        return "<time datetime='$val_t' epoch='$val'>$val_t</time>";
+    }
+
     
     function header_row( $row ) {
         $attrs = $this->_get_attrs_buf( $this->header_attrs );

@@ -26,7 +26,7 @@ class trades {
         $trades = $this->get_all_trades();
         extract( $criteria );  // puts keys in local namespace.
 
-        $sort = @$sort ?: 'asc';        
+        $sort = @$sort ?: 'desc';
         $dtfrom_milli = @$datetime_from * 1000;
         $dtto_milli = @$datetime_to * 1000;
         $limit = @$limit ?: PHP_INT_MAX;
@@ -63,11 +63,7 @@ class trades {
         }
 
         if( $sort == 'asc') {
-            usort( $matches, function($a, $b) {
-                $a = $a['tradeDate'];
-                $b = $b['tradeDate'];
-                return $a == $b ? 0 : ($a < $b ? -1 : 1);
-            });
+            $matches = array_reverse( $matches );
         }
         
         return $matches;
@@ -75,7 +71,35 @@ class trades {
     
     public function get_all_trades() {
         $json_file = '/home/danda/.local/share/Bitsquare/mainnet/db/trade_statistics.json';
-    
+        
+        if( !function_exists( 'apcu_fetch' ) ) {
+            // cache in mem for present request.
+            static $result = null;
+            if( $result ) {
+                return $result;
+            }
+            $result = $this->get_all_trades_worker($json_file);
+            return $result;
+        }
+        
+        $result_key = 'all_trades_result';
+        $ts_key = 'all_trades_timestamp';
+        
+        $cached_ts = apcu_fetch( $ts_key );
+        $cached_result = apcu_fetch( $result_key );
+        if( $cached_result && $cached_ts && filemtime( $json_file ) < $cached_ts ) {
+            $result = $cached_result;
+        }
+        else {
+            $result = $this->get_all_trades_worker($json_file);
+            apcu_store( $ts_key, time() );
+            apcu_store( $result_key, $result );
+        }
+        return $result;
+    }
+        
+    private function get_all_trades_worker($json_file) {
+        
         // remove some garbage data at beginning of file, if present.
         $fh = fopen( $json_file, 'r' );
         

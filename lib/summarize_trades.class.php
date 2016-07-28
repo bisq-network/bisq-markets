@@ -148,7 +148,7 @@ class summarize_trades {
             case 'hour':
                 return (int)($ts - ($ts % 3600)) * $this->ts_multiplier;
             case 'day':
-                return (int)($ts - ($ts % 86400)) * $this->ts_multiplier;
+                return strtotime( 'midnight today', $ts) * $this->ts_multiplier;
             case 'week':
                 return strtotime( "midnight sunday last week", $ts ) * $this->ts_multiplier;
             case 'month':

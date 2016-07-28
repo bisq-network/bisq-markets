@@ -28,6 +28,7 @@ try {
                                                                     'datetime_from' => $start_period_time = strtotime( '4 week ago + 1 day 00:00:00' ),
                                                                     'datetime_to' => $start_period_time +  (int)floor((time() - $start_period_time)/1800)*1800,
                                                                    ] );
+print_r($history_result);    
     $market_select = sprintf( "<select onclick='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value)'>\n", $market );
     foreach( $markets_result as $id => $m ) {
         $market_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $id, $id == $market ? ' selected' : '', strtoupper( str_replace('_', '/', $id )) );
@@ -41,20 +42,23 @@ try {
                       'avg'=> '--',
                       'volume' => '--'
                     ];
-    $today = @$history_result[count($history_result)-1];
-    if( $today && date('Y-m-d', $today['period_start']/1000) == date('Y-m-d') ) {
+    $latest = @$history_result[count($history_result)-1];
+print_r( $latest );
+    if( $latest && date('Y-m-d', $latest['period_start']/1000) == date('Y-m-d') ) {
         $market_result = ['market'=> $market_select,
                           'market_date'=> date('Y-m-d'),
-                          'last'=> $today['close'],
-                          'high'=> $today['high'],
-                          'low'=> $today['low'],
-                          'avg'=> $today['avg'],
-                          'volume' => $today['volume']
+                          'last'=> $latest['close'],
+                          'high'=> $latest['high'],
+                          'low'=> $latest['low'],
+                          'avg'=> $latest['avg'],
+                          'volume' => $latest['volume']
                          ];
     }
 
     $trades_result = $trades->get_trades( [ 'market' => $market,
                                             'limit'  => $max_trade_history ] );
+print_r( $trades_result[0] );
+    
 }
 catch( Exception $e ) {
     _global_exception_handler( $e );

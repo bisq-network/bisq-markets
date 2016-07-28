@@ -71,10 +71,17 @@ class trades {
     
     public function get_all_trades() {
         $json_file = '/home/danda/.local/share/Bitsquare/mainnet/db/trade_statistics.json';
-        
+
+        // in case apcu is not installed.   ( slow )
         if( !function_exists( 'apcu_fetch' ) ) {
             // cache in mem for present request.
             static $result = null;
+            static $warned = false;
+            if( !$warned ) {
+                error_log( "Warning: APCu not found. Please install APCu extension for better performance." );
+                $warned = true;
+            }
+            
             if( $result ) {
                 return $result;
             }
@@ -84,7 +91,22 @@ class trades {
         
         $result_key = 'all_trades_result';
         $ts_key = 'all_trades_timestamp';
+
+        // We prefer to use apcu_entry if existing, because it is atomic.        
+        if( function_exists( 'apcu_entry' ) ) {
+            // note:  this case is untested!!!  my version of apcu is too old.
+            $cached_ts = apcu_entry( $ts_key, function($key) { return time(); } );
+            
+            // invalidate cache if file on disk is newer than cached value.
+            if( filemtime( $json_file ) < $cached_ts ) {
+                apcu_delete( $result_key );
+            }
+            return apcu_entry( $result_key, function($key) use($json_file) {
+                return $this->get_all_trades_worker($json_file);
+            });
+        }
         
+        // Otherwise, use apcu_fetch, apcu_store.
         $cached_ts = apcu_fetch( $ts_key );
         $cached_result = apcu_fetch( $result_key );
         if( $cached_result && $cached_ts && filemtime( $json_file ) < $cached_ts ) {

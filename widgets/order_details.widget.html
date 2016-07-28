@@ -1,0 +1,77 @@
+<?php
+
+require_once( dirname( __FILE__) . '/../html_table.class.html' );
+require_once( dirname( __FILE__) . '/../time_util.class.html' );
+
+class order_details_widget {
+    
+    function __construct( $order_result ) {
+        
+        $result = clone( $order_result );
+        
+        $this->order_expire_time = $result->timest + $result->order_expires_secs;
+        $this->order_expire_time_text = strftime( '%c %Z', $this->order_expire_time );
+        $this->order_expire_time_interval_text = $this->order_expire_time < time() ? '0 seconds (already expired)' : time_util::formatDateDiff( 'now',  $this->order_expire_time_text );
+        $result->expires_in = $this->order_expire_time_interval_text;
+        $expires_at_epoch = $result->timest + $result->order_expires_secs;
+        $expires_at = date('Y-m-d H:i:s T', $expires_at_epoch );
+        $result->expires_at = "<time datetime='$expires_at' epoch='$expires_at_epoch'>$expires_at</time>";
+        $timest = date('Y-m-d H:i:s T', $result->timest );
+        $result->timest = "<time datetime='$timest' epoch='{$result->timest}'>$timest</time>";
+        
+        $cancel_states = array( 'ENTERED', 'LIVE', 'PARTIAL' );
+        $this->can_cancel = in_array( $result->status, $cancel_states );
+        
+        $result_display_map =  array(
+            'market' => 'Market',
+            'order_id' => 'Order ID',
+            'status' => 'Status',
+            'status_comment' => 'Status Comment',
+            'type' => array( 'label' => 'Type', 'cb_format' => function($value) { $map = array( 'MKT' => 'Market', 'LMT' => 'Limit' ); return @$map[$value]; } ),
+            'side' => 'Side',
+            'size' => 'Size',
+            'price' => $result->type == 'MKT' ? 'Price' : 'Limit Price',
+            'avg_trade_price' => 'Average Trade Price',
+            'timest' => 'Order Created',
+            'expires_at' => 'Order Expires',
+            'expires_in' => 'Expires In',
+            'currency_symbol_source' => 'Deposit Currency',
+            'currency_symbol_dest' => 'Payout Currency',
+        );
+        if( !@$result->refund_address || !@$result->dest_address ) {
+            unset( $result_display_map['refund_address'] );
+            unset( $result_display_map['dest_address'] );
+        }
+        if( !$result->status_comment ) {
+            unset( $result_display_map['status_comment'] );
+        }
+        if( $result->avg_trade_price == 0 ) {
+            unset( $result_display_map['avg_trade_price'] );
+        }
+        if( !$this->can_cancel ) {
+            unset( $result_display_map['expires_in'] );
+            unset( $result_display_map['expires_at'] );
+        }
+        
+        if( $result->type == 'MKT' ) {
+            if( $result->size == 0 ) {
+                unset( $result_display_map['size'] );
+            }
+            if( $result->price == 0 ) {
+                unset( $result_display_map['price'] );
+            }
+        }
+        $this->result_display_map = $result_display_map;
+        $this->result = $result;
+        
+    }
+    
+    
+    function get_widget_html() {
+        $table = new html_table();
+        $table->right_align_numeric = false;
+        $table->table_attrs = array( 'cellspacing' => 0, 'cellpadding' => 3, 'bgcolor' => 'lightgreen', 'class' => 'bordered', 'style' => 'width: 100%;');
+        return $table->table_from_object( $this->result, $this->result_display_map, false );
+    }
+
+}

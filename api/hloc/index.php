@@ -5,6 +5,7 @@ require_once( __DIR__ . '/../../lib/summarize_trades.class.php');
 $market = @$_GET['market'];
 $start = @$_GET['start'] ?: strtotime('2016-01-01') * 1000;
 $end = @$_GET['end'];
+$format = @$_GET['format'] ?: 'json';  // csv or json.
 
 function bail($code, $msg) {
     header($_SERVER["SERVER_PROTOCOL"]." $code $msg", true, $code);
@@ -55,13 +56,18 @@ elseif ($range < 15 * 31 * 24 * 3600 * 1000) {
     $rows = $summarizer->get_trade_summaries_months($criteria);
 }
 
-// serve response to client.
-$fh = fopen( 'php://output', 'w');
-fputcsv($fh, array_values( ['date','open','high','low','close','volume','value'] ) );
-foreach( $rows as $k => $row ) {
-    $row['period_start'] = date('c', $row['period_start']/1000);
-    fputcsv( $fh, $row );
+if( $format == 'csv' ) {
+    // serve response to client.
+    $fh = fopen( 'php://output', 'w');
+    fputcsv($fh, array_values( ['date','open','high','low','close','volume','value'] ) );
+    foreach( $rows as $k => $row ) {
+        $row['period_start'] = date('c', $row['period_start']/1000);
+        fputcsv( $fh, $row );
+    }
+    fclose( $fh );
 }
-fclose( $fh );
+else {
+    echo json_encode( $rows );
+}
 
 

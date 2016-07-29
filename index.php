@@ -10,9 +10,6 @@ date_default_timezone_set ( 'UTC' );   // all dates expressed in UTC.
 
 $market = @$_GET['market'];
 $allmarkets = @$_GET['allmarkets'];
-if( !$market ) {
-    include(dirname(__FILE__) . '/404.html');
-}
 $market_name = strtoupper( str_replace( '_', '/', $market));
 
 try {
@@ -20,8 +17,13 @@ try {
     // get list of markets.    
     $marketservice = new markets();
     $markets_result = $allmarkets ? $marketservice->get_markets() : $marketservice->get_markets_with_trades();
+    
+    // Default to usd market.
+    if( !$market || !@$markets_result[$market]) {
+        $market = "usd_btc";
+    }
     $currmarket = $markets_result[$market];
-
+    
     // Obtain market summary info for today only.
     $summarize_trades = new summarize_trades();
     $market_result = $summarize_trades->get_trade_summaries_days( ['market' => $market,

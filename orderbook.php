@@ -9,6 +9,7 @@ ini_set('memory_limit', '1G');         // just in case.
 date_default_timezone_set ( 'UTC' );   // all dates expressed in UTC.
 
 $market = @$_GET['market'];
+$allmarkets = @$_GET['allmarkets'];
 if( !$market ) {
     include(dirname(__FILE__) . '/404.html');
 }
@@ -18,7 +19,8 @@ try {
 
     // get list of markets.    
     $marketservice = new markets();
-    $markets_result = $marketservice->get_markets();
+    $markets_result = $allmarkets ? $marketservice->get_markets() : $marketservice->get_markets_with_trades();
+    $currmarket = $markets_result[$market];
 
     // Obtain market summary info for today only.
     $summarize_trades = new summarize_trades();
@@ -28,7 +30,8 @@ try {
                                                                     'limit' => 1
                                                                    ] );
     // create market select control.
-    $market_select = sprintf( "<select onclick='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value)'>\n", $market );
+    $allparam = $allmarkets ? '&allmarkets=1' : '';
+    $market_select = sprintf( "<select onclick='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
     foreach( $markets_result as $id => $m ) {
         $market_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $id, $id == $market ? ' selected' : '', strtoupper( str_replace('_', '/', $id )) );
     }
@@ -36,7 +39,8 @@ try {
     
     $latest = @$market_result[0];
     if( $latest ) {
-        $market_result = ['market'=> $market_select,
+        $market_result = ['choose' => $market_select, 
+                          'market'=>  $currmarket['name'],
                           'market_date'=> date('Y-m-d'),
                           'last'=> $latest['close'],
                           'high'=> $latest['high'],
@@ -46,7 +50,8 @@ try {
                          ];
     }
     else {
-        $market_result = ['market'=> $market_select,
+        $market_result = ['choose' => $market_select, 
+                          'market'=>  $currmarket['name'],
                           'market_date'=> date('Y-m-d'),
                           'last'=> '--',
                           'high'=> '--',
@@ -63,7 +68,7 @@ try {
 }
 catch( Exception $e ) {
 //  for dev/debug.
-//  _global_exception_handler( $e ); 
+  _global_exception_handler( $e ); 
     include(dirname(__FILE__) . '/404.html');
 }
 
@@ -82,7 +87,7 @@ function display_cryptotimesfiat($val, $row) {
     return $val / 1000000000000;
 }
 
-$amcharts_cdn = 'https://www.amcharts.com/lib/3/';
+$amcharts_cdn = 'https://www.amcharts.com/lib/3';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -90,7 +95,7 @@ $amcharts_cdn = 'https://www.amcharts.com/lib/3/';
 <?php include( dirname(__FILE__) . '/widgets/head.html' ); ?>
 <script src="<?= $amcharts_cdn ?>/amcharts.js"></script>
 <script src="<?= $amcharts_cdn ?>/serial.js"></script>
-<script src="<?= $amcharts_cdn ?>/light.js"></script>
+<script src="<?= $amcharts_cdn ?>/themes/light.js"></script>
 <script src="<?= $amcharts_cdn ?>/amstock.js"></script>
 <script src="<?= $amcharts_cdn ?>/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
 <?php require_once( dirname( __FILE__) . '/widgets/timezone-js.html' ); ?>
@@ -108,24 +113,26 @@ $amcharts_cdn = 'https://www.amcharts.com/lib/3/';
     visibility: hidden;
     height: 500px;
 }
+#market_info td {
+    text-align: center;
+}
 </style>
 </head>
 <body>
 
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'market_info', 'style' => 'width: 800px' ); ?>
 <?= $table->table_with_header( array( $market_result ),
-                              array( 'Market', 'Date', "Last", "High", "Low", "Avg", "Volume" ),
-                              array( 'market', 'market_date', 'last', 'high', 'low', 'avg', 'volume' ) ); ?>
+                              array( 'Choose', 'Market', 'Date', "Last", "High", "Low", "Avg", "Volume" ),
+                              array( 'choose', 'market', 'market_date', 'last', 'high', 'low', 'avg', 'volume' ) ); ?>
 
-<div class='widget' style="margin-top: 15px;">
-<div id="chartdiv"></div>
-<div style="clear: both"></div>
-</div>
-<?php if( !count( $trades_result ) || $trades_result[0]['tradeDate']/1000 <= strtotime( 'now - 7 day' ) ): ?>
+<?php if( !count( $trades_result ) ): ?>
 <div class="widget" style="margin-top: 15px; text-align: center;">
     There have been no trades in this market recently.   You can get the ball rolling by placing an order now.
 </div>
-<?php endif; ?>
+<?php else: ?>
+<div class='widget' style="margin-top: 15px;">
+<div id="chartdiv"></div>
+</div>
                     
 <table width="100%" cellpadding="0" cellspacing="0"><tr><td><h3>Trade History</h3></td><td align="right">( Last <?= count($trades_result) ?> trades )</td></tr></table>
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history', 'style' => 'width: 800px' ); ?>
@@ -139,7 +146,6 @@ $amcharts_cdn = 'https://www.amcharts.com/lib/3/';
                                      'tradeAmount' => ['cb_format' => 'display_crypto'],
                                      'total' => ['cb_format' => 'display_cryptotimesfiat'] ) ); ?>
 </div>
-
 
 <script type="text/javascript">
 createStockChart();
@@ -175,15 +181,15 @@ function createStockChart() {
         "categoryField": "date",
         
         "dataLoader": {
-           // we use csv instead of json because it is more compact over the wire.
-          "url": "api/hloc?market=<?= $market ?>&format=csv",
+          // we use csv instead of json because it is more compact over the wire.
+          "url": "api/hloc?market=<?= $market ?>&interval=day&format=csv",
           "format": "csv",
           "delimiter": ",",       // column separator
           "useColumnNames": true, // use first row for column names
           "skip": 1,               // skip header row
           "reload": 300,           // auto reload every 5 minutes.
-          "timestamp": true        // add timestamp to url, to avoid caches.
-        }    
+          "timestamp": true       // add timestamp to url, to avoid caches.
+        }
       } ],
     
       "panels": [ {
@@ -197,9 +203,8 @@ function createStockChart() {
     
           "categoryAxis": {
             "dashLength": 5,
-            "minPeriod": "DD",
-            "parseDates": true,
-            "minorGridEnabled": true
+            "minPeriod": "hh",
+            "parseDates": true
           },
     
           "stockGraphs": [ {
@@ -284,13 +289,14 @@ function createStockChart() {
           "period": "mm",
           "count": 1,
           "label": "Minute"
-        }, {
+        },
+*/
+?>
+        {
           "period": "hh",
           "count": 1,
           "label": "Hour"
         },
-    */
-?>    
         {
           "period": "DD",
           "count": 1,
@@ -372,6 +378,9 @@ function createStockChart() {
     
 }
 </script>
+
+<?php endif; ?>
+
 
 </body>
 </html>

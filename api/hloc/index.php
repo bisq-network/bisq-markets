@@ -34,7 +34,7 @@ $criteria = ['market' => $market,
              'datetime_from' => $start / 1000,
              'datetime_to' => $end / 1000,
              'integeramounts' => false,
-             'fields' => ['date','open','high','low','close','volume','avg'],
+             'fields' => ['period_start','open','high','low','close','volume','avg'],
              'sort' => 'asc',
             ];
 
@@ -56,16 +56,12 @@ elseif ($range < 15 * 31 * 24 * 3600 * 1000) {
 }
 
 // serve response to client.
-if( count($rows) ) {
-    header('Content-Type: text/javascript');
-    $fh = fopen( 'php://output', 'w');
-    fputcsv($fh, array_values( ['date','open','high','low','close','volume','value'] ) );
-    foreach( $rows as $k => $row ) {
-        fputcsv( $fh, $row );
-    }
-    fclose( $fh );
+$fh = fopen( 'php://output', 'w');
+fputcsv($fh, array_values( ['date','open','high','low','close','volume','value'] ) );
+foreach( $rows as $k => $row ) {
+    $row['period_start'] = date('c', $row['period_start']/1000);
+    fputcsv( $fh, $row );
 }
-else {
-    echo json_encode($matches, JSON_PRETTY_PRINT);    
-}
+fclose( $fh );
+
 

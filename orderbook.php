@@ -5,7 +5,8 @@ require_once( dirname( __FILE__) . '/lib/trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/summarize_trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/markets.class.php' );
 
-ini_set('memory_limit', '5G');
+ini_set('memory_limit', '1G');         // just in case.
+date_default_timezone_set ( 'UTC' );   // all dates expressed in UTC.
 
 $market = @$_GET['market'];
 if( !$market ) {
@@ -13,36 +14,28 @@ if( !$market ) {
 }
 $market_name = strtoupper( str_replace( '_', '/', $market));
 
-$max_trade_history = 100;
 try {
 
+    // get list of markets.    
     $marketservice = new markets();
     $markets_result = $marketservice->get_markets();
-    
-    $trades = new trades();
+
+    // Obtain market summary info for today only.
     $summarize_trades = new summarize_trades();
-
-    $history_fields = ['volume_left', 'open', 'last', 'high', 'low', 'avg'];
-
-    $history_result = $summarize_trades->get_trade_summaries_days( ['market' => $market,
-                                                                    'datetime_from' => $start_period_time = strtotime( '4 week ago + 1 day 00:00:00' ),
-                                                                    'datetime_to' => $start_period_time +  (int)floor((time() - $start_period_time)/1800)*1800,
+    $market_result = $summarize_trades->get_trade_summaries_days( ['market' => $market,
+                                                                    'datetime_from' => strtotime( 'today 00:00:00' ),
+                                                                    'datetime_to' => strtotime( 'today 23:59:00' ),
+                                                                    'limit' => 1
                                                                    ] );
+    // create market select control.
     $market_select = sprintf( "<select onclick='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value)'>\n", $market );
     foreach( $markets_result as $id => $m ) {
         $market_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $id, $id == $market ? ' selected' : '', strtoupper( str_replace('_', '/', $id )) );
     }
     $market_select .= "</select>\n";
-    $market_result = ['market'=> $market_select,
-                      'market_date'=> date('Y-m-d'),
-                      'last'=> '--',
-                      'high'=> '--',
-                      'low'=> '--',
-                      'avg'=> '--',
-                      'volume' => '--'
-                    ];
-    $latest = @$history_result[count($history_result)-1];
-    if( $latest && date('Y-m-d', $latest['period_start']/1000) == date('Y-m-d') ) {
+    
+    $latest = @$market_result[0];
+    if( $latest ) {
         $market_result = ['market'=> $market_select,
                           'market_date'=> date('Y-m-d'),
                           'last'=> $latest['close'],
@@ -52,40 +45,32 @@ try {
                           'volume' => $latest['volume']
                          ];
     }
+    else {
+        $market_result = ['market'=> $market_select,
+                          'market_date'=> date('Y-m-d'),
+                          'last'=> '--',
+                          'high'=> '--',
+                          'low'=> '--',
+                          'avg'=> '--',
+                          'volume' => '--'
+                        ];
+    }
 
+    // get latest trades.
+    $trades = new trades();
     $trades_result = $trades->get_trades( [ 'market' => $market,
-                                            'limit'  => $max_trade_history ] );
+                                            'limit'  => 100 ] );
 }
 catch( Exception $e ) {
-    _global_exception_handler( $e );
+//  for dev/debug.
+//  _global_exception_handler( $e ); 
     include(dirname(__FILE__) . '/404.html');
 }
 
 list( $curr_left, $curr_right ) = explode( '_', $market, 2);
 
 $table = new html_table();
-$table->right_align_numeric = true;
-$table->table_attrs = array( 'class' => 'bordered', 'id' => 'sell_orders' );
-
-/*
-$sells = $table->table_with_header( $result->sell,
-                                    array( 'Price', $curr_left, $curr_right, 'Orders' ),
-                                    array( 'price', 'size', 'total_price', 'count' ) );
-
-$table->table_attrs = array( 'class' => 'bordered', 'id' => 'buy_orders' );
-$buys = $table->table_with_header( $result->buy,
-                                    array( 'Price', $curr_left, $curr_right, 'Orders' ),
-                                    array( 'price', 'size', 'total_price', 'count' ) );
-*/
-
-$table = new html_table();
 $table->timestampjs_col_names['tradeDate'] = true;
-//$table->td_attrs = array( 'style' => "vertical-align: top;" );
-
-$buttons_row = array( "<table width='100%' cellpadding='0' cellspacing='0'><tr><td valign='bottom'><h3>Sell Orders</h3></td><td valign='bottom' align='right'><a href='place_order.html?market=$market&side=BUY' class='button'>Buy <span class='curr_left'>$curr_left</span></a></td></tr></table>",
-                      '&nbsp;',
-                      "<table width='100%' cellpadding='0' cellspacing='0'><tr><td valign='bottom'><h3>Buy Orders</h3></td><td valign='bottom' align='right'> <a href='place_order.html?market=$market&side=SELL' class='button'>Sell <span class='curr_left'>$curr_left</span></a></td></tr></table>"
-                    );
 
 function display_crypto($val, $row) {
     return $val / 100000000;
@@ -97,42 +82,20 @@ function display_cryptotimesfiat($val, $row) {
     return $val / 1000000000000;
 }
 
-
+$amcharts_cdn = 'https://www.amcharts.com/lib/3/';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 <?php include( dirname(__FILE__) . '/widgets/head.html' ); ?>
-<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="https://www.amcharts.com/lib/3/serial.js"></script>
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-<script src="https://www.amcharts.com/lib/3/amstock.js"></script>
-<script src="https://www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
+<script src="<?= $amcharts_cdn ?>/amcharts.js"></script>
+<script src="<?= $amcharts_cdn ?>/serial.js"></script>
+<script src="<?= $amcharts_cdn ?>/light.js"></script>
+<script src="<?= $amcharts_cdn ?>/amstock.js"></script>
+<script src="<?= $amcharts_cdn ?>/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
 <?php require_once( dirname( __FILE__) . '/widgets/timezone-js.html' ); ?>
 <style>
-#buy_sell_orders {
-    margin-top: 0px;
-    margin-bottom: 15px;
-    width: 100%;
-}
-
-#buy_sell_orders .td-0,  #buy_sell_orders .td-2 {
-    width: 380px;
-}
-
-#buy_sell_orders .td-1 {
-    width: 10px;
-}
-
-#sell_orders, #buy_orders {
-    width: 100%;
-}
-#sell_orders {
-}
-#buy_orders {
-}
-
-#sell_orders, #buy_orders, #trade_history {
+#trade_history {
     display: block;
     max-height: 30em;
     height: 30em;
@@ -171,7 +134,6 @@ function display_cryptotimesfiat($val, $row) {
 <?= $table->table_with_header( $trades_result,
                               array( 'Date', 'Action', 'Price', 'Size', 'Total' ),
                               array( 'tradeDate',
-                                     // 'direction' => array( 'cb_format' => function($val, $row) { return sprintf( '<a href="view_trade.html?trade=%s">%s</a>', @$row['offerId'], $val ); } ),
                                      'direction',
                                      'tradePrice' => ['cb_format' => 'display_fiat'],
                                      'tradeAmount' => ['cb_format' => 'display_crypto'],
@@ -179,236 +141,237 @@ function display_cryptotimesfiat($val, $row) {
 </div>
 
 
-		<script type="text/javascript">
-            // generateChartData();
-            createStockChart();
+<script type="text/javascript">
+createStockChart();
 
-			function generateChartData() {
-                var chartData = [];
-                var data = <?=  json_encode( $history_result ) ?>;
-
-				for (var i = 0; i < data.length; i++) {
-                    var d = data[i];
-
-					chartData.push ({
-						date: new Date(d.period_start),
-						open: d.open,
-						close: d.close,
-						high: d.high,
-						low: d.low,
-						volume: d.volume,
-						value: d.avg
-					});
-                    
-				}
-                return chartData;
-			}
-
-            function createStockChart() {
-                
-var chartData = generateChartData();
-
-
-var chart = AmCharts.makeChart( "chartdiv", {
-  "type": "stock",
-  "theme": "light",
-
-  "dataSets": [ {
-    "fieldMappings": [ {
-      "fromField": "open",
-      "toField": "open"
-    }, {
-      "fromField": "close",
-      "toField": "close"
-    }, {
-      "fromField": "high",
-      "toField": "high"
-    }, {
-      "fromField": "low",
-      "toField": "low"
-    }, {
-      "fromField": "volume",
-      "toField": "volume"
-    }, {
-      "fromField": "value",
-      "toField": "value"
-    } ],
-    "color": "#7f8da9",
-    "dataProvider": chartData,
-    "title": "<?= $market_name ?>",
-    "categoryField": "date"
-  } ],
-
-
-  "panels": [ {
-      "title": "Price",
-      "showCategoryAxis": false,
-      "percentHeight": 70,
-      "valueAxes": [ {
-        "id": "v1",
-        "dashLength": 5
-      } ],
-
-      "categoryAxis": {
-        "dashLength": 5
-      },
-
-      "stockGraphs": [ {
-        "type": "candlestick",
-        "id": "g1",
-        "openField": "open",
-        "closeField": "close",
-        "highField": "high",
-        "lowField": "low",
-        "valueField": "close",
-        "lineColor": "black",
-        "fillColors": "lightgreen",
-        "negativeLineColor": "black",
-        "negativeFillColors": "#db4c3c",
-        "fillAlphas": 1,
-        "useDataSetColors": false,
-        "comparable": false,
-        "compareField": "value",
-        "showBalloon": true,
-        "balloonText" : "Open: [[open]]\nClose: [[close]]\n\nHigh: [[high]]\nLow: [[low]]\nAvg: [[value]]\n\nVolume: [[volume]]",
-        "proCandlesticks": true
-      } ],
-
-      "stockLegend": {
-        "valueTextRegular": undefined,
-        //"periodValueTextComparing": "[[percents.value.close]]%"
-      }
-    },
-
-    {
-      "title": "Volume",
-      "percentHeight": 30,
-      "marginTop": 1,
-      "showCategoryAxis": true,
-      "valueAxes": [ {
-        "dashLength": 5
-      } ],
-
-      "categoryAxis": {
-        "dashLength": 5
-      },
-
-      "stockGraphs": [ {
-        "valueField": "volume",
-        "type": "column",
-        "showBalloon": true,
-        "fillAlphas": 1
-      } ],
-
-      "stockLegend": {
-        "markerType": "none",
-        "markerSize": 0,
-        "labelText": "",
-        "periodValueTextRegular": "[[value.close]]"
-      }
-    }
-  ],  
-  
-  "chartScrollbarSettings": {
-    "graph": "g1",
-    "graphType": "line",
-    "usePeriod": "WW"
-  },
-
-  "valueAxesSettings": {
-    "inside": false,
-    "autoMargins": true
-  },
-  
-  "chartCursorSettings": {
-    "valueLineBalloonEnabled": true,
-    "valueLineEnabled": true,
-  },
-
-  "periodSelector": {
-    "position": "bottom",
-    "periods": [
-    {
-      "period": "mm",
-      "count": 1,
-      "label": "Minute"
-    }, {
-      "period": "hh",
-      "count": 1,
-      "label": "Hour"
-    }, {
-      "period": "DD",
-      "count": 1,
-      "label": "Day"
-    }, {
-      "period": "WW",
-      "count": 1,
-      "label": "Week"
-    }, {
-      "period": "MM",
-      selected: true,
-      "count": 1,
-      "label": "Month"
-    }, {
-      "period": "YYYY",
-      "count": 1,
-      "label": "Year"
-    }, {
-      "period": "YTD",
-      "label": "YTD"
-    }, {
-      "period": "MAX",
-      "label": "MAX"
-    } ]
-  },
-  "export": {
-    "enabled": true
-  },
-  
-  "listeners": [{
-    "event": "init",
-    "method": function(e) {
-      // init
-      var margins = {
-        "left": 0,
-        "right": 20
-      };
-      
-      // iterate thorugh all of the panels
-      for ( var p = 0; p < chart.panels.length; p++ ) {
-        var panel = chart.panels[p];
+function createStockChart() {
+    
+    var chart = AmCharts.makeChart( "chartdiv", {
+      "type": "stock",
+      "theme": "light",
+    
+      "dataSets": [ {
+        "fieldMappings": [ {
+          "fromField": "open",
+          "toField": "open"
+        }, {
+          "fromField": "close",
+          "toField": "close"
+        }, {
+          "fromField": "high",
+          "toField": "high"
+        }, {
+          "fromField": "low",
+          "toField": "low"
+        }, {
+          "fromField": "volume",
+          "toField": "volume"
+        }, {
+          "fromField": "value",
+          "toField": "value"
+        } ],
+        "color": "#7f8da9",
+        "title": "<?= $market_name ?>",
+        "categoryField": "date",
         
-        // iterate through all of the axis
-        for ( var i = 0; i < panel.valueAxes.length; i++ ) {
-          var axis = panel.valueAxes[ i ];
-          if ( axis.inside !== false ) {
-            continue;
+        "dataLoader": {
+           // we use csv instead of json because it is more compact over the wire.
+          "url": "api/hloc?market=<?= $market ?>&format=csv",
+          "format": "csv",
+          "delimiter": ",",       // column separator
+          "useColumnNames": true, // use first row for column names
+          "skip": 1,               // skip header row
+          "reload": 300,           // auto reload every 5 minutes.
+          "timestamp": true        // add timestamp to url, to avoid caches.
+        }    
+      } ],
+    
+      "panels": [ {
+          "title": "Price",
+          "showCategoryAxis": false,
+          "percentHeight": 70,
+          "valueAxes": [ {
+            "id": "v1",
+            "dashLength": 5
+          } ],
+    
+          "categoryAxis": {
+            "dashLength": 5,
+            "minPeriod": "DD",
+            "parseDates": true,
+            "minorGridEnabled": true
+          },
+    
+          "stockGraphs": [ {
+            "type": "candlestick",
+            "id": "g1",
+            "openField": "open",
+            "closeField": "close",
+            "highField": "high",
+            "lowField": "low",
+            "valueField": "close",
+            "lineColor": "black",
+            "fillColors": "lightgreen",
+            "negativeLineColor": "black",
+            "negativeFillColors": "#db4c3c",
+            "fillAlphas": 1,
+            "useDataSetColors": false,
+            "comparable": false,
+            "compareField": "value",
+            "showBalloon": true,
+            "balloonText" : "Open: [[open]]\nClose: [[close]]\n\nHigh: [[high]]\nLow: [[low]]\nAvg: [[value]]\n\nVolume: [[volume]]",
+            "proCandlesticks": true
+          } ],
+    
+          "stockLegend": {
+            "valueTextRegular": undefined,
           }
-
-          var axisWidth = axis.getBBox().width + 10;
-          if ( axisWidth > margins[ axis.position ] ) {
-            margins[ axis.position ] = axisWidth;
+        },
+    
+        {
+          "title": "Volume",
+          "percentHeight": 30,
+          "marginTop": 1,
+          "showCategoryAxis": true,
+          "valueAxes": [ {
+            "dashLength": 5
+          } ],
+    
+          "categoryAxis": {
+            "dashLength": 5,
+            "parseDates": true
+          },
+    
+          "stockGraphs": [ {
+            "valueField": "volume",
+            "type": "column",
+            "showBalloon": true,
+            "fillAlphas": 1
+          } ],
+    
+          "stockLegend": {
+            "markerType": "none",
+            "markerSize": 0,
+            "labelText": "",
+            "periodValueTextRegular": "[[value.close]]"
           }
         }
-        
-      }
+      ],  
       
-      // set margins
-      if ( margins.left || margins.right ) {
-        chart.panelsSettings.marginLeft = margins.left;
-        chart.panelsSettings.marginRight = margins.right;
-        chart.invalidateSize();
-        window.setTimeout( function() {document.getElementById('chartdiv').style.visibility = 'visible'}, 500);
-      }
-    }
-  }]    
-  
-} );
-    }
-	
+      "chartScrollbarSettings": {
+        "graph": "g1",
+        "graphType": "line",
+        "usePeriod": "WW"
+      },
+    
+      "valueAxesSettings": {
+        "inside": false,
+        "autoMargins": true
+      },
+      
+      "chartCursorSettings": {
+        "valueLineBalloonEnabled": true,
+        "valueLineEnabled": true,
+      },
+    
+      "periodSelector": {
+        "position": "bottom",
+        "hideOutOfScopePeriods": true,
+        "periods": [
+<?php            
+    /*        
+        {
+          "period": "mm",
+          "count": 1,
+          "label": "Minute"
+        }, {
+          "period": "hh",
+          "count": 1,
+          "label": "Hour"
+        },
+    */
+?>    
+        {
+          "period": "DD",
+          "count": 1,
+          "label": "Day"
+        }, {
+          "period": "WW",
+          "count": 1,
+          "label": "Week"
+        }, {
+          "period": "MM",
+          "selected": true,
+          "count": 1,
+          "label": "Month"
+        }, {
+          "period": "YYYY",
+          "count": 1,
+          "label": "Year"
+        }, {
+          "period": "YTD",
+          "label": "YTD"
+        }, {
+          "period": "MAX",
+          "label": "MAX"
+        } ]
+      },
+      "export": {
+        "enabled": true
+      },
 
-    		
-		</script>
+<?php    
+      /**
+       * this is an ugly hack to get the graph to display inside the div without
+       * clipping left and right edges, and also keep the graph from displaying
+       * on top of the left axis.  why this is necessary is beyond me.  I found
+       * it in an amcharts demo though. maybe an html/JS wizard can fix things
+       * so this is no longer necessary.
+       */
+?>      
+      "listeners": [{
+        "event": "init",
+        "method": function(e) {
+          // init
+          var margins = {
+            "left": 0,
+            "right": 20
+          };
+          
+          // iterate thorugh all of the panels
+          for ( var p = 0; p < chart.panels.length; p++ ) {
+            var panel = chart.panels[p];
+            
+            // iterate through all of the axis
+            for ( var i = 0; i < panel.valueAxes.length; i++ ) {
+              var axis = panel.valueAxes[ i ];
+              if ( axis.inside !== false ) {
+                continue;
+              }
+    
+              var axisWidth = axis.getBBox().width + 10;
+              if ( axisWidth > margins[ axis.position ] ) {
+                margins[ axis.position ] = axisWidth;
+              }
+            }
+            
+          }
+          
+          // set margins
+          if ( margins.left || margins.right ) {
+            chart.panelsSettings.marginLeft = margins.left;
+            chart.panelsSettings.marginRight = margins.right;
+            chart.invalidateSize();
+            // prevent redraw flashing.
+            window.setTimeout( function() {document.getElementById('chartdiv').style.visibility = 'visible'}, 500);
+          }
+        }
+      }]    
+      
+    } );
+    
+}
+</script>
 
 </body>
 </html>

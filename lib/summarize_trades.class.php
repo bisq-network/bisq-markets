@@ -74,6 +74,7 @@ class summarize_trades {
      *  + datetime_to: timestamp utc.  required.
      *  + direction: buy, sell
      *  + integeramounts: bool.  default = true.
+     *  + fillgaps: bool.  default = false.
      *  + fields: array -- fields to return.
      *      available:  "period_start", "open", "close",
      *                  "high", "low", "avg", "volume"
@@ -85,12 +86,11 @@ class summarize_trades {
         $criteria['sort'] = 'asc';
         $criteria['integeramounts'] = true;
         $trades = $tradesobj->get_trades( $criteria );
-//print_r( $trades );
-        // generate intervals
+
         $intervals = [];
         foreach( $trades as $trade ) {
             $traded_at = $trade['tradeDate'] / 1000;
-            $interval_start = $this->interval_start($traded_at, $interval);
+            $interval_start = $this->interval_start($traded_at, $interval)*$this->ts_multiplier;
             if( !isset($intervals[$interval_start]) ) {
                 $intervals[$interval_start] = ['open' => 0,
                                                'close' => 0,
@@ -126,13 +126,41 @@ class summarize_trades {
                 $period['volume'] = btcutil::int_to_btc( $period['volume'] );
             }
         }
+        
+        // generate intervals in gaps.
+        // note:  this is a slow operation.  best not to use this option if possible.
+        if( @$fillgaps ) {
+            $secs = $this->interval_secs( $interval );
+            $next = $datetime_from;
+            $prev_close = 1;
+            while( $next < $datetime_to ) {
+                $interval_start = $this->interval_start($next, $interval)*$this->ts_multiplier;
+                $cur = @$intervals[$interval_start];
+                if( !$cur ) {
+                    $cur = ['period_start' => $interval_start,
+                            'open' => $prev_close,
+                            'close' => $prev_close,
+                            'high' => $prev_close,
+                            'low' => $prev_close,
+                            'avg' => $prev_close,
+                            'volume' => 0,
+                          ];
+                    $intervals[$interval_start] = $cur;
+                }
+                else {
+                    $prev_close = $cur['close'];
+                }
+                $next += $secs;
+            }
+            ksort( $intervals );
+        }
 
         // convert to user specified field order list, if present.
         if( @$fields ) {
             foreach( $intervals as $k => &$period ) {
                 $p = [];
                 foreach( $fields as $f ) {
-                    $p[$f] = @$period[$f] ?: null;
+                    $p[$f] = @$period[$f];
                 }
                 $period = $p;
             }
@@ -143,31 +171,37 @@ class summarize_trades {
     private function interval_start( $ts, $interval ) {
         switch( $interval ) {
             case 'minute':
-                return (int)($ts - ($ts % 60)) * $this->ts_multiplier;
+                return (int)($ts - ($ts % 60));
             case '10_minute':
-                return (int)($ts - ($ts % 600)) * $this->ts_multiplier;
+                return (int)($ts - ($ts % 600));
             case 'hour':
-                return (int)($ts - ($ts % 3600)) * $this->ts_multiplier;
+                return (int)($ts - ($ts % 3600));
             case 'day':
-                return strtotime( 'midnight today', $ts) * $this->ts_multiplier;
+                return strtotime( 'midnight today', $ts);
             case 'week':
-                return strtotime( "midnight sunday last week", $ts ) * $this->ts_multiplier;
+                return strtotime( "midnight sunday last week", $ts );
             case 'month':
-                return strtotime( "midnight first day of this month", $ts ) * $this->ts_multiplier;
+                return strtotime( "midnight first day of this month", $ts );
             case 'year':
-                return strtotime( "midnight first day of january", $ts ) * $this->ts_multiplier;
+                return strtotime( "midnight first day of january", $ts );
             default:
-                throw new exception( "Unsupported interval" ) * $this->ts_multiplier;
+                throw new exception( "Unsupported interval" );
         }
     }
 
     private function interval_end( $ts, $interval ) {
         switch( $interval ) {
             case '10_minute':
-                return $this->interval_start($ts, $interval) + 600 -1;
+                return ($this->interval_start($ts, $interval) + 600 -1);
             default:
-                return strtotime("+1 $interval", $ts) -1;
+                return (strtotime("+1 $interval", $ts) -1);
         }
     }
+    
+    private function interval_secs( $interval ) {
+        $start = $this->interval_start( time(), $interval );
+        return $this->interval_end( $start, $interval ) - $start;
+    }
+    
     
 }

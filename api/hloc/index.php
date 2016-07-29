@@ -9,6 +9,7 @@ $end = @$_GET['end'];
 $format = @$_GET['format'] ?: 'json';  // csv or json.
 $endcaps = @$_GET['endcaps'];
 $fillgaps = (bool)@$_GET['fillgaps'];
+$prettyjson = (bool)@$_GET['prettyjson'];
 
 function bail($code, $msg) {
     header($_SERVER["SERVER_PROTOCOL"]." $code $msg", true, $code);
@@ -96,12 +97,12 @@ if( $format == 'csv' ) {
     foreach( $rows as $k => $row ) {
         $row['period_start'] = date('c', $row['period_start']/1000);
         fwrite( $fh, implode( ",", $row ) . "\n" );
-        // fputcsv( $fh, $row );
+        fputcsv( $fh, $row );
     }
     fclose( $fh );
 }
 else {
-    echo json_encode( $rows );
+    echo json_encode( $results, $prettyjson ? JSON_PRETTY_PRINT : null );
 }
 
 

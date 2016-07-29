@@ -28,7 +28,6 @@ try {
                                                                     'datetime_from' => $start_period_time = strtotime( '4 week ago + 1 day 00:00:00' ),
                                                                     'datetime_to' => $start_period_time +  (int)floor((time() - $start_period_time)/1800)*1800,
                                                                    ] );
-print_r($history_result);    
     $market_select = sprintf( "<select onclick='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value)'>\n", $market );
     foreach( $markets_result as $id => $m ) {
         $market_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $id, $id == $market ? ' selected' : '', strtoupper( str_replace('_', '/', $id )) );
@@ -43,7 +42,6 @@ print_r($history_result);
                       'volume' => '--'
                     ];
     $latest = @$history_result[count($history_result)-1];
-print_r( $latest );
     if( $latest && date('Y-m-d', $latest['period_start']/1000) == date('Y-m-d') ) {
         $market_result = ['market'=> $market_select,
                           'market_date'=> date('Y-m-d'),
@@ -57,8 +55,6 @@ print_r( $latest );
 
     $trades_result = $trades->get_trades( [ 'market' => $market,
                                             'limit'  => $max_trade_history ] );
-print_r( $trades_result[0] );
-    
 }
 catch( Exception $e ) {
     _global_exception_handler( $e );
@@ -92,8 +88,15 @@ $buttons_row = array( "<table width='100%' cellpadding='0' cellspacing='0'><tr><
                     );
 
 function display_crypto($val, $row) {
-    return $val / 10000000;
+    return $val / 100000000;
 }
+function display_fiat($val, $row) {
+    return $val / 10000;
+}
+function display_cryptotimesfiat($val, $row) {
+    return $val / 1000000000000;
+}
+
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -104,6 +107,7 @@ function display_crypto($val, $row) {
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 <script src="https://www.amcharts.com/lib/3/amstock.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
 <?php require_once( dirname( __FILE__) . '/widgets/timezone-js.html' ); ?>
 <style>
 #buy_sell_orders {
@@ -137,6 +141,10 @@ function display_crypto($val, $row) {
 #sell_orders td, #buy_orders td, #trade_history td {
     width: 100%;
 }
+#chartdiv {
+    visibility: hidden;
+    height: 500px;
+}
 </style>
 </head>
 <body>
@@ -150,7 +158,6 @@ function display_crypto($val, $row) {
 <div id="chartdiv"></div>
 <div style="clear: both"></div>
 </div>
-<script>document.getElementById('chartdiv').style.height = "500px";</script>
 <?php if( !count( $trades_result ) || $trades_result[0]['tradeDate']/1000 <= strtotime( 'now - 7 day' ) ): ?>
 <div class="widget" style="margin-top: 15px; text-align: center;">
     There have been no trades in this market recently.   You can get the ball rolling by placing an order now.
@@ -166,9 +173,9 @@ function display_crypto($val, $row) {
                               array( 'tradeDate',
                                      // 'direction' => array( 'cb_format' => function($val, $row) { return sprintf( '<a href="view_trade.html?trade=%s">%s</a>', @$row['offerId'], $val ); } ),
                                      'direction',
-                                     'tradePrice' => ['cb_format' => 'display_crypto'],
+                                     'tradePrice' => ['cb_format' => 'display_fiat'],
                                      'tradeAmount' => ['cb_format' => 'display_crypto'],
-                                     'total' => ['cb_format' => 'display_crypto'] ) ); ?>
+                                     'total' => ['cb_format' => 'display_cryptotimesfiat'] ) ); ?>
 </div>
 
 
@@ -254,9 +261,9 @@ var chart = AmCharts.makeChart( "chartdiv", {
         "highField": "high",
         "lowField": "low",
         "valueField": "close",
-        "lineColor": "#7f8da9",
-        "fillColors": "#7f8da9",
-        "negativeLineColor": "#db4c3c",
+        "lineColor": "black",
+        "fillColors": "lightgreen",
+        "negativeLineColor": "black",
         "negativeFillColors": "#db4c3c",
         "fillAlphas": 1,
         "useDataSetColors": false,
@@ -300,17 +307,22 @@ var chart = AmCharts.makeChart( "chartdiv", {
         "periodValueTextRegular": "[[value.close]]"
       }
     }
-  ],
-
+  ],  
+  
   "chartScrollbarSettings": {
     "graph": "g1",
     "graphType": "line",
     "usePeriod": "WW"
   },
 
+  "valueAxesSettings": {
+    "inside": false,
+    "autoMargins": true
+  },
+  
   "chartCursorSettings": {
     "valueLineBalloonEnabled": true,
-    "valueLineEnabled": true
+    "valueLineEnabled": true,
   },
 
   "periodSelector": {
@@ -351,10 +363,51 @@ var chart = AmCharts.makeChart( "chartdiv", {
   },
   "export": {
     "enabled": true
-  }
+  },
+  
+  "listeners": [{
+    "event": "init",
+    "method": function(e) {
+      // init
+      var margins = {
+        "left": 0,
+        "right": 20
+      };
+      
+      // iterate thorugh all of the panels
+      for ( var p = 0; p < chart.panels.length; p++ ) {
+        var panel = chart.panels[p];
+        
+        // iterate through all of the axis
+        for ( var i = 0; i < panel.valueAxes.length; i++ ) {
+          var axis = panel.valueAxes[ i ];
+          if ( axis.inside !== false ) {
+            continue;
+          }
+
+          var axisWidth = axis.getBBox().width + 10;
+          if ( axisWidth > margins[ axis.position ] ) {
+            margins[ axis.position ] = axisWidth;
+          }
+        }
+        
+      }
+      
+      // set margins
+      if ( margins.left || margins.right ) {
+        chart.panelsSettings.marginLeft = margins.left;
+        chart.panelsSettings.marginRight = margins.right;
+        chart.invalidateSize();
+        window.setTimeout( function() {document.getElementById('chartdiv').style.visibility = 'visible'}, 500);
+      }
+    }
+  }]    
+  
 } );
     }
-			
+	
+
+    		
 		</script>
 
 </body>

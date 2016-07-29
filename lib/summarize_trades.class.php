@@ -83,6 +83,7 @@ class summarize_trades {
         $tradesobj = new trades();
         unset( $criteria['fields'] );
         $criteria['sort'] = 'asc';
+        $criteria['integeramounts'] = true;
         $trades = $tradesobj->get_trades( $criteria );
 //print_r( $trades );
         // generate intervals

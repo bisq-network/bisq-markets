@@ -14,6 +14,7 @@ class trades {
      *  + direction: 'buy', 'sell'
      *  + limit: max trades
      *  + sort: asc | desc.  default = asc
+     *  + integeramounts: bool.  default = true.
      *  + fields: array -- fields to return.
      *      available:  "currency", "direction", "tradePrice", "tradeAmount",
      *                  "tradeDate", "paymentMethod", "offerDate",
@@ -46,6 +47,13 @@ class trades {
                 continue;
             }
 
+            if( false && !@$integeramounts ) {
+                $trade['tradePrice'] = btcutil::int_to_money4( $trade['tradePrice'] );
+                $trade['tradeAmount'] = btcutil::int_to_money4( $trade['tradeAmount'] );
+                $trade['offerAmount'] = btcutil::int_to_btc( $trade['offerAmount'] );
+                $trade['offerMinAmount'] = btcutil::int_to_btc( $trade['offerMinAmount'] );
+            }
+            
             // convert to user specified field order list, if present.
             if( @$fields ) {
                 $t = [];
@@ -61,6 +69,7 @@ class trades {
                 break;
             }
         }
+        
 
         if( $sort == 'asc') {
             $matches = array_reverse( $matches );

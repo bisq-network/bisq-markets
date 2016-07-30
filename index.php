@@ -184,7 +184,7 @@ function createStockChart() {
         
         "dataLoader": {
           // we use csv instead of json because it is more compact over the wire.
-          "url": "api/hloc?market=<?= $market ?>&interval=day&format=csv",
+          "url": "api/hloc?market=<?= $market ?>&interval=day&format=csv&endcaps=1",
           "format": "csv",
           "delimiter": ",",       // column separator
           "useColumnNames": true, // use first row for column names

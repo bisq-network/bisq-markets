@@ -95,7 +95,6 @@ if( $format == 'csv' ) {
         if( !$timestamp ) {
             $row['period_start'] = date('c', $row['period_start']);
         }
-        fwrite( $fh, implode( ",", $row ) . "\n" );
         fputcsv( $fh, $row );
     }
     fclose( $fh );

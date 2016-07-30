@@ -176,6 +176,9 @@ function createStockChart() {
           "toField": "volume"
         }, {
           "fromField": "avg",
+          "toField": "avg"
+        }, {
+          "fromField": "avg",
           "toField": "value"
         } ],
         "color": "#7f8da9",
@@ -226,7 +229,7 @@ function createStockChart() {
             "comparable": false,
             "compareField": "value",
             "showBalloon": true,
-            "balloonText" : "Open: [[open]]\nClose: [[close]]\n\nHigh: [[high]]\nLow: [[low]]\nAvg: [[value]]\n\nVolume: [[volume]]",
+            "balloonText" : "Open: [[open]]\nClose: [[close]]\n\nHigh: [[high]]\nLow: [[low]]\nAvg: [[avg]]\n\nVolume: [[volume]]",
             "proCandlesticks": false
           } ],
     

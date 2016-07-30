@@ -142,7 +142,7 @@ class trades {
         $buf = stream_get_contents( $fh );
         fclose( $fh );
         
-        $start = strpos( $buf, '[');
+        $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
 
         // add market key        

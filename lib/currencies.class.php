@@ -58,7 +58,7 @@ class currencies {
             return $result;
         }
         $buf = file_get_contents($json_file);
-        $start = strpos( $buf, '[');
+        $start = strpos( $buf, "\n")-1;
         $result = $this->add_keys( json_decode( substr($buf, $start), true ) );
         return $result;
     }

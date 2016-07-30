@@ -4,12 +4,13 @@ require_once( __DIR__ . '/../../lib/summarize_trades.class.php');
 
 $market = @$_GET['market'];
 $interval = @$_GET['interval'];
-$start = @$_GET['start'] ?: strtotime('2016-01-01') * 1000;
-$end = @$_GET['end'];
+$start = @$_GET['timestamp_from'] ?: strtotime('2016-01-01') ;
+$end = @$_GET['timestamp_to'] ?: time();
 $format = @$_GET['format'] ?: 'json';  // csv or json.
 $endcaps = @$_GET['endcaps'];
 $fillgaps = (bool)@$_GET['fillgaps'];
 $prettyjson = (bool)@$_GET['prettyjson'];
+$timestamp = (bool)@$_GET['timestamp'] != 'no';
 
 function bail($code, $msg) {
     header($_SERVER["SERVER_PROTOCOL"]." $code $msg", true, $code);
@@ -26,9 +27,6 @@ if ($start && !preg_match('/^[0-9]+$/', $start)) {
 if ($end && !preg_match('/^[0-9]+$/', $end)) {
 	bail(500, "Invalid end parameter: $end");
 }
-if (!$end) {
-    $end = time() * 1000;
-}
 if( $interval && !in_array( $interval, ['minute', 'hour', 'day', 'month'] )) {
 	bail(500, "Invalid interval parameter: $interval");
 }
@@ -40,14 +38,13 @@ $range = $end - $start;
 $summarizer = new summarize_trades();
 
 $criteria = ['market' => $market,
-             'datetime_from' => $start / 1000,
-             'datetime_to' => $end / 1000,
+             'datetime_from' => $start,
+             'datetime_to' => $end,
              'integeramounts' => false,
              'fields' => ['period_start','open','high','low','close','volume','avg'],
              'sort' => 'asc',
              'fillgaps' => $fillgaps,
             ];
-
 switch( $interval ) {
     
     case 'minute':  $rows = $summarizer->get_trade_summaries_minutes($criteria); break;
@@ -58,14 +55,14 @@ switch( $interval ) {
     default:
         // find the right table
         // two days range loads minute data
-        if($range < 2 * 24 * 3600 * 1000) {
+        if($range < 2 * 24 * 3600) {
             $rows = $summarizer->get_trade_summaries_minutes($criteria);
         }
-        elseif($range < 31 * 24 * 3600 * 1000) {
+        elseif($range < 31 * 24 * 3600) {
         // one month range loads hourly data
             $rows = $summarizer->get_trade_summaries_hours($criteria);
         }
-        elseif($range < 15 * 31 * 24 * 3600 * 1000) {
+        elseif($range < 15 * 31 * 24 * 3600) {
         // one year range loads daily data
             $rows = $summarizer->get_trade_summaries_days($criteria);
         }
@@ -76,7 +73,7 @@ switch( $interval ) {
         break;
 }
 
-if( $endcaps && !$fillgaps) {
+if( $endcaps) {
     if( count($rows ) ) {
         $first = $rows[0];
         $last = $rows[count($rows)-1];
@@ -92,17 +89,25 @@ if( $endcaps && !$fillgaps) {
 if( $format == 'csv' ) {
     // serve response to client.
     $fh = fopen( 'php://output', 'w');
-    fputcsv($fh, array_values( ['date','open','high','low','close','volume','value'] ) );
+    fputcsv($fh, array_values( ['period_start','open','high','low','close','volume','avg'] ) );
 
     foreach( $rows as $k => $row ) {
-        $row['period_start'] = date('c', $row['period_start']/1000);
+        if( !$timestamp ) {
+            $row['period_start'] = date('c', $row['period_start']);
+        }
         fwrite( $fh, implode( ",", $row ) . "\n" );
         fputcsv( $fh, $row );
     }
     fclose( $fh );
 }
 else {
-    echo json_encode( $results, $prettyjson ? JSON_PRETTY_PRINT : null );
+    if( !$timestamp ) {
+        foreach( $rows as $k => &$row ) {
+            $row['period_start'] = date('c', $row['period_start']);
+            
+        }
+    }
+    echo json_encode( $rows, $prettyjson ? JSON_PRETTY_PRINT : 0 );
 }
 
 

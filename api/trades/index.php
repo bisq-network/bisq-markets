@@ -42,6 +42,6 @@ if( $format == 'csv' ) {
     fclose( $fh );
 }
 else {
-    echo json_encode( $results, $prettyjson ? JSON_PRETTY_PRINT : null );
+    echo json_encode( $results, $prettyjson ? JSON_PRETTY_PRINT : 0 );
 }
 

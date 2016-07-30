@@ -175,16 +175,16 @@ function createStockChart() {
           "fromField": "volume",
           "toField": "volume"
         }, {
-          "fromField": "value",
+          "fromField": "avg",
           "toField": "value"
         } ],
         "color": "#7f8da9",
         "title": "<?= $market_name ?>",
-        "categoryField": "date",
+        "categoryField": "period_start",
         
         "dataLoader": {
           // we use csv instead of json because it is more compact over the wire.
-          "url": "api/hloc?market=<?= $market ?>&interval=day&format=csv&endcaps=1",
+          "url": "api/hloc?market=<?= $market ?>&interval=day&timestamp=no&format=csv&endcaps=1",
           "format": "csv",
           "delimiter": ",",       // column separator
           "useColumnNames": true, // use first row for column names
@@ -227,7 +227,7 @@ function createStockChart() {
             "compareField": "value",
             "showBalloon": true,
             "balloonText" : "Open: [[open]]\nClose: [[close]]\n\nHigh: [[high]]\nLow: [[low]]\nAvg: [[value]]\n\nVolume: [[volume]]",
-            "proCandlesticks": true
+            "proCandlesticks": false
           } ],
     
           "stockLegend": {

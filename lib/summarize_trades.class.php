@@ -5,7 +5,7 @@ require_once( __DIR__ . '/trades.class.php' );
 require_once( __DIR__ . '/btcutil.class.php' );
 
 class summarize_trades {
-    private $ts_multiplier = 1000;  // use milliseconds
+    private $ts_multiplier = 1;  // use seconds
     
     private function summarize( $trades ) {
     }
@@ -106,11 +106,12 @@ class summarize_trades {
             $intervals_prices[$interval_start][] = $price;
             
             if( $price ) {
+                $low = $period['low'];
                 $period['period_start'] = $interval_start;
                 $period['open'] = @$period['open'] ?: $price;
                 $period['close'] = $price;
                 $period['high'] = $price > $period['high'] ? $price : $period['high'];
-                $period['low'] = $price > $period['low'] ? $price : $period['low'];
+                $period['low'] = ($low && $price > $low) ? $period['low'] : $price;
                 $period['avg'] = array_sum($intervals_prices[$interval_start]) / count($intervals_prices[$interval_start]);
                 $period['volume'] += $trade['tradeAmount'];
             }

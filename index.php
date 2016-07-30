@@ -33,7 +33,7 @@ try {
                                                                    ] );
     // create market select control.
     $allparam = $allmarkets ? '&allmarkets=1' : '';
-    $market_select = sprintf( "<select onclick='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
+    $market_select = sprintf( "<select onchange='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
     foreach( $markets_result as $id => $m ) {
         $market_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $id, $id == $market ? ' selected' : '', strtoupper( str_replace('_', '/', $id )) );
     }

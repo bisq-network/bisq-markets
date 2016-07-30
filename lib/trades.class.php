@@ -1,5 +1,6 @@
 <?php
 
+require_once( __DIR__ . '/settings.class.php' );
 require_once( __DIR__ . '/strict_mode.funcs.php' );
 
 class trades {
@@ -79,7 +80,7 @@ class trades {
     }
     
     public function get_all_trades() {
-        $json_file = '/home/danda/.local/share/Bitsquare/mainnet/db/trade_statistics.json';
+        $json_file = settings::get('data_dir') . '/trade_statistics.json';
 
         // in case apcu is not installed.   ( slow )
         if( !function_exists( 'apcu_fetch' ) ) {

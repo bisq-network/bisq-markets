@@ -18,9 +18,9 @@ try {
     $marketservice = new markets();
     $markets_result = $allmarkets ? $marketservice->get_markets() : $marketservice->get_markets_with_trades();
     
-    // Default to usd market.
+    // Default to eur market for now.
     if( !$market || !@$markets_result[$market]) {
-        $market = "usd_btc";
+        $market = "eur_btc";
     }
     $currmarket = $markets_result[$market];
     

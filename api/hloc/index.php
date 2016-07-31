@@ -11,6 +11,13 @@ $endcaps = @$_GET['endcaps'];
 $fillgaps = (bool)@$_GET['fillgaps'];
 $prettyjson = (bool)@$_GET['prettyjson'];
 $timestamp = (bool)@$_GET['timestamp'] != 'no';
+$callback = @$_GET['callback'];  // a weird thing needed by highcharts.
+$milliseconds = @$_GET['milliseconds'];
+
+if( $milliseconds ) {
+    $start = @$_GET['timestamp_from'] ? (int)($_GET['timestamp_from'] / 1000) : $start;
+    $end = @$_GET['timestamp_from'] ? (int)($_GET['timestamp_to'] / 1000) : $end;
+}
 
 function bail($code, $msg) {
     header($_SERVER["SERVER_PROTOCOL"]." $code $msg", true, $code);
@@ -58,7 +65,7 @@ switch( $interval ) {
         if($range < 2 * 24 * 3600) {
             $rows = $summarizer->get_trade_summaries_minutes($criteria);
         }
-        elseif($range < 31 * 24 * 3600) {
+        elseif($range < 28 * 24 * 3600) {
         // one month range loads hourly data
             $rows = $summarizer->get_trade_summaries_hours($criteria);
         }
@@ -86,9 +93,20 @@ if( $endcaps) {
     }
 }
 
-if( $format == 'csv' ) {
+if( $format == 'jscallback' ) {
+    echo $callback . "([\n";
+    foreach( $rows as $k => $row ) {
+        if( $milliseconds ) {
+            $row['period_start'] *= 1000;
+        }
+        echo "[" . implode( ",", $row ) . "]" . ($k == count($rows) -1 ? "\n" : ",\n");
+    }
+    echo "])\n";
+}
+else if( $format == 'csv') {
     // serve response to client.
     $fh = fopen( 'php://output', 'w');
+    
     fputcsv($fh, array_values( ['period_start','open','high','low','close','volume','avg'] ) );
 
     foreach( $rows as $k => $row ) {

@@ -8,7 +8,7 @@ $start = @$_GET['timestamp_from'] ?: strtotime('2016-01-01') ;
 $end = @$_GET['timestamp_to'] ?: time();
 $format = @$_GET['format'] ?: 'json';  // csv or json.
 $endcaps = @$_GET['endcaps'];
-$fillgaps = (bool)@$_GET['fillgaps'];
+$fillgaps = @$_GET['fillgaps'];
 $prettyjson = (bool)@$_GET['prettyjson'];
 $timestamp = (bool)@$_GET['timestamp'] != 'no';
 $callback = @$_GET['callback'];  // a weird thing needed by highcharts.

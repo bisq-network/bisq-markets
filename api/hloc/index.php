@@ -56,38 +56,42 @@ $criteria = ['market' => $market,
 switch( $interval ) {
     
     case 'minute':  $rows = $summarizer->get_trade_summaries_minutes($criteria); break;
+    case 'half_hour':  $rows = $summarizer->get_trade_summaries_half_hours($criteria); break;
     case 'hour':  $rows = $summarizer->get_trade_summaries_hours($criteria); break;
+    case 'half_day':  $rows = $summarizer->get_trade_summaries_half_days($criteria); break;
     case 'day':  $rows = $summarizer->get_trade_summaries_days($criteria); break;
+    case 'week':  $rows = $summarizer->get_trade_summaries_weeks($criteria); break;
     case 'month':  $rows = $summarizer->get_trade_summaries_months($criteria); break;
+    case 'year':  $rows = $summarizer->get_trade_summaries_years($criteria); break;
         
     default:
         // find the right table
         // two days range loads minute data
-        if($range < 3600) {
+        if($range <= 3600) {
             // up to one hour range loads minutely data
             $rows = $summarizer->get_trade_summaries_minutes($criteria);
         }
-        else if($range < 1 * 24 * 3600) {
+        else if($range <= 1 * 24 * 3600) {
             // up to one day range loads half-hourly data
             $rows = $summarizer->get_trade_summaries_half_hours($criteria);
         }
-        elseif($range < 3 * 24 * 3600) {
+        elseif($range <= 3 * 24 * 3600) {
             // up to 3 day range loads hourly data
             $rows = $summarizer->get_trade_summaries_hours($criteria);
         }
-        elseif($range < 7 * 24 * 3600) {
+        elseif($range <= 7 * 24 * 3600) {
             // up to 7 day range loads half-daily data
             $rows = $summarizer->get_trade_summaries_half_days($criteria);
         }
-        elseif($range < 60 * 24 * 3600) {
+        elseif($range <= 60 * 24 * 3600) {
             // up to 2 month range loads daily data
             $rows = $summarizer->get_trade_summaries_days($criteria);
         }
-        elseif($range < 12 * 31 * 24 * 3600) {
+        elseif($range <= 12 * 31 * 24 * 3600) {
             // up to one year range loads weekly data
             $rows = $summarizer->get_trade_summaries_weeks($criteria);
         }
-        elseif($range < 12 * 31 * 24 * 3600) {
+        elseif($range <= 12 * 31 * 24 * 3600) {
             // up to 5 year range loads monthly data
             $rows = $summarizer->get_trade_summaries_months($criteria);
         }

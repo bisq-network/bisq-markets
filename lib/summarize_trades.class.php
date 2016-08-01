@@ -108,6 +108,7 @@ class summarize_trades {
         foreach( $trades as $trade ) {
             $traded_at = $trade['tradeDate'] / 1000;
             $interval_start = $this->interval_start($traded_at, $interval)*$this->ts_multiplier;
+
             if( !isset($intervals[$interval_start]) ) {
                 $intervals[$interval_start] = ['open' => 0,
                                                'close' => 0,

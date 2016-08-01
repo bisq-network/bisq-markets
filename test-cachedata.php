@@ -10,7 +10,6 @@ date_default_timezone_set ( 'UTC' );   // all dates expressed in UTC.
 
 $market = @$_GET['market'];
 $allmarkets = @$_GET['allmarkets'];
-$market_name = strtoupper( str_replace( '_', '/', $market));
 
 try {
 
@@ -23,6 +22,7 @@ try {
         $market = "eur_btc";
     }
     $currmarket = $markets_result[$market];
+    $market_name = strtoupper( str_replace( '_', '/', $market));
     
     // Obtain market summary info for today only.
     $summarize_trades = new summarize_trades();

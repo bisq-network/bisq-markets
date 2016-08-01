@@ -121,7 +121,9 @@ class summarize_trades {
             }
             $period =& $intervals[$interval_start];
             $price = $trade['tradePrice'];
-            $intervals_prices[$interval_start][] = $price;
+            $direction = $trade['direction'];
+            $intervals_prices[$interval_start]['leftvol'][] = $trade['tradeAmount'] * $price;
+            $intervals_prices[$interval_start]['rightvol'][] = $trade['tradeAmount'];
             
             if( $price ) {
                 $plow = $period['low'];
@@ -130,7 +132,9 @@ class summarize_trades {
                 $period['close'] = $price;
                 $period['high'] = $price > $period['high'] ? $price : $period['high'];
                 $period['low'] = ($plow && $price > $plow) ? $period['low'] : $price;
-                $period['avg'] = array_sum($intervals_prices[$interval_start]) / count($intervals_prices[$interval_start]);
+//                print_r($intervals_prices[$interval_start]);
+//                var_dump( array_sum($intervals_prices[$interval_start]['amount']), array_sum($intervals_prices[$interval_start]['price']) ); echo "\n----\n";
+                $period['avg'] = array_sum($intervals_prices[$interval_start]['leftvol']) / array_sum($intervals_prices[$interval_start]['rightvol']);
                 $period['volume'] += $trade['tradeAmount'];
             }
         }

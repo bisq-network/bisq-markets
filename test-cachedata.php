@@ -307,14 +307,13 @@ function server_url(from, to, interval) {
     return server_base_url() + '&timestamp_from=' + Math.round(from) + '&timestamp_to=' + Math.round(to) + "&interval=" + interval;
 }
 
+function polling_time() {
+    // 5 minutes.
+    return 5 * 60 * 1000;
+}
 
-Highcharts.setOptions({
-   plotOptions: {
-      series: {
-         animation: false
-      }
-   }
-});
+// refresh after 5 minutes
+setTimeout(requestData, polling_time());
 
 $(function () {
     /**
@@ -368,6 +367,9 @@ $(function () {
             oldmax = chart.xAxis[0].max;
 
             chart.hideLoading();
+
+            // refresh after 5 minutes
+            setTimeout(requestData, polling_time());
         });
     }
 

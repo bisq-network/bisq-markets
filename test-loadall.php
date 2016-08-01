@@ -156,15 +156,73 @@ function server_base_url(args) {
     return 'api/hloc?market=<?= $market ?>&milliseconds=true&timestamp=no&format=jscallback&fillgaps=<?= @$_GET['fillgaps'] ?>&callback=?';
 }
 
-function server_url(from, to, interval) {
+function server_url_args(from, to, interval) {
     return server_base_url() + '&timestamp_from=' + Math.round(from) + '&timestamp_to=' + Math.round(to) + "&interval=" + interval;
+}
+
+function server_url() {
+    return server_url_args( new Date('2016-01-01').getTime(), new Date().getTime(), 'minute' );
+}
+
+function polling_time() {
+    // 5 minutes.
+    return 5 * 60 * 1000;
+}
+
+
+
+/**
+ * Request data from the server, add it to the graph and set a timeout 
+ * to request again
+ */
+// call it again after 5 minutes
+setTimeout(requestData, polling_time());
+
+ 
+function requestData() {
+    $.getJSON(server_url(), function (data) {
+
+        var chart = $('#container').highcharts();
+        chart.showLoading('Loading data from server...');
+        
+        var ohlc = [],
+            volume = [],
+            avg = [],
+            dataLength = data.length;
+            
+        for (i = 0; i < dataLength; i++) {
+            ohlc.push([
+                data[i][0], // the date
+                data[i][1], // open
+                data[i][2], // high
+                data[i][3], // low
+                data[i][4] // close
+            ]);
+            avg.push([
+                data[i][0], // the date
+                data[i][6]  // the average
+            ]);
+            volume.push([
+                data[i][0], // the date
+                data[i][5] // the volume
+            ]);
+        }                
+
+        chart.series[0].setData(ohlc);
+        chart.series[1].setData(avg);
+        chart.series[2].setData(volume);
+        
+        chart.hideLoading();
+        
+        // call it again after 5 minutes
+        setTimeout(requestData, polling_time());
+    });
 }
 
 $(function () {
 
     // See source code from the JSONP handler at https://github.com/highcharts/highcharts/blob/master/samples/data/from-sql.php
-    var url = server_url( new Date('2016-01-01').getTime(), new Date().getTime(), 'minute' );
-    $.getJSON(url, function (data) {
+    $.getJSON(server_url(), function (data) {
 
             var ohlc = [],
                 volume = [],

@@ -312,8 +312,55 @@ function polling_time() {
     return 5 * 60 * 1000;
 }
 
-// refresh after 5 minutes
-setTimeout(requestData, polling_time());
+function requestData() {
+            
+    var chart = $('#container').highcharts();
+    chart.showLoading('Loading data from server...');
+
+    if ( e == null ) {
+        e = {min: chart.xAxis[0].min, max: chart.xAxis[0].max};
+    }
+    
+    $.getJSON( server_url( e.min, e.max, ''), function (data) {
+
+        var ohlc = [],
+            volume = [],
+            avg = [],
+            dataLength = data.length,
+            pointInterval;
+            
+        for (i = 0; i < dataLength; i++) {
+            ohlc.push([
+                data[i][0], // the date
+                data[i][1], // open
+                data[i][2], // high
+                data[i][3], // low
+                data[i][4] // close
+            ]);
+            avg.push([
+                data[i][0], // the date
+                data[i][6]  // the average
+            ]);
+            volume.push([
+                data[i][0], // the date
+                data[i][5] // the volume
+            ])
+        }                
+            
+        chart.series[0].setData(ohlc);
+        chart.series[1].setData(avg);
+        chart.series[2].setData(volume);
+
+        oldmin = chart.xAxis[0].min;
+        oldmax = chart.xAxis[0].max;
+        
+        chart.hideLoading();
+        
+        // refresh after 5 minutes
+        setTimeout(requestData, polling_time());
+    });
+    
+}
 
 $(function () {
     /**
@@ -321,58 +368,18 @@ $(function () {
      */
     function afterSetExtremes(e) {
         
-
-        var chart = $('#container').highcharts();
-        
         if (e.min >= oldmin && e.max <= oldmax ) {
             if ( get_interval(e.min, e.max) == get_interval(oldmin, oldmax)) {
                 return;
             }
         }
         
-
-        chart.showLoading('Loading data from server...');
-        
-        $.getJSON( server_url( e.min, e.max, ''), function (data) {
-
-            var ohlc = [],
-                volume = [],
-                avg = [],
-                dataLength = data.length,
-                pointInterval;
-                
-            for (i = 0; i < dataLength; i++) {
-                ohlc.push([
-                    data[i][0], // the date
-                    data[i][1], // open
-                    data[i][2], // high
-                    data[i][3], // low
-                    data[i][4] // close
-                ]);
-                avg.push([
-                    data[i][0], // the date
-                    data[i][6]  // the average
-                ]);
-                volume.push([
-                    data[i][0], // the date
-                    data[i][5] // the volume
-                ])
-            }                
-                
-            chart.series[0].setData(ohlc);
-            chart.series[1].setData(avg);
-            chart.series[2].setData(volume);
-            
-            oldmin = chart.xAxis[0].min;
-            oldmax = chart.xAxis[0].max;
-
-            chart.hideLoading();
-
-            // refresh after 5 minutes
-            setTimeout(requestData, polling_time());
-        });
+        requestData();
     }
 
+    // refresh after 5 minutes
+    setTimeout(requestData, polling_time());
+    
     // See source code from the JSONP handler at https://github.com/highcharts/highcharts/blob/master/samples/data/from-sql.php
     var url = server_url( new Date('2016-01-01').getTime(), new Date().getTime(), 'day' );
     $.getJSON(url, function (data) {

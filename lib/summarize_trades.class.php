@@ -24,6 +24,14 @@ class summarize_trades {
         $criteria['interval'] = '10_minute';
         return $this->get_trade_summaries( $criteria );
     }
+
+    public function get_trade_summaries_half_hours( $criteria ) {
+        
+        // align to start of half hour
+        $criteria['interval'] = 'half_hour';
+        
+        return $this->get_trade_summaries( $criteria );
+    }
     
     public function get_trade_summaries_hours( $criteria ) {
         
@@ -33,6 +41,14 @@ class summarize_trades {
         return $this->get_trade_summaries( $criteria );
     }
 
+    public function get_trade_summaries_half_days( $criteria ) {
+        
+        // align to start of day
+        $criteria['interval'] = 'half_day';
+        
+        return $this->get_trade_summaries( $criteria );
+    }    
+    
     public function get_trade_summaries_days( $criteria ) {
         
         // align to start of day
@@ -85,6 +101,7 @@ class summarize_trades {
         unset( $criteria['fields'] );
         $criteria['sort'] = 'asc';
         $criteria['integeramounts'] = true;
+
         $trades = $tradesobj->get_trades( $criteria );
 
         $intervals = [];
@@ -106,17 +123,17 @@ class summarize_trades {
             $intervals_prices[$interval_start][] = $price;
             
             if( $price ) {
-                $low = $period['low'];
+                $plow = $period['low'];
                 $period['period_start'] = $interval_start;
                 $period['open'] = @$period['open'] ?: $price;
                 $period['close'] = $price;
                 $period['high'] = $price > $period['high'] ? $price : $period['high'];
-                $period['low'] = ($low && $price > $low) ? $period['low'] : $price;
+                $period['low'] = ($plow && $price > $plow) ? $period['low'] : $price;
                 $period['avg'] = array_sum($intervals_prices[$interval_start]) / count($intervals_prices[$interval_start]);
                 $period['volume'] += $trade['tradeAmount'];
             }
         }
-        
+
         if( !@$integeramounts ) {
             foreach( $intervals as &$period ) {
                 $period['open'] = btcutil::int_to_money4( $period['open'] );
@@ -132,19 +149,31 @@ class summarize_trades {
         // note:  this is a slow operation.  best not to use this option if possible.
         if( @$fillgaps ) {
             $secs = $this->interval_secs( $interval );
+            if( $secs < 0 ) {
+                throw new Exception( "invalid interval seconds $secs for interval $interval" );
+            }
+
             $next = $datetime_from;
-            $prev_close = 1;
             while( $next < $datetime_to ) {
                 $interval_start = $this->interval_start($next, $interval)*$this->ts_multiplier;
                 $cur = @$intervals[$interval_start];
                 if( !$cur ) {
+                    if( $fillgaps === 'random' ) {
+                        $open = @$prev_close ?: 50;
+                        $close = rand( $open - $open / 2, $open + $open / 2);
+                        $high = rand( $open, $open + $open / 3);
+                        $low = rand( $open - $open / 3, $open );
+                        $avg = rand( $low, $high );
+                        $volume = rand( 1, 100 );
+                        $prev_close = $close;
+                    }
                     $cur = ['period_start' => $interval_start,
-                            'open' => $prev_close,
-                            'close' => $prev_close,
-                            'high' => $prev_close,
-                            'low' => $prev_close,
-                            'avg' => $prev_close,
-                            'volume' => 0,
+                            'open' => @$open,
+                            'close' => @$close,
+                            'high' => @$high,
+                            'low' => @$low,
+                            'avg' => @$avg,
+                            'volume' => @$volume,
                           ];
                     $intervals[$interval_start] = $cur;
                 }
@@ -175,8 +204,12 @@ class summarize_trades {
                 return (int)($ts - ($ts % 60));
             case '10_minute':
                 return (int)($ts - ($ts % 600));
+            case 'half_hour':
+                return (int)($ts - ($ts % 1800));
             case 'hour':
                 return (int)($ts - ($ts % 3600));
+            case 'half_day':
+                return (int)($ts - ($ts % (3600*12)));
             case 'day':
                 return strtotime( 'midnight today', $ts);
             case 'week':
@@ -194,6 +227,10 @@ class summarize_trades {
         switch( $interval ) {
             case '10_minute':
                 return ($this->interval_start($ts, $interval) + 600 -1);
+            case 'half_day':
+                return ($this->interval_start($ts, $interval) + 86400/2 -1);
+            case 'half_hour':
+                return ($this->interval_start($ts, $interval) + 3600/2 -1);
             default:
                 return (strtotime("+1 $interval", $ts) -1);
         }

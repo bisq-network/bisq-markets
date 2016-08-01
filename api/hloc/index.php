@@ -52,6 +52,7 @@ $criteria = ['market' => $market,
              'sort' => 'asc',
              'fillgaps' => $fillgaps,
             ];
+
 switch( $interval ) {
     
     case 'minute':  $rows = $summarizer->get_trade_summaries_minutes($criteria); break;
@@ -62,20 +63,37 @@ switch( $interval ) {
     default:
         // find the right table
         // two days range loads minute data
-        if($range < 2 * 24 * 3600) {
+        if($range < 3600) {
+            // up to one hour range loads minutely data
             $rows = $summarizer->get_trade_summaries_minutes($criteria);
         }
-        elseif($range < 28 * 24 * 3600) {
-        // one month range loads hourly data
+        else if($range < 1 * 24 * 3600) {
+            // up to one day range loads half-hourly data
+            $rows = $summarizer->get_trade_summaries_half_hours($criteria);
+        }
+        elseif($range < 3 * 24 * 3600) {
+            // up to 3 day range loads hourly data
             $rows = $summarizer->get_trade_summaries_hours($criteria);
         }
-        elseif($range < 15 * 31 * 24 * 3600) {
-        // one year range loads daily data
+        elseif($range < 7 * 24 * 3600) {
+            // up to 7 day range loads half-daily data
+            $rows = $summarizer->get_trade_summaries_half_days($criteria);
+        }
+        elseif($range < 60 * 24 * 3600) {
+            // up to 2 month range loads daily data
             $rows = $summarizer->get_trade_summaries_days($criteria);
         }
-        else {
-        // greater range loads monthly data
+        elseif($range < 12 * 31 * 24 * 3600) {
+            // up to one year range loads weekly data
+            $rows = $summarizer->get_trade_summaries_weeks($criteria);
+        }
+        elseif($range < 12 * 31 * 24 * 3600) {
+            // up to 5 year range loads monthly data
             $rows = $summarizer->get_trade_summaries_months($criteria);
+        }
+        else {
+            // greater range loads yearly data
+            $rows = $summarizer->get_trade_summaries_years($criteria);
         }
         break;
 }

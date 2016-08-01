@@ -250,32 +250,32 @@ function get_interval(start, end) {
     // Note: this logic mirrors the logic in api/hloc/index.php
     var range = (end - start) / 1000;   // in seconds.
     console.log(range);
-    if(range < 3600) {
-        // up to one hour range loads minutely data
+    if(range <= 3600) {
+        // up to one hour range loads minutely data  ( 60 / hour )
         return 'minutes';
     }
-    else if(range < 1 * 24 * 3600) {
-        // up to one day range loads half-hourly data
+    else if(range <= 1 * 24 * 3600) {
+        // up to one day range loads half-hourly data  ( 48 / day )
         return 'half_hours';
     }
-    else if(range < 3 * 24 * 3600) {
-        // up to 3 day range loads hourly data
+    else if(range <= 3 * 24 * 3600) {
+        // up to 3 day range loads hourly data  ( 72 / 3 days)
         return 'hours';
     }
-    else if(range < 7 * 24 * 3600) {
-        // up to 7 day range loads half-daily data
+    else if(range <= 7 * 24 * 3600) {
+        // up to 7 day range loads half-daily data  ( 84 / week )
         return 'half_days';
     }
-    else if(range < 60 * 24 * 3600) {
-        // up to 2 month range loads daily data
+    else if(range <= 60 * 24 * 3600) {
+        // up to 2 month range loads daily data  ( 48 / 2 months )
         return 'days';
     }
-    else if(range < 12 * 31 * 24 * 3600) {
-        // up to one year range loads weekly data
+    else if(range <= 12 * 31 * 24 * 3600) {
+        // up to one year range loads weekly data ( 52 / year )
         return 'weeks';
     }
-    else if(range < 12 * 31 * 24 * 3600) {
-        // up to 5 year range loads monthly data
+    else if(range <= 12 * 31 * 24 * 3600) {
+        // up to 5 year range loads monthly data ( 60 / 5 years )
         return 'months';
     }
     else {
@@ -299,6 +299,15 @@ function get_point_interval(start, end) {
     }
 }
 
+function server_base_url(args) {
+    return 'api/hloc?market=<?= $market ?>&milliseconds=true&timestamp=no&format=jscallback&callback=?';
+}
+
+function server_url(from, to, interval) {
+    return server_base_url() + '&timestamp_from=' + Math.round(from) + '&timestamp_to=' + Math.round(to) + "&interval=" + interval;
+}
+
+
 Highcharts.setOptions({
    plotOptions: {
       series: {
@@ -312,12 +321,13 @@ $(function () {
      * Load new data depending on the selected min and max
      */
     function afterSetExtremes(e) {
+        
 
         var chart = $('#container').highcharts();
-
+        
         chart.showLoading('Loading data from server...');
-        $.getJSON('api/hloc?market=<?= $market ?>&milliseconds=true&fillgaps=1&timestamp=no&format=jscallback&callback=?&timestamp_from=' + Math.round(e.min) +
-                '&timestamp_to=' + Math.round(e.max), function (data) {
+        
+        $.getJSON( server_url( e.min, e.max, ''), function (data) {
 
             var ohlc = [],
                 volume = [],
@@ -335,7 +345,7 @@ $(function () {
                 ]);
                 avg.push([
                     data[i][0], // the date
-                    data[i][6] > 0 ? data[i][6] : null  // the average
+                    data[i][6]  // the average
                 ]);
                 volume.push([
                     data[i][0], // the date
@@ -346,35 +356,14 @@ $(function () {
             chart.series[0].setData(ohlc);
             chart.series[1].setData(avg);
             chart.series[2].setData(volume);
-/*            
-chart.series[0].update({
-        pointInterval: get_point_interval( chart.xAxis[0].min, chart.xAxis[0].max )
-    });
-chart.series[1].update({
-        pointInterval: get_point_interval( chart.xAxis[0].min, chart.xAxis[0].max )
-    });
-chart.series[2].update({
-        pointInterval: get_point_interval( chart.xAxis[0].min, chart.xAxis[0].max )
-    });
-*/
-
-/*
-            chart.xAxis[0].pointInterval = get_point_interval( chart.xAxis[0].min, chart.xAxis[0].max );
-            chart.xAxis[0].minRange = chart.xAxis[0].pointInterval;
-            chart.xAxis[0].zoomEnabled = false;
-*/            
-//            chart.series[0].pointInterval = get_point_interval( chart.xAxis[0].min, chart.xAxis[0].max );
-//            chart.series[1].pointInterval = get_point_interval( chart.xAxis[0].min, chart.xAxis[0].max );
-//            chart.series[2].pointInterval = get_point_interval( chart.xAxis[0].min, chart.xAxis[0].max );
             
-            console.log( chart.xAxis[0] );
-
             chart.hideLoading();
         });
     }
 
     // See source code from the JSONP handler at https://github.com/highcharts/highcharts/blob/master/samples/data/from-sql.php
-    $.getJSON('api/hloc?market=<?= $market ?>&milliseconds=true&timestamp=no&format=jscallback&callback=?', function (data) {
+    var url = server_url( new Date('2016-01-01').getTime(), new Date().getTime(), 'day' );
+    $.getJSON(url, function (data) {
 
             var ohlc = [],
                 volume = [],
@@ -411,12 +400,17 @@ chart.series[2].update({
                 candlestick: {
                     color: 'red',
                     upColor: 'green',
-//                    pointWidth: 10,
+                    pointWidth: 10,
                 },
+                column: {
+                    pointWidth: 10,
+                }
+                
+                /*,
                 spline: {
-                    connectNulls: true
+                    connectNulls: false
 //                  pointWidth: 10,
-                },
+                } */
             },
 
             yAxis: [{
@@ -443,7 +437,7 @@ chart.series[2].update({
             },
 
             scrollbar: {
-                liveRedraw: false
+                liveRedraw: true
             },
 
             title: {
@@ -520,7 +514,7 @@ chart.series[2].update({
                 events : {
                     afterSetExtremes : afterSetExtremes
                 },
-                minRange: 24 * 3600, // one day
+                minRange: 3600 * 1000, // one hour
             },
 
             series: [
@@ -539,7 +533,7 @@ chart.series[2].update({
                     dataGrouping: {
                         enabled: false
                     }
-                },                
+                },
                 {
                     type: 'column',
                     name: 'Volume',
@@ -548,7 +542,8 @@ chart.series[2].update({
                     dataGrouping: {
                         enabled: false
                     }
-                }]            
+                }
+            ]
         });
     });
 });

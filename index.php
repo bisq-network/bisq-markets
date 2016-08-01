@@ -300,7 +300,7 @@ function get_point_interval(start, end) {
 }
 
 function server_base_url(args) {
-    return 'api/hloc?market=<?= $market ?>&milliseconds=true&timestamp=no&format=jscallback&callback=?';
+    return 'api/hloc?market=<?= $market ?>&milliseconds=true&timestamp=no&format=jscallback&fillgaps=<?= @$_GET['fillgaps'] ?>&callback=?';
 }
 
 function server_url(from, to, interval) {

@@ -155,8 +155,11 @@ class summarize_trades {
             }
 
             $next = $datetime_from;
-            while( $next < $datetime_to ) {
+            $cnt = 0;
+            $max = 50000;   // avoid breaking server.  ;-)
+            while( $next < $datetime_to && $cnt++ < $max ) {
                 $interval_start = $this->interval_start($next, $interval)*$this->ts_multiplier;
+
                 $cur = @$intervals[$interval_start];
                 if( !$cur ) {
                     if( $fillgaps === 'random' ) {
@@ -181,7 +184,7 @@ class summarize_trades {
                 else {
                     $prev_close = $cur['close'];
                 }
-                $next += $secs;
+                $next += $secs + 1;
             }
             ksort( $intervals );
         }

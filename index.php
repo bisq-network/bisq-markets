@@ -152,159 +152,16 @@ createStockChart();
 
 function createStockChart() {
 
-/*                
-$(function () {
-//    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-ohlcv.json&callback=?', function (data) {
-    $.getJSON('api/hloc?market=<?= $market ?>&timestamp=no&format=jscallback&callback=?', function (data) {
-
-//    $.getJSON('api/hloc/?market=dash_btc&callback=?', function (data) {
-
-        // split the data set into ohlc and volume
-        var ohlc = [],
-            volume = [],
-            dataLength = data.length,
-            // set the allowed units for data grouping
-            groupingUnits = [[
-                'week',                         // unit name
-                [1]                             // allowed multiples
-            ], [
-                'month',
-                [1, 2, 3, 4, 6]
-            ]],
-
-            i = 0;
-
-        for (i; i < dataLength; i += 1) {
-            ohlc.push([
-                data[i][0], // the date
-                data[i][1], // open
-                data[i][2], // high
-                data[i][3], // low
-                data[i][4]  // close
-            ]);
-
-            volume.push([
-                data[i][0], // the date
-                data[i][5]  // the volume
-            ]);
-        }
-
-
-        // create the chart
-        $('#container').highcharts('StockChart', {
-
-            rangeSelector: {
-                selected: 1
-            },
-
-            title: {
-                text: 'AAPL Historical'
-            },
-
-            yAxis: [{
-                labels: {
-                    align: 'right',
-                    x: -3
-                },
-                title: {
-                    text: 'OHLC'
-                },
-                height: '60%',
-                lineWidth: 2
-            }, {
-                labels: {
-                    align: 'right',
-                    x: -3
-                },
-                title: {
-                    text: 'Volume'
-                },
-                top: '65%',
-                height: '35%',
-                offset: 0,
-                lineWidth: 2
-            }],
-
-            series: [{
-                type: 'candlestick',
-                name: 'AAPL',
-                data: ohlc,
-                dataGrouping: {
-                    units: groupingUnits
-                }
-            }, {
-                type: 'column',
-                name: 'Volume',
-                data: volume,
-                yAxis: 1,
-                dataGrouping: {
-                    units: groupingUnits
-                }
-            }]
-        });
-    });
-});                
-*/
-
-function get_interval(start, end) {
-    // Note: this logic mirrors the logic in api/hloc/index.php
-    var range = (end - start) / 1000;   // in seconds.
-    console.log(range);
-    if(range <= 3600) {
-        // up to one hour range loads minutely data  ( 60 / hour )
-        return 'minutes';
-    }
-    else if(range <= 1 * 24 * 3600) {
-        // up to one day range loads half-hourly data  ( 48 / day )
-        return 'half_hours';
-    }
-    else if(range <= 3 * 24 * 3600) {
-        // up to 3 day range loads hourly data  ( 72 / 3 days)
-        return 'hours';
-    }
-    else if(range <= 7 * 24 * 3600) {
-        // up to 7 day range loads half-daily data  ( 84 / week )
-        return 'half_days';
-    }
-    else if(range <= 60 * 24 * 3600) {
-        // up to 2 month range loads daily data  ( 48 / 2 months )
-        return 'days';
-    }
-    else if(range <= 12 * 31 * 24 * 3600) {
-        // up to one year range loads weekly data ( 52 / year )
-        return 'weeks';
-    }
-    else if(range <= 12 * 31 * 24 * 3600) {
-        // up to 5 year range loads monthly data ( 60 / 5 years )
-        return 'months';
-    }
-    else {
-        // greater range loads yearly data
-        return 'years';
-    }
-}
-
-function get_point_interval(start, end) {
-    var interval = get_interval(start, end);
-    switch( interval ) {
-        case 'minutes':      return 60 * 1000;
-        case 'half_hours':   return 1800 * 1000;
-        case 'hours':        return 3600 * 1000;
-        case 'half_days':    return 3600 * 12 * 1000;
-        case 'days':         return 24 * 3600 * 1000;
-        case 'weeks':        return 24 * 7 * 3600 * 1000;
-        case 'months':       return 24 * 3600 * 30 *1000;
-        case 'years':        return 86400 * 365 * 1000;
-        default: return null;
-    }
-}
-
 function server_base_url(args) {
     return 'api/hloc?market=<?= $market ?>&milliseconds=true&timestamp=no&format=jscallback&fillgaps=<?= @$_GET['fillgaps'] ?>&callback=?';
 }
 
-function server_url(from, to, interval) {
+function server_url_args(from, to, interval) {
     return server_base_url() + '&timestamp_from=' + Math.round(from) + '&timestamp_to=' + Math.round(to) + "&interval=" + interval;
+}
+
+function server_url() {
+    return server_url_args( new Date('2016-01-01').getTime(), new Date().getTime(), 'minute' );
 }
 
 function polling_time() {
@@ -312,23 +169,26 @@ function polling_time() {
     return 5 * 60 * 1000;
 }
 
-function requestData(e) {
 
-    var chart = $('#container').highcharts();
-    
-    if ( e == null ) {
-        e = {min: chart.xAxis[0].min, max: chart.xAxis[0].max};
-    }
-            
-    chart.showLoading('Loading data from server...');
-    
-    $.getJSON( server_url( e.min, e.max, ''), function (data) {
 
+/**
+ * Request data from the server, add it to the graph and set a timeout 
+ * to request again
+ */
+// call it again after 5 minutes
+setTimeout(requestData, polling_time());
+
+ 
+function requestData() {
+    $.getJSON(server_url(), function (data) {
+
+        var chart = $('#container').highcharts();
+        chart.showLoading('Loading data from server...');
+        
         var ohlc = [],
             volume = [],
             avg = [],
-            dataLength = data.length,
-            pointInterval;
+            dataLength = data.length;
             
         for (i = 0; i < dataLength; i++) {
             ohlc.push([
@@ -345,41 +205,48 @@ function requestData(e) {
             volume.push([
                 data[i][0], // the date
                 data[i][5] // the volume
-            ])
+            ]);
         }                
-            
+
         chart.series[0].setData(ohlc);
         chart.series[1].setData(avg);
         chart.series[2].setData(volume);
-
+        
         chart.hideLoading();
         
-        // refresh after 5 minutes
+        // call it again after 5 minutes
         setTimeout(requestData, polling_time());
     });
-    
 }
 
-
 $(function () {
-    /**
-     * Load new data depending on the selected min and max
-     */
-    function afterSetExtremes(e) {
-        requestData(e);
-    }
 
-    // refresh after 5 minutes
-    setTimeout(requestData, polling_time());
-    
     // See source code from the JSONP handler at https://github.com/highcharts/highcharts/blob/master/samples/data/from-sql.php
-    var url = server_url( new Date('2016-01-01').getTime(), new Date().getTime(), 'day' );
-    $.getJSON(url, function (data) {
+    $.getJSON(server_url(), function (data) {
 
             var ohlc = [],
                 volume = [],
                 avg = [],
                 dataLength = data.length;
+                
+            var groupingUnits = [
+                [
+                    'hour',                         // unit name
+                    [1,12]                          // allowed multiples
+                ],
+                [
+                    'day',                         // unit name
+                    [1]                             // allowed multiples
+                ],
+                [
+                    'week',                         // unit name
+                    [1]                             // allowed multiples
+                ],
+                [
+                    'month',
+                    [1, 2, 3, 4, 6]
+                ]];
+                
                 
             for (i = 0; i < dataLength; i++) {
                 ohlc.push([
@@ -408,20 +275,16 @@ $(function () {
             },
             
             plotOptions: {
+                series: {
+                    // limit the maximum column width.
+                    maxPointWidth: 20
+                },
                 candlestick: {
                     color: 'red',
-                    upColor: 'green',
-                    pointWidth: 10,
+                    upColor: 'green'
                 },
                 column: {
-                    pointWidth: 10,
                 }
-                
-                /*,
-                spline: {
-                    connectNulls: false
-//                  pointWidth: 10,
-                } */
             },
 
             yAxis: [{
@@ -441,7 +304,6 @@ $(function () {
             }],
             
             navigator : {
-                adaptToUpdatedData: false,
                 series : {
                     data : data
                 }
@@ -454,7 +316,7 @@ $(function () {
             title: {
                 text: '<?= $market_name ?> Price History'
             },
-            
+
             tooltip:{
                 formatter: function() {
                     var points = this.point ? Highcharts.splat(this.point) : this.points,
@@ -463,19 +325,7 @@ $(function () {
                         txt = '';
                         
                     var chart = $('#container').highcharts();
-                    var date_format;
-                    var interval = get_interval( chart.xAxis[0].min, chart.xAxis[0].max );
-                    console.log( interval, chart.xAxis[0].min, chart.xAxis[0].max  );
-                    switch( interval ) {
-                        case 'minutes':    date_format = '%B %e, %Y - %l:%M %p'; break;
-                        case 'half_hours': date_format = '%B %e, %Y - %l:%M %p'; break;
-                        case 'hours':      date_format = '%B %e, %Y - %l %p';    break;
-                        case 'half_days':  date_format = '%B %e, %Y - %l %p';    break;
-                        case 'days':       date_format = '%B %e, %Y';            break;
-                        case 'weeks':      date_format = 'Week of %B %e, %Y';    break;
-                        case 'months':     date_format = '%B %Y';                break;
-                        case 'years':     date_format = '%Y';                    break;
-                    }
+                    var date_format = '%B %e, %Y - %l:%M %p';
                     
                     txt += '<span style="font-size: 10px"><b>' + Highcharts.dateFormat( date_format, point.x) + '</b></span><br/>';
                     var empty_buf = txt + "No trades";
@@ -483,20 +333,20 @@ $(function () {
                     var found = false;
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
-                            txt += 'Open: ' + p.point.open + '<br/>High: ' + p.point.high + '<br/>Low: ' + p.point.low + '<br/>Close: ' + p.point.close + '<br/><br/>';
+                            txt += '<b>Open</b>: ' + p.point.open + '<br/><b>High</b>: ' + p.point.high + '<br/><b>Low</b>: ' + p.point.low + '<br/><b>Close</b>: ' + p.point.close + '<br/><br/>';
                             found = true;
                         } else {
-                            txt +=  p.series.name + ': ' + p.y + '<br/>';
+                            txt +=  "<b>" + p.series.name + '</b>: ' + p.y + '<br/>';
                         }
                     });
                 
                     return found ? txt : empty_buf;
                 }
             },
-            
 
             rangeSelector : {
-                buttons: [{
+                buttons: [
+                {
                     type: 'hour',
                     count: 1,
                     text: '1h'
@@ -521,11 +371,6 @@ $(function () {
             },
 
             xAxis : {
-                ordinal: false,
-                events : {
-                    afterSetExtremes : afterSetExtremes
-                },
-                minRange: 3600 * 1000, // one hour
             },
 
             series: [
@@ -534,25 +379,31 @@ $(function () {
                     name: 'ohlc',
                     data: ohlc,
                     dataGrouping: {
-                        enabled: false
-                    }
+                        units: groupingUnits,
+                        enabled: true,
+                        forced: true                        
+                    }                    
                 },
                 {
                     type: 'spline',
-                    name: 'Average',
+                    name: 'Avg',
                     data: avg,
                     dataGrouping: {
-                        enabled: false
-                    }
+                        units: groupingUnits,
+                        enabled: true,
+                        forced: true                        
+                    }                    
                 },
                 {
                     type: 'column',
-                    name: 'Volume',
+                    name: 'Vol',
                     data: volume,
                     yAxis: 1,
                     dataGrouping: {
-                        enabled: false
-                    }
+                        units: groupingUnits,
+                        enabled: true,
+                        forced: true                        
+                    }                    
                 }
             ]
         });

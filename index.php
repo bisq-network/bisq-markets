@@ -340,7 +340,8 @@ $(function () {
                             found = true;
                         } else {
                             var curr = p.series.name == 'Avg' ? '<?= $curr_left ?>' : '<?= $curr_right ?>';
-                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, 2) + " " + curr +'<br/>';
+                            var precision = p.series.name == 'Avg' ? 2 : 4;
+                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, precision) + " " + curr +'<br/>';
                         }
                     });
                 

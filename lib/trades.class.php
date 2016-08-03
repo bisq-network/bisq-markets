@@ -108,7 +108,7 @@ class trades {
             $cached_ts = apcu_entry( $ts_key, function($key) { return time(); } );
             
             // invalidate cache if file on disk is newer than cached value.
-            if( filemtime( $json_file ) < $cached_ts ) {
+            if( filemtime( $json_file ) > $cached_ts ) {
                 apcu_delete( $result_key );
             }
             return apcu_entry( $result_key, function($key) use($json_file) {

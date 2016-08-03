@@ -7,7 +7,7 @@
   <title>Bitsquare - The decentralized bitcoin exchange : Markets</title>
   <link href="css/bitsquare/style.css" media="screen" rel="stylesheet" type=
   "text/css">
-  <link href="css/bitsquare/favicon.ico" rel="icon" type="image/x-icon">
+  <link href="favicon.ico" rel="icon" type="image/x-icon">
   <link href="css/bitsquare/css.css" id="opensans-css" media="all" rel=
   "stylesheet" type="text/css">
 </head>

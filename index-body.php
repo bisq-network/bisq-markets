@@ -22,6 +22,7 @@ try {
         $market = "eur_btc";
     }
     $market_name = strtoupper( str_replace( '_', '/', $market));
+    list( $curr_left, $curr_right ) = explode( '/', $market_name, 2);
     $currmarket = $markets_result[$market];
     
     // Obtain market summary info for today only.
@@ -48,7 +49,7 @@ try {
                           'high'=> $latest['high'],
                           'low'=> $latest['low'],
                           'avg'=> $latest['avg'],
-                          'volume' => $latest['volume']
+                          'volume' => $latest['volume'] . " " . $curr_right
                          ];
     }
     else {
@@ -74,7 +75,6 @@ catch( Exception $e ) {
     include(dirname(__FILE__) . '/404.html');
 }
 
-list( $curr_left, $curr_right ) = explode( '/', $market_name, 2);
 
 $table = new html_table();
 $table->timestampjs_col_names['tradeDate'] = true;

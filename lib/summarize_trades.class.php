@@ -138,17 +138,6 @@ class summarize_trades {
                 $period['volume'] += $trade['tradeAmount'];
             }
         }
-
-        if( !@$integeramounts ) {
-            foreach( $intervals as &$period ) {
-                $period['open'] = btcutil::int_to_money4( $period['open'] );
-                $period['close'] = btcutil::int_to_money4( $period['close'] );
-                $period['high'] = btcutil::int_to_money4( $period['high'] );
-                $period['low'] = btcutil::int_to_money4( $period['low'] );
-                $period['avg'] = btcutil::int_to_money4( $period['avg'] );
-                $period['volume'] = btcutil::int_to_btc( $period['volume'] );
-            }
-        }
         
         // generate intervals in gaps.
         // note:  this is a slow operation.  best not to use this option if possible.
@@ -192,17 +181,31 @@ class summarize_trades {
             }
             ksort( $intervals );
         }
-
-        // convert to user specified field order list, if present.
-        if( @$fields ) {
+        
+        
+        if( @$fields || !@$integeramounts ) {
             foreach( $intervals as $k => &$period ) {
-                $p = [];
-                foreach( $fields as $f ) {
-                    $p[$f] = @$period[$f];
+                
+                if( !@$integeramounts ) {
+                    $period['open'] = btcutil::int_to_money4( $period['open'] );
+                    $period['close'] = btcutil::int_to_money4( $period['close'] );
+                    $period['high'] = btcutil::int_to_money4( $period['high'] );
+                    $period['low'] = btcutil::int_to_money4( $period['low'] );
+                    $period['avg'] = btcutil::int_to_money4( $period['avg'] );
+                    $period['volume'] = btcutil::int_to_btc( $period['volume'] );
                 }
-                $period = $p;
+    
+                // convert to user specified field order list, if present.
+                if( @$fields ) {
+                    $p = [];
+                    foreach( $fields as $f ) {
+                        $p[$f] = @$period[$f];
+                    }
+                    $period = $p;
+                }
             }
         }
+
         return array_values( $intervals );
     }
     

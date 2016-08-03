@@ -42,7 +42,6 @@ body, .normal {
 	font-family:Arial,Verdana,sans-serif;
 	font-size:0.7em;
 	color:#333;
-	width: 800px;
 	margin-left: auto;
 	margin-right: auto;	
 }
@@ -304,16 +303,13 @@ table.bordered {
 
 table.bordered {
     border: solid #ccc 1px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
     -webkit-box-shadow: 0 2px 2px #ccc; 
     -moz-box-shadow: 0 2px 6px #ccc; 
     box-shadow: 0 2px 6px #ccc;         
 }
 
 table.bordered tr.odd:hover, table.bordered tr.even:hover {
-    background: #fbf8e9;
+    background: #fff;
     -o-transition: all 0.1s ease-in-out;
     -webkit-transition: all 0.1s ease-in-out;
     -moz-transition: all 0.1s ease-in-out;
@@ -328,13 +324,13 @@ table.bordered td, table.bordered th {
 }
 
 table.bordered th {
-    background-color: #dce9f9;
+    background-color: #fff;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
-    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #fff);
+    background-image: -moz-linear-gradient(top, #ebf3fc, #fff);
+    background-image: -ms-linear-gradient(top, #ebf3fc, #fff);
+    background-image: -o-linear-gradient(top, #ebf3fc, #fff);
+    background-image: linear-gradient(top, #ebf3fc, #fff);
     -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
     -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
     box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
@@ -380,10 +376,10 @@ table.bordered tr:last-child td:last-child {
 }
 
 table.bordered tr.odd {
-    background-color: #F4F8FD;
+    background-color: white;
 }
 table.bordered tr.even {
-    background-color: white;
+    background-color: #F4F8FD;
 }
 
 
@@ -425,14 +421,6 @@ form.formutil {
 
 }
 
-form table {
-    width: 100%;
-}
-
-.form_header {
-	width: 600px;
-	margin: auto;
-}
 
 input[type="submit"] {
     width:100px;
@@ -452,8 +440,8 @@ input[type="submit"]:hover {
 
 input, select    {
     border: 1px solid #999;
-	background-color: white;
-    height: 25px;
+    background-color: white;
+    height: 30px;
     -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);

@@ -219,6 +219,12 @@ function requestData() {
 }
 
 $(function () {
+    
+    Highcharts.setOptions({
+        global: {
+            useUTC: false   // we want user's localtime.
+        }
+    });    
 
     // See source code from the JSONP handler at https://github.com/highcharts/highcharts/blob/master/samples/data/from-sql.php
     $.getJSON(server_url(), function (data) {

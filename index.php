@@ -74,7 +74,7 @@ catch( Exception $e ) {
     include(dirname(__FILE__) . '/404.html');
 }
 
-list( $curr_left, $curr_right ) = explode( '_', $market, 2);
+list( $curr_left, $curr_right ) = explode( '/', $market_name, 2);
 
 $table = new html_table();
 $table->timestampjs_col_names['tradeDate'] = true;
@@ -89,7 +89,6 @@ function display_cryptotimesfiat($val, $row) {
     return $val / 1000000000000;
 }
 
-$amcharts_cdn = 'https://www.amcharts.com/lib/3';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -289,13 +288,13 @@ $(function () {
 
             yAxis: [{
                 title: {
-                    text: 'Price (<?= $market_name ?>)'
+                    text: '<b>Price (<?= $market_name ?>)</b>'
                 },
                 height: 200,
                 lineWidth: 2
             }, {
                 title: {
-                    text: 'Volume'
+                    text: '<b>Volume (<?= $curr_right ?>)</b>'
                 },
                 top: 290,
                 height: 95,
@@ -333,10 +332,15 @@ $(function () {
                     var found = false;
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
-                            txt += '<b>Open</b>: ' + p.point.open + '<br/><b>High</b>: ' + p.point.high + '<br/><b>Low</b>: ' + p.point.low + '<br/><b>Close</b>: ' + p.point.close + '<br/><br/>';
+                            var curr = '<?= $curr_left ?>';
+                            txt += '<b>Open</b>: ' + p.point.open + ' ' + curr +
+                                   '<br/><b>High</b>: ' + p.point.high + ' ' + curr +
+                                   '<br/><b>Low</b>: ' + p.point.low +' ' + curr +
+                                   '<br/><b>Close</b>: ' + p.point.close + ' ' + curr +'<br/><br/>';
                             found = true;
                         } else {
-                            txt +=  "<b>" + p.series.name + '</b>: ' + p.y + '<br/>';
+                            var curr = p.series.name == 'Avg' ? '<?= $curr_left ?>' : '<?= $curr_right ?>';
+                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, 2) + " " + curr +'<br/>';
                         }
                     });
                 
@@ -371,6 +375,8 @@ $(function () {
             },
 
             xAxis : {
+                // permit gaps in data.
+                ordinal: false
             },
 
             series: [

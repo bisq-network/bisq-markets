@@ -231,7 +231,7 @@ $(function () {
             var groupingUnits = [
                 [
                     'hour',                         // unit name
-                    [1,12]                          // allowed multiples
+                    [1]                          // allowed multiples
                 ],
                 [
                     'day',                         // unit name
@@ -243,7 +243,7 @@ $(function () {
                 ],
                 [
                     'month',
-                    [1, 2, 3, 4, 6]
+                    [1]
                 ]];
                 
                 
@@ -323,8 +323,20 @@ $(function () {
                         each = Highcharts.each,
                         txt = '';
                         
+                        
                     var chart = $('#container').highcharts();
-                    var date_format = '%B %e, %Y - %l:%M %p';
+                    var unit = chart.series[0].currentDataGrouping.unitName;
+                    var date_format;
+                    
+                    switch( unit ) {
+                        case 'day':    date_format = '%B %e, %Y'; break;
+                        case 'week':   date_format = '%B %e, %Y'; break;
+                        case 'month':   date_format = '%B %Y'; break;
+                        case 'year':   date_format = '%B %Y'; break;
+
+                        default:
+                            date_format = '%B %e, %Y - %l:%M %p';
+                    }
                     
                     txt += '<span style="font-size: 10px"><b>' + Highcharts.dateFormat( date_format, point.x) + '</b></span><br/>';
                     var empty_buf = txt + "No trades";
@@ -355,24 +367,33 @@ $(function () {
                     type: 'hour',
                     count: 1,
                     text: '1h'
-                }, {
+                },
+                {
                     type: 'day',
                     count: 1,
                     text: '1d'
-                }, {
+                },
+                {
+                    type: 'week',
+                    count: 1,
+                    text: '1w'
+                },
+                {
                     type: 'month',
                     count: 1,
                     text: '1m'
-                }, {
+                },
+                {
                     type: 'year',
                     count: 1,
                     text: '1y'
-                }, {
+                },
+                {
                     type: 'all',
                     text: 'All'
                 }],
                 inputEnabled: false, // it supports only days
-                selected : 2 // month
+                selected : 3 // month
             },
 
             xAxis : {
@@ -387,6 +408,7 @@ $(function () {
                     data: ohlc,
                     dataGrouping: {
                         units: groupingUnits,
+                        groupPixelWidth: 40,
                         enabled: true,
                         forced: true                        
                     }                    
@@ -397,6 +419,7 @@ $(function () {
                     data: avg,
                     dataGrouping: {
                         units: groupingUnits,
+                        groupPixelWidth: 40,
                         enabled: true,
                         forced: true                        
                     }                    
@@ -408,6 +431,7 @@ $(function () {
                     yAxis: 1,
                     dataGrouping: {
                         units: groupingUnits,
+                        groupPixelWidth: 40,
                         enabled: true,
                         forced: true                        
                     }                    

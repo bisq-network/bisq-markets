@@ -231,7 +231,7 @@ $(function () {
             var groupingUnits = [
                 [
                     'hour',                         // unit name
-                    [1]                          // allowed multiples
+                    [1,6,12]                        // allowed multiples
                 ],
                 [
                     'day',                         // unit name

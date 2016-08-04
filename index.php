@@ -120,20 +120,6 @@
     <div class="center" id="wrapper_bg">
 
       <footer class="center copy">
-        <div style="display: none;">
-          <p><a href=
-          "http://thriveweb.com.au/the-lab/pinzolo-a-free-responsive-wordpress-theme/">
-          Pinzolo Theme</a> - Made on the Gold Coast by THRIVE</p>
-
-
-          <p>Powered by <a href="http://wordpress.org/" title=
-          "WordPress">WordPress</a></p>
-
-
-          <p id="thrive"><img height="40" src="css/bitsquare/thrive.png"
-          title="thrive" width="40">
-          </p>
-        </div>
 
         <nav class="nav-footer">
           <ul class="menu sf-js-enabled sf-shadow" id="menuUIfooter">

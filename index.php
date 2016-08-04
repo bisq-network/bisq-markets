@@ -116,16 +116,14 @@
           </nav>
         </div>
       </div>
+    </div>
 
 
-      <div class="center" id="main">
-        
-        <?php include( __DIR__ . '/index-body.php' ) ?>
+    <div style="margin-top: 20px; margin-bottom: 20px">
+     <?php include( __DIR__ . '/index-body.php' ) ?>
+    </div>
 
-        <div class="clear">
-        </div>
-      </div>
-
+    <div class="center" id="wrapper_bg">
 
       <footer class="center copy">
         <div style="display: none;">

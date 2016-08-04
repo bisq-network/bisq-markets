@@ -130,8 +130,8 @@ function display_cryptotimesfiat($val, $row) {
 <div id="container"></div>
 </div>
                     
-<table width="100%" cellpadding="0" cellspacing="0" style="border: none"><tr><td><h3>Trade History</h3></td><td align="right">( Last <?= count($trades_result) ?> trades )</td></tr></table>
-<?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history', "style" => "margin-top: -10px" ); ?>
+<table width="100%" cellpadding="0" cellspacing="0" class="unbordered"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
+<?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history' ); ?>
 <div id="trade_history_scroll">
 
 <?= $table->table_with_header( $trades_result,

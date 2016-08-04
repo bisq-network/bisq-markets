@@ -64,31 +64,52 @@ table.bordered th {
     font-weight: bold;
 }
 
-table.bordered td:first-child, table.bordered th:first-child {
-    border-left: none;
-}
-
-table.bordered th:first-child {
-}
-
-table.bordered th:last-child {
-}
-
-table.bordered th:only-child{
-}
-
-table.bordered tr:last-child td:first-child {
-}
-
-table.bordered tr:last-child td:last-child {
-}
-
 table.bordered tr.odd {
     background-color: white;
 }
 table.bordered tr.even {
     background-color: #f2f2f2;
 }
+
+
+/**
+ * unbordered table
+ */
+
+table.unbordered {
+    *border-collapse: collapse; /* IE7 and lower */
+    border: none;
+    width: 100%;
+}
+
+table.unbordered tr.odd:hover, table.unbordered tr.even:hover {
+    background: #fff;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;     
+}    
+    
+table.unbordered td, table.unbordered th {
+    padding: 0px;
+    vertical-align: bottom;
+}
+
+table.unbordered th {
+    background-color: #fff;
+    font-weight: bold;
+    color: #0f87c3;;
+}
+
+table.unbordered tr.odd {
+    background-color: white;
+}
+table.unbordered tr.even {
+    background-color: #f2f2f2;
+}
+
+
 
 input[type="submit"] {
     width:100px;

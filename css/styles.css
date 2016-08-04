@@ -261,9 +261,6 @@ li.button, .button:link,.button:visited
 
 div.widget, div.widget_action, div.widget_title {
     border: solid #ccc 1px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
     -webkit-box-shadow: 0 2px 2px #ccc; 
     -moz-box-shadow: 0 2px 6px #ccc; 
     box-shadow: 0 2px 6px #ccc;
@@ -325,12 +322,11 @@ table.bordered td, table.bordered th {
 
 table.bordered th {
     background-color: #fff;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
-    background-image: -webkit-linear-gradient(top, #ebf3fc, #fff);
-    background-image: -moz-linear-gradient(top, #ebf3fc, #fff);
-    background-image: -ms-linear-gradient(top, #ebf3fc, #fff);
-    background-image: -o-linear-gradient(top, #ebf3fc, #fff);
-    background-image: linear-gradient(top, #ebf3fc, #fff);
+    background-image: -webkit-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: -moz-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: -ms-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: -o-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: linear-gradient(top, #f2f2f2, #f2f2f2);
     -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
     -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
     box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
@@ -346,40 +342,25 @@ table.bordered td:first-child, table.bordered th:first-child {
 }
 
 table.bordered th:first-child {
-    -moz-border-radius: 6px 0 0 0;
-    -webkit-border-radius: 6px 0 0 0;
-    border-radius: 6px 0 0 0;
 }
 
 table.bordered th:last-child {
-    -moz-border-radius: 0 6px 0 0;
-    -webkit-border-radius: 0 6px 0 0;
-    border-radius: 0 6px 0 0;
 }
 
 table.bordered th:only-child{
-    -moz-border-radius: 6px 6px 0 0;
-    -webkit-border-radius: 6px 6px 0 0;
-    border-radius: 6px 6px 0 0;
 }
 
 table.bordered tr:last-child td:first-child {
-    -moz-border-radius: 0 0 0 6px;
-    -webkit-border-radius: 0 0 0 6px;
-    border-radius: 0 0 0 6px;
 }
 
 table.bordered tr:last-child td:last-child {
-    -moz-border-radius: 0 0 6px 0;
-    -webkit-border-radius: 0 0 6px 0;
-    border-radius: 0 0 6px 0;
 }
 
 table.bordered tr.odd {
     background-color: white;
 }
 table.bordered tr.even {
-    background-color: #F4F8FD;
+    background-color: #f2f2f2;
 }
 
 

@@ -99,6 +99,7 @@ class summarize_trades {
         extract( $criteria );
         $tradesobj = new trades();
         unset( $criteria['fields'] );
+        unset( $criteria['limit'] );
         $criteria['sort'] = 'asc';
         $criteria['integeramounts'] = true;
 

@@ -4,7 +4,6 @@ require_once( __DIR__ . '/../../lib/summarize_trades.class.php');
 
 $market = @$_GET['market'];
 $format = @$_GET['format'];
-$prettyjson = @$_GET['prettyjson'];
 
 function bail($code, $msg) {
     header($_SERVER["SERVER_PROTOCOL"]." $code $msg", true, $code);
@@ -41,7 +40,7 @@ if( $format == 'csv' ) {
     }
     fclose( $fh );
 }
-else {
-    echo json_encode( $results, $prettyjson ? JSON_PRETTY_PRINT : 0 );
+else  {
+    echo json_encode( $results, $format == 'json' ? 0 : JSON_PRETTY_PRINT );
 }
 

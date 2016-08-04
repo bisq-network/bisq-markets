@@ -10,8 +10,7 @@ Retrieves high-low-open-close data according to criteria.
 
 Params:
 * market: eg 'dash_btc'.  required.
-* format: json | csv.  default: json.
-* prettyjson: pretty-prints json if set.  default: 0
+* format: json | jsonpretty | csv.  default: jsonpretty.
 * timestamp: yes | no. return date as a timestamp.  default: yes
 * interval: minute|hour|day|month.
    default: choose based on from/to.
@@ -23,7 +22,7 @@ Params:
 Sample Call and Result:
 
 ```
-curl "http://market.bitsquare.io/api/hloc/?market=eur_btc&prettyjson=1&interval=day"
+curl "http://market.bitsquare.io/api/hloc/?market=eur_btc&interval=day"
 [
     {
         "period_start": "2016-04-20T00:00:00+00:00",
@@ -55,8 +54,7 @@ Retrieves trades for a given market according to criteria.
 
 Params:
 * market: eg 'dash_btc'.  omit for all markets.
-* format: json | csv.  default: json.
-* prettyjson: pretty-prints json if set.  default: 0
+* format: json | jsonpretty | csv.  default: jsonpretty.
 * timestamp_from: start of date range.  unix timestamp. default: 0.
 * timestamp_to: end of date range. unix timestamp.  default: now.
 * direction: 'buy', 'sell'.  omit for both.
@@ -73,7 +71,7 @@ Params:
 Sample Call and Result:
 
 ```
-curl "http://market.bitsquare.io/api/trades/?market=eur_btc&prettyjson=1&limit=1"
+curl "http://market.bitsquare.io/api/trades/?market=eur_btc&limit=1"
 [
     {
         "currency": "EUR",

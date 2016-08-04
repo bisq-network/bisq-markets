@@ -6,10 +6,9 @@ $market = @$_GET['market'];
 $interval = @$_GET['interval'];
 $start = @$_GET['timestamp_from'] ?: strtotime('2016-01-01') ;
 $end = @$_GET['timestamp_to'] ?: time();
-$format = @$_GET['format'] ?: 'json';  // csv or json.
+$format = @$_GET['format'] ?: 'jsonpretty';  // csv, jsonpretty, or json.
 $endcaps = @$_GET['endcaps'];
 $fillgaps = @$_GET['fillgaps'];
-$prettyjson = (bool)@$_GET['prettyjson'];
 $timestamp = (bool)@$_GET['timestamp'] != 'no';
 $callback = @$_GET['callback'];  // a weird thing needed by highcharts.
 $milliseconds = @$_GET['milliseconds'];
@@ -146,7 +145,8 @@ else {
             
         }
     }
-    echo json_encode( $rows, $prettyjson ? JSON_PRETTY_PRINT : 0 );
+    echo json_encode( $rows, $format == 'json' ? 0 : JSON_PRETTY_PRINT );
 }
+
 
 

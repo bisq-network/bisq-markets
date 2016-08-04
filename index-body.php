@@ -49,7 +49,7 @@ try {
                           'last'=> $latest['close'],
                           'high'=> $latest['high'],
                           'low'=> $latest['low'],
-                          'avg'=> $latest['avg'],
+                          'avg'=> round( $latest['avg'], 2 ),
                           'volume' => $latest['volume'] . " " . $curr_right
                          ];
     }

@@ -79,6 +79,7 @@ catch( Exception $e ) {
 $table = new html_table();
 $table->timestampjs_col_names['tradeDate'] = true;
 
+
 function display_crypto($val, $row) {
     return $val / 100000000;
 }
@@ -115,7 +116,7 @@ function display_cryptotimesfiat($val, $row) {
 
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'market_info' ); ?>
 <?= $table->table_with_header( array( $market_result ),
-                              array( 'Choose', 'Bitsquare Market', 'Date', "Last", "High", "Low", "Avg", "Volume" ),
+                              array( 'Choose', 'Bitsquare Market', 'Market Date (UTC)', "Last", "High", "Low", "Avg", "Volume" ),
                               array( 'choose', 'market', 'market_date', 'last', 'high', 'low', 'avg', 'volume' ) ); ?>
 
 <?php if( !count( $trades_result ) ): ?>

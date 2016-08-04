@@ -15,7 +15,9 @@ class markets {
             $pair = strtolower($symbol) . '_' . 'btc';
             $market = ['pair' => $pair,
                        'lname' => $c['name'],
+                       'lsymbol' => $symbol,
                        'rname' => 'Bitcoin',
+                       'rsymbol' => 'BTC',
                        'name' => sprintf( "%s / %s", $c['name'], 'Bitcoin' )
                       ];
             // maybe add more attributes later.

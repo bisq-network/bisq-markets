@@ -18,15 +18,9 @@
       <div id="navwrap">
         <div id="navwrap2">
           <nav>
-            <ul class="menu sf-js-enabled sf-shadow l_tinynavNaN" id="menuUl">
-              <li class="tnskip">&nbsp;</li>
-
-
-              <li class=
+            <ul class="menu sf-js-enabled sf-shadow l_tinynavNaN" id="menuUl"><li class="tnskip">&nbsp;</li><li class=
               "menu-item menu-item-type-post_type menu-item-object-page menu-item"
-              id="menu-item-40">
-                <a href="https://bitsquare.io/">Home</a>
-              </li>
+              id="menu-item-40"><a href="https://bitsquare.io/">Home</a></li>
 
 
               <li class=

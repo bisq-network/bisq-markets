@@ -36,15 +36,16 @@ try {
     $allparam = $allmarkets ? '&allmarkets=1' : '';
     $market_select = sprintf( "<select onchange='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
     foreach( $markets_result as $id => $m ) {
-        $market_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $id, $id == $market ? ' selected' : '', strtoupper( str_replace('_', '/', $id )) );
+        $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $m['lname'], $m['lsymbol'] );
     }
     $market_select .= "</select>\n";
     
     $latest = @$market_result[0];
     if( $latest ) {
         $market_result = ['choose' => $market_select, 
-                          'market'=>  $currmarket['name'],
+                          'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
+                          'open'=> $latest['open'],
                           'last'=> $latest['close'],
                           'high'=> $latest['high'],
                           'low'=> $latest['low'],
@@ -54,8 +55,9 @@ try {
     }
     else {
         $market_result = ['choose' => $market_select, 
-                          'market'=>  $currmarket['name'],
+                          'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
+                          'open'=> '--',
                           'last'=> '--',
                           'high'=> '--',
                           'low'=> '--',
@@ -116,8 +118,8 @@ function display_cryptotimesfiat($val, $row) {
 
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'market_info' ); ?>
 <?= $table->table_with_header( array( $market_result ),
-                              array( 'Choose', 'Bitsquare Market', 'Market Date (UTC)', "Last", "High", "Low", "Avg", "Volume" ),
-                              array( 'choose', 'market', 'market_date', 'last', 'high', 'low', 'avg', 'volume' ) ); ?>
+                              array( 'Currency', 'Bitsquare Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
+                              array( 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume' ) ); ?>
 
 <?php if( !count( $trades_result ) ): ?>
 <div class="widget" style="margin-top: 15px; text-align: center;">

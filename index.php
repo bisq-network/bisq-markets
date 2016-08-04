@@ -4,7 +4,7 @@
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <meta charset="UTF-8">
 
-  <title>Bitsquare - The decentralized bitcoin exchange : Markets</title>
+  <title>Bitsquare Markets</title>
   <link href="css/bitsquare/style.css" media="screen" rel="stylesheet" type=
   "text/css">
   <link href="favicon.ico" rel="icon" type="image/x-icon">

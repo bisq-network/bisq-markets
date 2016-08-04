@@ -354,7 +354,15 @@ $(function () {
                                    '<br/><b>Low</b>: ' + p.point.low +' ' + curr +
                                    '<br/><b>Close</b>: ' + p.point.close + ' ' + curr +'<br/><br/>';
                             found = true;
-                        } else {
+                        }
+<?php /*                        
+                        note: disabling display of average in tooltip because highcharts grouping uses a simple
+                        average function that does not take into account quantity traded at each price. So the grouped
+                        average would be different from what is displayed in the daily market summary table and the java app.
+                        also the dataGrouping.approximation function does not accept additional params that would
+                        enable us to calculate ourselves, even if we had necessary input data from server.
+*/?>
+                        else if( p.series.name != 'Avg' ) {
                             var curr = p.series.name == 'Avg' ? '<?= $curr_left ?>' : '<?= $curr_right ?>';
                             var precision = p.series.name == 'Avg' ? 2 : 4;
                             txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, precision) + " " + curr +'<br/>';
@@ -421,11 +429,11 @@ $(function () {
                     type: 'spline',
                     name: 'Avg',
                     data: avg,
-                    dataGrouping: {
+                    dataGrouping: {                        
                         units: groupingUnits,
                         groupPixelWidth: 40,
                         enabled: true,
-                        forced: true                        
+                        forced: true
                     }                    
                 },
                 {

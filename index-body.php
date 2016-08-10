@@ -73,7 +73,9 @@ try {
 }
 catch( Exception $e ) {
 //  for dev/debug.
-  _global_exception_handler( $e ); 
+    if( @$_GET['debug'] ) {
+        _global_exception_handler( $e ); 
+    }
     include(dirname(__FILE__) . '/404.html');
 }
 

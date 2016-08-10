@@ -34,7 +34,10 @@ class markets {
         $traded = [];
         foreach( $all as $trade ) {
             $pair = strtolower($trade['currency']) . '_btc';
-            $traded[$pair] = $markets[$pair];
+            $market = @$markets[$pair];
+            if( $market ) {
+                $traded[$pair] = $markets[$pair];
+            }
         }
         
         ksort( $traded );

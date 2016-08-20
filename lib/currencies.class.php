@@ -22,7 +22,7 @@ class currencies {
         
         $crypto = $this->get_all_crypto();
         foreach( $crypto as &$c ) {
-            $c['type'] = 'fiat';
+            $c['type'] = 'crypto';
         }
         $all = array_merge( $fiat, $crypto );
         ksort( $all );

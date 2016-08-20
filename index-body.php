@@ -16,10 +16,10 @@ try {
     // get list of markets.    
     $marketservice = new markets();
     $markets_result = $allmarkets ? $marketservice->get_markets() : $marketservice->get_markets_with_trades();
-    
+
     // Default to eur market for now.
     if( !$market || !@$markets_result[$market]) {
-        $market = "eur_btc";
+        $market = "btc_eur";
     }
     $market_name = strtoupper( str_replace( '_', '/', $market));
     list( $curr_left, $curr_right ) = explode( '/', $market_name, 2);
@@ -32,11 +32,21 @@ try {
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
                                                                     'limit' => 1
                                                                    ] );
+
+    // Sort by currency name.  ( where currency is non-btc side of market )
+    uasort( $markets_result, function( $a, $b ) {
+        $aname = $a['lsymbol'] == 'BTC' ? $a['rname'] : $a['lname'];
+        $bname = $b['lsymbol'] == 'BTC' ? $b['rname'] : $b['lname'];
+        return strcmp( $aname, $bname );
+    });
+    
     // create market select control.
     $allparam = $allmarkets ? '&allmarkets=1' : '';
     $market_select = sprintf( "<select onchange='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
     foreach( $markets_result as $id => $m ) {
-        $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $m['lname'], $m['lsymbol'] );
+        $symbol = $m['lsymbol'] == 'BTC' ? $m['rsymbol'] : $m['lsymbol'];
+        $name = $m['lsymbol'] == 'BTC' ? $m['rname'] : $m['lname'];
+        $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $name, $symbol );
     }
     $market_select .= "</select>\n";
     
@@ -85,13 +95,13 @@ $table->timestampjs_col_names['tradeDate'] = true;
 
 
 function display_crypto($val, $row) {
-    return $val / 100000000;
+    return number_format( $val / 100000000, 8 );
 }
 function display_fiat($val, $row) {
-    return $val / 10000;
+    return number_format( $val / 10000, 8 );
 }
 function display_cryptotimesfiat($val, $row) {
-    return $val / 1000000000000;
+    return number_format( $val / 1000000000000, 8 );
 }
 
 ?>
@@ -137,12 +147,13 @@ function display_cryptotimesfiat($val, $row) {
 <div id="trade_history_scroll">
 
 <?= $table->table_with_header( $trades_result,
-                              array( 'Date', 'Action', 'Price', 'Size', 'Total' ),
+                              array( 'Date', 'Action', 'Price', "$curr_left", "$curr_right" ),
                               array( 'tradeDate',
                                      'direction',
                                      'tradePrice' => ['cb_format' => 'display_fiat'],
                                      'tradeAmount' => ['cb_format' => 'display_crypto'],
-                                     'total' => ['cb_format' => 'display_cryptotimesfiat'] ) ); ?>
+                                     'total' => ['cb_format' => 'display_cryptotimesfiat'] )
+                              ); ?>
 </div>
 
 <script type="text/javascript">

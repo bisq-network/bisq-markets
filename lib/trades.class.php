@@ -2,6 +2,7 @@
 
 require_once( __DIR__ . '/settings.class.php' );
 require_once( __DIR__ . '/strict_mode.funcs.php' );
+require_once( __DIR__ . '/currencies.class.php' );
 
 class trades {
     function __construct() {
@@ -132,6 +133,10 @@ class trades {
         
     private function get_all_trades_worker($json_file) {
         
+        // only needed to determine if currency is fiat or not.
+        $currencies = new currencies();
+        $fiats = $currencies->get_all_fiat();
+        
         // remove some garbage data at beginning of file, if present.
         $fh = fopen( $json_file, 'r' );
         
@@ -147,7 +152,17 @@ class trades {
 
         // add market key        
         foreach( $data as &$trade ) {
-            $trade['market'] = sprintf( '%s_btc', strtolower($trade['currency']) );
+            // invert price if currency is not fiat.
+            // because fiat is always primary market, otherwise BTC is primary market.
+            // note:  this is a kludge.  should be done in bitsquare app.
+            $is_fiat = isset( $fiats[ $trade['currency'] ] );
+            $trade['tradePrice'] = $is_fiat ? $trade['tradePrice'] : btcutil::btc_to_int( 1/$trade['tradePrice'] );
+            
+            // btc is primary market except when trades against fiat.
+            // note:  this is a kludge.  should be done in bitsquare app.
+            $trade['market'] = $is_fiat ?
+                                    sprintf( 'btc_%s', strtolower($trade['currency']) ) :
+                                    sprintf( '%s_btc', strtolower($trade['currency']) );
             $trade['total'] = $trade['tradePrice'] * $trade['tradeAmount'];
         }
         

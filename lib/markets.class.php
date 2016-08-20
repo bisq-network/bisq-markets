@@ -9,20 +9,34 @@ class markets {
     public function get_markets() {
         $currencies = new currencies();
         $clist = $currencies->get_all_currencies();
-    
+
         $markets = [];
         foreach( $clist as $symbol => $c ) {
-            $pair = strtolower($symbol) . '_' . 'btc';
+            // here we make fiat markets always primary, eg BTC/USD.
+            // and BTC always primary against other crypto, eg XMR/BTC.
+            // This is a kludge.  should be getting this info from bitsquare json.
+            
+            $is_fiat = $c['type'] == 'fiat';            
+            
+            $lsymbol = $is_fiat ? 'BTC' : $symbol;
+            $rsymbol = $is_fiat ? $symbol : 'BTC';
+            $lname = $is_fiat ? 'Bitcoin' : $c['name'];
+            $rname = $is_fiat ? $c['name']: 'Bitcoin';
+            $pair = sprintf( '%s_%s', strtolower($lsymbol), strtolower($rsymbol) );
+            
             $market = ['pair' => $pair,
-                       'lname' => $c['name'],
-                       'lsymbol' => $symbol,
-                       'rname' => 'Bitcoin',
-                       'rsymbol' => 'BTC',
-                       'name' => sprintf( "%s / %s", $c['name'], 'Bitcoin' )
+                       'lname' => $lname,
+                       'lsymbol' => $lsymbol,
+                       'rname' => $rname,
+                       'rsymbol' => $rsymbol,
+                       'name' => sprintf( '%s/%s', $lname, $rname )
                       ];
             // maybe add more attributes later.
             $markets[$pair] = $market;
         }
+
+        ksort( $markets );        
+
         return $markets;
     }
     
@@ -33,14 +47,13 @@ class markets {
         $markets = $this->get_markets();
         $traded = [];
         foreach( $all as $trade ) {
-            $pair = strtolower($trade['currency']) . '_btc';
+            $pair = $trade['market'];
             $market = @$markets[$pair];
             if( $market ) {
                 $traded[$pair] = $markets[$pair];
             }
         }
-        
-        ksort( $traded );
+
         return $traded;
     }
     

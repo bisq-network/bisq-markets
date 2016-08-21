@@ -23,12 +23,14 @@ class markets {
             $lname = $is_fiat ? 'Bitcoin' : $c['name'];
             $rname = $is_fiat ? $c['name']: 'Bitcoin';
             $pair = sprintf( '%s_%s', strtolower($lsymbol), strtolower($rsymbol) );
+            $type = $is_fiat ? 'crypto/fiat' : 'crypto/crypto';
             
             $market = ['pair' => $pair,
                        'lname' => $lname,
                        'lsymbol' => $lsymbol,
                        'rname' => $rname,
                        'rsymbol' => $rsymbol,
+                       'type' => $type,
                        'name' => sprintf( '%s/%s', $lname, $rname )
                       ];
             // maybe add more attributes later.

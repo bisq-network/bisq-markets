@@ -140,8 +140,8 @@ function display_cryptotimesfiat($val, $row) {
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 <?php require_once( dirname( __FILE__) . '/widgets/timezone-js.html' ); ?>
 <style>
-#trade_history {
-    max-height: 30em;
+#trade_history_scroll {
+    display: block;
     height: 30em;
     overflow-y: auto;
 }

@@ -3,6 +3,7 @@
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="60">
 
   <title>Bitsquare Markets</title>
   <link href="css/bitsquare/style.css" media="screen" rel="stylesheet" type=

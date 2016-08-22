@@ -161,7 +161,8 @@ class offers {
             // because fiat is always primary market, otherwise BTC is primary market.
             // note:  this is a kludge.  should be done in bitsquare app.
             $is_fiat = isset( $fiats[ $curr ] );
-            $offer['price'] = $is_fiat ? $offer['price'] : btcutil::btc_to_int( 1/$offer['price'] );
+            $offer['price'] = $is_fiat ? $offer['price'] : btcutil::btc_to_int2( 1/$offer['price'] );
+            $offer['amount'] = $is_fiat ? $offer['amount'] : $offer['amount']/$offer['price'] * 10000;
             
             // btc is primary market except when offers against fiat.
             // note:  this is a kludge.  should be done in bitsquare app.

@@ -4,6 +4,7 @@ require_once( dirname( __FILE__) . '/lib/html_table.class.php' );
 require_once( dirname( __FILE__) . '/lib/trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/summarize_trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/markets.class.php' );
+require_once( dirname( __FILE__) . '/lib/offers.class.php' );
 
 ini_set('memory_limit', '1G');         // just in case.
 date_default_timezone_set ( 'UTC' );   // all dates expressed in UTC.
@@ -16,6 +17,13 @@ try {
     // get list of markets.    
     $marketservice = new markets();
     $markets_result = $allmarkets ? $marketservice->get_markets() : $marketservice->get_markets_with_trades();
+    
+    // Sort by currency name.  ( where currency is non-btc side of market )
+    uasort( $markets_result, function( $a, $b ) {
+        $aname = $a['lsymbol'] == 'BTC' ? $a['rname'] : $a['lname'];
+        $bname = $b['lsymbol'] == 'BTC' ? $b['rname'] : $b['lname'];
+        return strcmp( $aname, $bname );
+    });
 
     // Default to eur market for now.
     if( !$market || !@$markets_result[$market]) {
@@ -32,13 +40,6 @@ try {
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
                                                                     'limit' => 1
                                                                    ] );
-
-    // Sort by currency name.  ( where currency is non-btc side of market )
-    uasort( $markets_result, function( $a, $b ) {
-        $aname = $a['lsymbol'] == 'BTC' ? $a['rname'] : $a['lname'];
-        $bname = $b['lsymbol'] == 'BTC' ? $b['rname'] : $b['lname'];
-        return strcmp( $aname, $bname );
-    });
     
     // create market select control.
     $allparam = $allmarkets ? '&allmarkets=1' : '';
@@ -80,6 +81,34 @@ try {
     $trades = new trades();
     $trades_result = $trades->get_trades( [ 'market' => $market,
                                             'limit'  => 100 ] );
+    
+    // get latest buy offers.
+    $offers = new offers();
+    
+    // kludge: the bitsquare app defines direction based on buy/sell of bitcoin, not secondary market.
+    // if/when bitsquare provides direction based on left-side (secondary) then this kludge can be removed.
+    $offers_buy_result = $offers->get_offers( [ 'market' => $market,
+                                                'direction' => $curr_left == 'BTC' ? 'BUY' : 'SELL',
+                                                'limit'  => 100 ] );
+    usort( $offers_buy_result, function($a, $b) {
+        return $b['price'] - $a['price'];
+    });
+        
+    $offers_sell_result = $offers->get_offers( [ 'market' => $market,
+                                                 'direction' => $curr_left == 'BTC' ? 'SELL' : 'BUY',
+                                                 'limit'  => 100 ] );
+    usort( $offers_sell_result, function($a, $b) {
+        return $a['price'] - $b['price'];
+    });
+    
+    // add running totals for primary market.
+    foreach( [&$offers_buy_result, &$offers_sell_result] as &$results ) {
+        $sum = 0;
+        foreach( $results as &$row ) {
+            $sum += $row['total'];
+            $row['sum'] = $sum;
+        }
+    }
 }
 catch( Exception $e ) {
 //  for dev/debug.
@@ -112,14 +141,20 @@ function display_cryptotimesfiat($val, $row) {
 <?php require_once( dirname( __FILE__) . '/widgets/timezone-js.html' ); ?>
 <style>
 #trade_history {
-    display: block;
     max-height: 30em;
     height: 30em;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
-#sell_orders td, #buy_orders td, #trade_history td {
-    width: 100%;
+
+.offers {
+    height: 21em;
+    overflow-y: auto;
 }
+.offers {
+    text-align: right;
+}
+
+
 #container {
     height: 500px;
 }
@@ -141,6 +176,40 @@ function display_cryptotimesfiat($val, $row) {
 <div class='widget' style="margin-top: 15px;">
 <div id="container"></div>
 </div>
+
+<?php $table->table_attrs = array( 'class' => 'unbordered' ); ?>
+<table width="100%" cellpadding="0" class="unbordered" style="margin-bottom: 20px">
+<tr><th style="padding-right: 10px">Buy <?= $curr_left ?> Offers</th>
+    <th style="padding-left: 10px">Sell <?= $curr_left ?> Offers</th></tr>
+<tr>
+    <td style="padding-right: 10px">
+        <div class="offers widget">
+<?= $table->table_with_header( $offers_buy_result,
+                               array( 'Price', $curr_left, $curr_right, "Sum($curr_right)" ),
+                               [ 'price' => ['cb_format' => 'display_fiat'],
+                                 'amount' => ['cb_format' => 'display_crypto'],
+                                 'total' => ['cb_format' => 'display_cryptotimesfiat'],
+                                 'sum' => ['cb_format' => 'display_cryptotimesfiat']
+                               ] );
+                               
+?>
+        </div>
+    </td>
+    <td style="padding-left: 10px">
+        <div class="offers widget">
+<?= $table->table_with_header( $offers_sell_result,
+                               array( 'Price', $curr_left, $curr_right, "Sum($curr_right)" ),
+                               [ 'price' => ['cb_format' => 'display_fiat'],
+                                 'amount' => ['cb_format' => 'display_crypto'],
+                                 'total' => ['cb_format' => 'display_cryptotimesfiat'],
+                                 'sum' => ['cb_format' => 'display_cryptotimesfiat']
+                               ] );
+?>
+        </div>
+    </td>
+</tr>
+
+</table>
                     
 <table width="100%" cellpadding="0" cellspacing="0" class="unbordered"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history' ); ?>

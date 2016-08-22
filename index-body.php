@@ -91,14 +91,20 @@ try {
                                                 'direction' => $curr_left == 'BTC' ? 'BUY' : 'SELL',
                                                 'limit'  => 100 ] );
     usort( $offers_buy_result, function($a, $b) {
-        return $b['price'] - $a['price'];
+        if( $b['price'] == $a['price'] ) {
+            return 0;
+        }
+        return $b['price'] < $a['price'] ? -1 : 1;
     });
         
     $offers_sell_result = $offers->get_offers( [ 'market' => $market,
                                                  'direction' => $curr_left == 'BTC' ? 'SELL' : 'BUY',
                                                  'limit'  => 100 ] );
     usort( $offers_sell_result, function($a, $b) {
-        return $a['price'] - $b['price'];
+        if( $b['price'] == $a['price'] ) {
+            return 0;
+        }
+        return $b['price'] > $a['price'] ? -1 : 1;
     });
     
     // add running totals for primary market.

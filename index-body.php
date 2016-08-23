@@ -440,10 +440,10 @@ $(function () {
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
                             var curr = '<?= $curr_left ?>';
-                            txt += '<b>Open</b>: ' + p.point.open + ' ' + curr +
-                                   '<br/><b>High</b>: ' + p.point.high + ' ' + curr +
-                                   '<br/><b>Low</b>: ' + p.point.low +' ' + curr +
-                                   '<br/><b>Close</b>: ' + p.point.close + ' ' + curr +'<br/><br/>';
+                            txt += '<b>Open</b>: ' + Highcharts.numberFormat( p.point.open, 8 ) + ' ' + curr +
+                                   '<br/><b>High</b>: ' + Highcharts.numberFormat( p.point.high, 8 ) + ' ' + curr +
+                                   '<br/><b>Low</b>: ' + Highcharts.numberFormat( p.point.low, 8 ) +' ' + curr +
+                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, 8 ) + ' ' + curr +'<br/><br/>';
                             found = true;
                         }
 <?php /*                        
@@ -455,8 +455,7 @@ $(function () {
 */?>
                         else if( p.series.name != 'Avg' ) {
                             var curr = p.series.name == 'Avg' ? '<?= $curr_left ?>' : '<?= $curr_right ?>';
-                            var precision = p.series.name == 'Avg' ? 2 : 4;
-                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, precision) + " " + curr +'<br/>';
+                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, 8) + " " + curr +'<br/>';
                         }
                     });
                 

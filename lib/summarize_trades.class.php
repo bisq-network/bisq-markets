@@ -136,7 +136,7 @@ class summarize_trades {
 //                print_r($intervals_prices[$interval_start]);
 //                var_dump( array_sum($intervals_prices[$interval_start]['amount']), array_sum($intervals_prices[$interval_start]['price']) ); echo "\n----\n";
                 $period['avg'] = array_sum($intervals_prices[$interval_start]['leftvol']) / array_sum($intervals_prices[$interval_start]['rightvol']);
-                $period['volume'] += $trade['tradeAmount'];
+                $period['volume'] += $trade['total'] / 10000;
             }
         }
         

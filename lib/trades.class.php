@@ -156,7 +156,8 @@ class trades {
             // because fiat is always primary market, otherwise BTC is primary market.
             // note:  this is a kludge.  should be done in bitsquare app.
             $is_fiat = isset( $fiats[ $trade['currency'] ] );
-            $trade['tradePrice'] = $is_fiat ? $trade['tradePrice'] : btcutil::btc_to_int( 1/$trade['tradePrice'] );
+            $trade['tradePrice'] = $is_fiat ? $trade['tradePrice'] : btcutil::btc_to_int2( 1/$trade['tradePrice'] );
+            $trade['tradeAmount'] = $is_fiat ? $trade['tradeAmount'] : $trade['tradeAmount']/$trade['tradePrice'] * 10000;
             
             // btc is primary market except when trades against fiat.
             // note:  this is a kludge.  should be done in bitsquare app.

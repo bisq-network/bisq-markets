@@ -52,16 +52,17 @@ try {
     $market_select .= "</select>\n";
     
     $latest = @$market_result[0];
+
     if( $latest ) {
         $market_result = ['choose' => $market_select, 
                           'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
-                          'open'=> $latest['open'],
-                          'last'=> $latest['close'],
-                          'high'=> $latest['high'],
-                          'low'=> $latest['low'],
-                          'avg'=> round( $latest['avg'], 2 ),
-                          'volume' => $latest['volume'] . " " . $curr_right
+                          'open'=> display_btc( $latest['open'] ),
+                          'last'=> display_btc( $latest['close'] ),
+                          'high'=> display_btc( $latest['high'] ),
+                          'low'=> display_btc( $latest['low'] ),
+                          'avg'=> display_btc( $latest['avg'] ),
+                          'volume' => display_btc( $latest['volume'] ) . " " . $curr_right
                          ];
     }
     else {
@@ -128,14 +129,16 @@ catch( Exception $e ) {
 $table = new html_table();
 $table->timestampjs_col_names['tradeDate'] = true;
 
-
-function display_crypto($val, $row) {
+function display_btc($val, $row = null) {
+    return number_format( $val, 8 );
+}
+function display_crypto($val, $row = null) {
     return number_format( $val / 100000000, 8 );
 }
-function display_fiat($val, $row) {
+function display_fiat($val, $row = null) {
     return number_format( $val / 10000, 8 );
 }
-function display_cryptotimesfiat($val, $row) {
+function display_cryptotimesfiat($val, $row = null) {
     return number_format( $val / 1000000000000, 8 );
 }
 

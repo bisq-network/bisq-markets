@@ -433,17 +433,17 @@ $(function () {
                             date_format = '%B %e, %Y - %l:%M %p';
                     }
                     
-                    txt += '<span style="font-size: 10px"><b>' + Highcharts.dateFormat( date_format, point.x) + '</b></span><br/>';
+                    txt += '<span style="font-size: 10px"><b>' + Highcharts.dateFormat( date_format, point.x) + ' - <?= $curr_right ?></b></span><br/>';
                     var empty_buf = txt + "No trades";
 
                     var found = false;
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
                             var curr = '<?= $curr_left ?>';
-                            txt += '<b>Open</b>: ' + Highcharts.numberFormat( p.point.open, 8 ) + ' ' + curr +
-                                   '<br/><b>High</b>: ' + Highcharts.numberFormat( p.point.high, 8 ) + ' ' + curr +
-                                   '<br/><b>Low</b>: ' + Highcharts.numberFormat( p.point.low, 8 ) +' ' + curr +
-                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, 8 ) + ' ' + curr +'<br/><br/>';
+                            txt += '<b>Open</b>: ' + Highcharts.numberFormat( p.point.open, 8 ) +
+                                   '<br/><b>High</b>: ' + Highcharts.numberFormat( p.point.high, 8 ) +
+                                   '<br/><b>Low</b>: ' + Highcharts.numberFormat( p.point.low, 8 ) +
+                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, 8 ) +'<br/><br/>';
                             found = true;
                         }
 <?php /*                        
@@ -455,7 +455,7 @@ $(function () {
 */?>
                         else if( p.series.name != 'Avg' ) {
                             var curr = p.series.name == 'Avg' ? '<?= $curr_left ?>' : '<?= $curr_right ?>';
-                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, 8) + " " + curr +'<br/>';
+                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, 8) + '<br/>';
                         }
                     });
                 

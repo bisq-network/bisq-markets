@@ -139,10 +139,7 @@ class summarize_trades {
                 $period['avg'] = array_sum($intervals_prices[$interval_start]['rightvol']) / array_sum($intervals_prices[$interval_start]['leftvol']) * 100000000;
                 $period['volume-left'] += $trade['tradeAmount'];
                 $period['volume'] += $trade['tradeVolume'];
-            }
-        print_r( $intervals_prices[$interval_start] );
-        print_r( $intervals ); exit;
-            
+            }            
         }
         
         // generate intervals in gaps.

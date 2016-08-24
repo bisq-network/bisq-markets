@@ -36,7 +36,7 @@ try {
     // Obtain market summary info for today only.
     $summarize_trades = new summarize_trades();
     $market_result = $summarize_trades->get_trade_summaries_days( ['market' => $market,
-                                                                    'datetime_from' => strtotime( 'today 00:00:00' ),
+                                                                    'datetime_from' => strtotime( 'yesterday 00:00:00' ),
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
                                                                     'limit' => 1
                                                                    ] );
@@ -228,9 +228,9 @@ function display_cryptotimesfiat($val, $row = null) {
                               array( 'Date', 'Action', 'Price', "$curr_left", "$curr_right" ),
                               array( 'tradeDate',
                                      'direction',
-                                     'tradePrice' => ['cb_format' => 'display_fiat'],
+                                     'tradePriceDisplayString',
                                      'tradeAmount' => ['cb_format' => 'display_crypto'],
-                                     'total' => ['cb_format' => 'display_cryptotimesfiat'] )
+                                     'tradeVolume' => ['cb_format' => 'display_crypto'] )
                               ); ?>
 </div>
 
@@ -284,21 +284,24 @@ function requestData() {
                 data[i][1], // open
                 data[i][2], // high
                 data[i][3], // low
-                data[i][4] // close
+                data[i][4], // close
+                data[i][5] // volume-left
             ]);
             avg.push([
                 data[i][0], // the date
-                data[i][6]  // the average
+                data[i][7]  // the average
             ]);
             volume.push([
                 data[i][0], // the date
-                data[i][5] // the volume
+                data[i][6] // the volume
             ]);
+            
         }                
 
         chart.series[0].setData(ohlc);
         chart.series[1].setData(avg);
         chart.series[2].setData(volume);
+        chart.series[3].setData(volume_left);
         
         chart.hideLoading();
         
@@ -352,14 +355,13 @@ $(function () {
                 ]);
                 avg.push([
                     data[i][0], // the date
-                    data[i][6]  // the average
+                    data[i][7]  // the average
                 ]);
                 volume.push([
                     data[i][0], // the date
-                    data[i][5] // the volume
+                    data[i][6] // the volume
                 ]);
             }                
-
 
         // create the chart
         $('#container').highcharts('StockChart', {
@@ -439,11 +441,11 @@ $(function () {
                     var found = false;
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
-                            var curr = '<?= $curr_left ?>';
-                            txt += '<b>Open</b>: ' + Highcharts.numberFormat( p.point.open, 8 ) + ' ' + curr +
-                                   '<br/><b>High</b>: ' + Highcharts.numberFormat( p.point.high, 8 ) + ' ' + curr +
-                                   '<br/><b>Low</b>: ' + Highcharts.numberFormat( p.point.low, 8 ) +' ' + curr +
-                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, 8 ) + ' ' + curr +'<br/><br/>';
+                            var curr = '<?= $curr_right ?>';
+                            txt += '<b>Open</b>: ' + Highcharts.numberFormat( p.point.open, 8 ) +
+                                   '<br/><b>High</b>: ' + Highcharts.numberFormat( p.point.high, 8 ) +
+                                   '<br/><b>Low</b>: ' + Highcharts.numberFormat( p.point.low, 8 ) +
+                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, 8 ) +'<br/><br/>';
                             found = true;
                         }
 <?php /*                        
@@ -453,8 +455,8 @@ $(function () {
                         also the dataGrouping.approximation function does not accept additional params that would
                         enable us to calculate ourselves, even if we had necessary input data from server.
 */?>
-                        else if( p.series.name != 'Avg' ) {
-                            var curr = p.series.name == 'Avg' ? '<?= $curr_left ?>' : '<?= $curr_right ?>';
+                        else if( p.series.name == 'Vol' ) {
+                            var curr = '<?= $curr_right ?>';
                             txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, 8) + " " + curr +'<br/>';
                         }
                     });
@@ -540,6 +542,7 @@ $(function () {
                 }
             ]
         });
+
     });
 });
 }

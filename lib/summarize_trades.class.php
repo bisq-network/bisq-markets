@@ -117,14 +117,15 @@ class summarize_trades {
                                                'low' => 0,
                                                'avg' => 0,
                                                'volume' => 0,
+                                               'volume-left' => 0,
                                              ];
                 $intervals_prices[$interval_start] = [];
             }
             $period =& $intervals[$interval_start];
             $price = $trade['tradePrice'];
             $direction = $trade['direction'];
-            $intervals_prices[$interval_start]['leftvol'][] = $trade['tradeAmount'] * $price;
-            $intervals_prices[$interval_start]['rightvol'][] = $trade['tradeAmount'];
+            $intervals_prices[$interval_start]['leftvol'][] = $trade['tradeAmount'];
+            $intervals_prices[$interval_start]['rightvol'][] = $trade['tradeVolume'];
             
             if( $price ) {
                 $plow = $period['low'];
@@ -135,9 +136,13 @@ class summarize_trades {
                 $period['low'] = ($plow && $price > $plow) ? $period['low'] : $price;
 //                print_r($intervals_prices[$interval_start]);
 //                var_dump( array_sum($intervals_prices[$interval_start]['amount']), array_sum($intervals_prices[$interval_start]['price']) ); echo "\n----\n";
-                $period['avg'] = array_sum($intervals_prices[$interval_start]['leftvol']) / array_sum($intervals_prices[$interval_start]['rightvol']);
-                $period['volume'] += $trade['total'] / 10000;
+                $period['avg'] = array_sum($intervals_prices[$interval_start]['rightvol']) / array_sum($intervals_prices[$interval_start]['leftvol']) * 100000000;
+                $period['volume-left'] += $trade['tradeAmount'];
+                $period['volume'] += $trade['tradeVolume'];
             }
+        print_r( $intervals_prices[$interval_start] );
+        print_r( $intervals ); exit;
+            
         }
         
         // generate intervals in gaps.
@@ -163,6 +168,7 @@ class summarize_trades {
                         $low = rand( $open - $open / 3, $open );
                         $avg = rand( $low, $high );
                         $volume = rand( 1, 100 );
+                        $volume_left = rand( 1, 100 );
                         $prev_close = $close;
                     }
                     $cur = ['period_start' => $interval_start,
@@ -172,6 +178,7 @@ class summarize_trades {
                             'low' => @$low,
                             'avg' => @$avg,
                             'volume' => @$volume,
+                            'volume-left' => @$volume_left,
                           ];
                     $intervals[$interval_start] = $cur;
                 }
@@ -188,12 +195,13 @@ class summarize_trades {
             foreach( $intervals as $k => &$period ) {
                 
                 if( !@$integeramounts ) {
-                    $period['open'] = btcutil::int_to_money4( $period['open'] );
-                    $period['close'] = btcutil::int_to_money4( $period['close'] );
-                    $period['high'] = btcutil::int_to_money4( $period['high'] );
-                    $period['low'] = btcutil::int_to_money4( $period['low'] );
-                    $period['avg'] = btcutil::int_to_money4( $period['avg'] );
+                    $period['open'] = btcutil::int_to_btc( $period['open'] );
+                    $period['close'] = btcutil::int_to_btc( $period['close'] );
+                    $period['high'] = btcutil::int_to_btc( $period['high'] );
+                    $period['low'] = btcutil::int_to_btc( $period['low'] );
+                    $period['avg'] = btcutil::int_to_btc( $period['avg'] );
                     $period['volume'] = btcutil::int_to_btc( $period['volume'] );
+                    $period['volume-left'] = btcutil::int_to_btc( $period['volume-left'] );
                 }
     
                 // convert to user specified field order list, if present.

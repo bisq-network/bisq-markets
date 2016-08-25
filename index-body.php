@@ -57,12 +57,12 @@ try {
         $market_result = ['choose' => $market_select, 
                           'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
-                          'open'=> display_btc( $latest['open'] ),
-                          'last'=> display_btc( $latest['close'] ),
-                          'high'=> display_btc( $latest['high'] ),
-                          'low'=> display_btc( $latest['low'] ),
-                          'avg'=> display_btc( $latest['avg'] ),
-                          'volume' => display_btc( $latest['volume'] ) . " " . $curr_right
+                          'open'=> display_currency( $latest['open'], $curr_right, false ),
+                          'last'=> display_currency( $latest['close'], $curr_right, false ),
+                          'high'=> display_currency( $latest['high'], $curr_right, false ),
+                          'low'=> display_currency( $latest['low'], $curr_right, false ),
+                          'avg'=> display_currency( $latest['avg'], $curr_right, false ),
+                          'volume' => display_currency( $latest['volume'], $curr_right, false ) . " " . $curr_right
                          ];
     }
     else {
@@ -128,6 +128,25 @@ catch( Exception $e ) {
 
 $table = new html_table();
 $table->timestampjs_col_names['tradeDate'] = true;
+
+function display_currency( $val, $symbol, $is_int=true ) {
+    global $currmarket, $curr_left;
+    $key = $symbol == $curr_left ? 'lprecision' : 'rprecision';
+    $precision = $currmarket[$key];
+    $val = $is_int ? $val / 100000000 : $val;
+    return number_format( $val, $precision );    
+}
+
+function display_currency_leftside( $val, $row ) {
+    list($left, $right) = explode( '/', $row['currencyPair'] );
+    return display_currency( $val, $left );
+}
+
+function display_currency_rightside( $val, $row ) {
+    list($left, $right) = explode( '/', $row['currencyPair'] );
+    return display_currency( $val, $right);
+}
+
 
 function display_btc($val, $row = null) {
     return number_format( $val, 8 );
@@ -228,9 +247,9 @@ function display_cryptotimesfiat($val, $row = null) {
                               array( 'Date', 'Action', 'Price', "$curr_left", "$curr_right" ),
                               array( 'tradeDate',
                                      'direction',
-                                     'tradePriceDisplayString',
-                                     'tradeAmount' => ['cb_format' => 'display_crypto'],
-                                     'tradeVolume' => ['cb_format' => 'display_crypto'] )
+                                     'tradePrice' => ['cb_format' => 'display_currency_rightside'],
+                                     'tradeAmount' => ['cb_format' => 'display_currency_leftside'],
+                                     'tradeVolume' => ['cb_format' => 'display_currency_rightside'] )
                               ); ?>
 </div>
 

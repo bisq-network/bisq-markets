@@ -135,7 +135,7 @@ class trades {
         
         // only needed to determine if currency is fiat or not.
         $currencies = new currencies();
-        $fiats = $currencies->get_all_fiat();
+        $currlist = $currencies->get_all_currencies();
         
         // remove some garbage data at beginning of file, if present.
         $fh = fopen( $json_file, 'r' );
@@ -149,24 +149,19 @@ class trades {
         
         $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
-
         // add market key        
         foreach( $data as &$trade ) {
-            // invert price if currency is not fiat.
-            // because fiat is always primary market, otherwise BTC is primary market.
-            // note:  this is a kludge.  should be done in bitsquare app.
-            $is_fiat = isset( $fiats[ $trade['currency'] ] );
-            $trade['tradePrice'] = btcutil::btc_to_int2($trade['tradePriceDisplayString']);
-            $trade['tradeAmount'] = btcutil::btc_to_int2( $trade['tradeAmountDisplayString'] );
-            $trade['tradeVolume'] = btcutil::btc_to_int2( $trade['tradeVolumeDisplayString'] );
-            
-            // btc is primary market except when trades against fiat.
-            // note:  this is a kludge.  should be done in bitsquare app.
-            $trade['market'] = $is_fiat ?
-                                    sprintf( 'btc_%s', strtolower($trade['currency']) ) :
-                                    sprintf( '%s_btc', strtolower($trade['currency']) );
+            list($left, $right) = explode('/', $trade['currencyPair'] );
+            $cleft = @$currlist[$left];
+            $cright = @$currlist[$right];
+            if( !$cleft && $cright ) {
+                continue;
+            }
+            $trade['tradePrice'] = $trade['primaryMarketTradePrice'] * pow( 10, 8 - $cright['precision'] );
+            $trade['tradeAmount'] = $trade['primaryMarketTradeAmount'] * pow( 10, 8 - $cleft['precision'] );
+            $trade['tradeVolume'] = $trade['primaryMarketTradeVolume'] * pow( 10, 8 - $cright['precision'] );
+            $trade['market'] = strtolower( str_replace( '/', '_', $trade['currencyPair'] ) );
         }
-print_r( $data );        
         return $data;
     }
     

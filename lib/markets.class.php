@@ -9,9 +9,14 @@ class markets {
     public function get_markets() {
         $currencies = new currencies();
         $clist = $currencies->get_all_currencies();
-
+        
         $markets = [];
         foreach( $clist as $symbol => $c ) {
+            
+            if( $symbol == 'BTC' ) {
+                continue;
+            }
+            
             // here we make fiat markets always primary, eg BTC/USD.
             // and BTC always primary against other crypto, eg XMR/BTC.
             // This is a kludge.  should be getting this info from bitsquare json.
@@ -22,6 +27,9 @@ class markets {
             $rsymbol = $is_fiat ? $symbol : 'BTC';
             $lname = $is_fiat ? 'Bitcoin' : $c['name'];
             $rname = $is_fiat ? $c['name']: 'Bitcoin';
+            $lprecision = $is_fiat ? 8 : $c['precision'];
+            $rprecision = $is_fiat ? $c['precision'] : 8;
+            
             $pair = sprintf( '%s_%s', strtolower($lsymbol), strtolower($rsymbol) );
             $type = $is_fiat ? 'crypto/fiat' : 'crypto/crypto';
             
@@ -30,8 +38,10 @@ class markets {
                        'lsymbol' => $lsymbol,
                        'rname' => $rname,
                        'rsymbol' => $rsymbol,
+                       'lprecision' => $lprecision,
+                       'rprecision' => $rprecision,
                        'type' => $type,
-                       'name' => sprintf( '%s/%s', $lname, $rname )
+                       'name' => sprintf( '%s/%s', $lname, $rname ),
                       ];
             // maybe add more attributes later.
             $markets[$pair] = $market;

@@ -112,7 +112,7 @@ try {
     foreach( [&$offers_buy_result, &$offers_sell_result] as &$results ) {
         $sum = 0;
         foreach( $results as &$row ) {
-            $sum += $row['total'];
+            $sum += $row['volume'];
             $row['sum'] = $sum;
         }
     }
@@ -145,20 +145,6 @@ function display_currency_leftside( $val, $row ) {
 function display_currency_rightside( $val, $row ) {
     list($left, $right) = explode( '/', $row['currencyPair'] );
     return display_currency( $val, $right);
-}
-
-
-function display_btc($val, $row = null) {
-    return number_format( $val, 8 );
-}
-function display_crypto($val, $row = null) {
-    return number_format( $val / 100000000, 8 );
-}
-function display_fiat($val, $row = null) {
-    return number_format( $val / 10000, 8 );
-}
-function display_cryptotimesfiat($val, $row = null) {
-    return number_format( $val / 1000000000000, 8 );
 }
 
 ?>
@@ -214,10 +200,10 @@ function display_cryptotimesfiat($val, $row = null) {
         <div class="offers widget">
 <?= $table->table_with_header( $offers_buy_result,
                                array( 'Price', $curr_left, $curr_right, "Sum($curr_right)" ),
-                               [ 'price' => ['cb_format' => 'display_fiat'],
-                                 'amount' => ['cb_format' => 'display_crypto'],
-                                 'total' => ['cb_format' => 'display_cryptotimesfiat'],
-                                 'sum' => ['cb_format' => 'display_cryptotimesfiat']
+                               [ 'price' => ['cb_format' => 'display_currency_rightside'],
+                                 'amount' => ['cb_format' => 'display_currency_leftside'],
+                                 'volume' => ['cb_format' => 'display_currency_rightside'],
+                                 'sum' => ['cb_format' => 'display_currency_rightside']
                                ] );
                                
 ?>
@@ -227,10 +213,10 @@ function display_cryptotimesfiat($val, $row = null) {
         <div class="offers widget">
 <?= $table->table_with_header( $offers_sell_result,
                                array( 'Price', $curr_left, $curr_right, "Sum($curr_right)" ),
-                               [ 'price' => ['cb_format' => 'display_fiat'],
-                                 'amount' => ['cb_format' => 'display_crypto'],
-                                 'total' => ['cb_format' => 'display_cryptotimesfiat'],
-                                 'sum' => ['cb_format' => 'display_cryptotimesfiat']
+                               [ 'price' => ['cb_format' => 'display_currency_rightside'],
+                                 'amount' => ['cb_format' => 'display_currency_leftside'],
+                                 'volume' => ['cb_format' => 'display_currency_rightside'],
+                                 'sum' => ['cb_format' => 'display_currency_rightside']
                                ] );
 ?>
         </div>
@@ -458,13 +444,14 @@ $(function () {
                     var empty_buf = txt + "No trades";
 
                     var found = false;
+                    var rprecision = <?= $currmarket['rprecision'] ?>;
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
                             var curr = '<?= $curr_right ?>';
-                            txt += '<b>Open</b>: ' + Highcharts.numberFormat( p.point.open, 8 ) +
-                                   '<br/><b>High</b>: ' + Highcharts.numberFormat( p.point.high, 8 ) +
-                                   '<br/><b>Low</b>: ' + Highcharts.numberFormat( p.point.low, 8 ) +
-                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, 8 ) +'<br/><br/>';
+                            txt += '<b>Open</b>: ' + Highcharts.numberFormat( p.point.open, rprecision ) +
+                                   '<br/><b>High</b>: ' + Highcharts.numberFormat( p.point.high, rprecision ) +
+                                   '<br/><b>Low</b>: ' + Highcharts.numberFormat( p.point.low, rprecision ) +
+                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, rprecision ) +'<br/><br/>';
                             found = true;
                         }
 <?php /*                        
@@ -476,7 +463,7 @@ $(function () {
 */?>
                         else if( p.series.name == 'Vol' ) {
                             var curr = '<?= $curr_right ?>';
-                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, 8) + " " + curr +'<br/>';
+                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, rprecision) + " " + curr +'<br/>';
                         }
                     });
                 

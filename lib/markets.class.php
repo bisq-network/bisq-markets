@@ -27,8 +27,8 @@ class markets {
             $rsymbol = $is_fiat ? $symbol : 'BTC';
             $lname = $is_fiat ? 'Bitcoin' : $c['name'];
             $rname = $is_fiat ? $c['name']: 'Bitcoin';
-            $lprecision = $is_fiat ? 8 : $c['precision'];
-            $rprecision = $is_fiat ? $c['precision'] : 8;
+            $lprecision = 8;
+            $rprecision = $is_fiat ? 2 : 8;
             
             $pair = sprintf( '%s_%s', strtolower($lsymbol), strtolower($rsymbol) );
             $type = $is_fiat ? 'crypto/fiat' : 'crypto/crypto';

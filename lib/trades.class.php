@@ -150,13 +150,20 @@ class trades {
         $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
         // add market key        
-        foreach( $data as &$trade ) {
+        foreach( $data as $idx => &$trade ) {
+            
             list($left, $right) = explode('/', $trade['currencyPair'] );
             $cleft = @$currlist[$left];
             $cright = @$currlist[$right];
-            if( !$cleft && $cright ) {
+            if( !$cleft || !$cright ) {
+                // This weeds out any trades with symbols that are not defined in the currency*.json files.
+                unset( $data[$idx]);
                 continue;
             }
+            
+            // Here we normalize integers to 8 units of precision. calling code depends on this.
+            // note: all currencies are presently specified with 8 units of precision in json files
+            // but this has not always been the case and could change in the future.
             $trade['tradePrice'] = $trade['primaryMarketTradePrice'] * pow( 10, 8 - $cright['precision'] );
             $trade['tradeAmount'] = $trade['primaryMarketTradeAmount'] * pow( 10, 8 - $cleft['precision'] );
             $trade['tradeVolume'] = $trade['primaryMarketTradeVolume'] * pow( 10, 8 - $cright['precision'] );

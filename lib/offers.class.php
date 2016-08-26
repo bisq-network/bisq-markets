@@ -135,7 +135,7 @@ class offers {
         
         // only needed to determine if currency is fiat or not.
         $currencies = new currencies();
-        $fiats = $currencies->get_all_fiat();
+        $currlist = $currencies->get_all_currencies();
         
         // remove some garbage data at beginning of file, if present.
         $fh = fopen( $json_file, 'r' );
@@ -151,27 +151,28 @@ class offers {
         $data = json_decode( substr($buf, $start), true );
 
         // add market key        
-        foreach( $data as &$offer ) {
+        foreach( $data as $idx => &$offer ) {
             
             // change currencyCode to currency, to match trades class.
             $curr = $offer['currency'] = $offer['currencyCode'];
             unset( $offer['currencyCode'] );
-            
-            // invert price if currency is not fiat.
-            // because fiat is always primary market, otherwise BTC is primary market.
-            // note:  this is a kludge.  should be done in bitsquare app.
-            $is_fiat = isset( $fiats[ $curr ] );
-            $offer['price'] = $is_fiat ? $offer['price'] : btcutil::btc_to_int2( 1/$offer['price'] );
-            $offer['amount'] = $is_fiat ? $offer['amount'] : $offer['amount']/$offer['price'] * 10000;
-            
-            // btc is primary market except when offers against fiat.
-            // note:  this is a kludge.  should be done in bitsquare app.
-            $offer['market'] = $is_fiat ?
-                                    sprintf( 'btc_%s', strtolower($curr) ) :
-                                    sprintf( '%s_btc', strtolower($curr) );
-            $offer['total'] = $offer['price'] * $offer['amount'];
+
+            list($left, $right) = explode('/', $offer['currencyPair'] );
+            $cleft = @$currlist[$left];
+            $cright = @$currlist[$right];
+            if( !$cleft || !$cright ) {
+                unset( $data[$idx]);
+                continue;
+            }
+
+            // Here we normalize integers to 8 units of precision. calling code depends on this.
+            // note: all currencies are presently specified with 8 units of precision in json files
+            // but this has not always been the case and could change in the future.
+            $offer['price'] = $offer['primaryMarketPrice'] * pow( 10, 8 - $cright['precision'] );
+            $offer['amount'] = $offer['primaryMarketAmount'] * pow( 10, 8 - $cleft['precision'] );
+            $offer['volume'] = $offer['primaryMarketVolume'] * pow( 10, 8 - $cright['precision'] );
+            $offer['market'] = strtolower( str_replace( '/', '_', $offer['currencyPair'] ) );
         }
-        
         return $data;
     }
 }

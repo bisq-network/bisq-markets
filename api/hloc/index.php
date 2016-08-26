@@ -47,7 +47,7 @@ $criteria = ['market' => $market,
              'datetime_from' => $start,
              'datetime_to' => $end,
              'integeramounts' => false,
-             'fields' => ['period_start','open','high','low','close','volume','avg'],
+             'fields' => ['period_start','open','high','low','close', 'volume-left','volume', 'avg'],
              'sort' => 'asc',
              'fillgaps' => $fillgaps,
             ];
@@ -105,12 +105,12 @@ if( $endcaps) {
     if( count($rows ) ) {
         $first = $rows[0];
         $last = $rows[count($rows)-1];
-        array_unshift( $rows, ['period_start' => $start, $first['open'], $first['open'], $first['open'], $first['open'], 0, 0] );
-        array_push( $rows, ['period_start' => $end, $last['close'], $last['close'], $last['close'], $last['close'], 0, 0] );
+        array_unshift( $rows, ['period_start' => $start, $first['open'], $first['open'], $first['open'], $first['open'], 0, 0, 0] );
+        array_push( $rows, ['period_start' => $end, $last['close'], $last['close'], $last['close'], $last['close'], 0, 0, 0] );
     }
     else {
-        array_unshift( $rows, ['period_start' => $start, 0, 0, 0, 0, 0, 0] );
-        array_push( $rows, ['period_start' => $end, 0, 0, 0, 0, 0, 0] );
+        array_unshift( $rows, ['period_start' => $start, 0, 0, 0, 0, 0, 0, 0] );
+        array_push( $rows, ['period_start' => $end, 0, 0, 0, 0, 0, 0, 0] );
     }
 }
 
@@ -128,7 +128,7 @@ else if( $format == 'csv') {
     // serve response to client.
     $fh = fopen( 'php://output', 'w');
     
-    fputcsv($fh, array_values( ['period_start','open','high','low','close','volume','avg'] ) );
+    fputcsv($fh, array_values( ['period_start','open','high','low','close','volume', 'volume-left', 'avg'] ) );
 
     foreach( $rows as $k => $row ) {
         if( !$timestamp ) {

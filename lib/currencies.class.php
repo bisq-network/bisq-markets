@@ -27,7 +27,7 @@ class currencies {
         $all = array_merge( $fiat, $crypto );
         ksort( $all );
         $result = $all;
-        
+
         return $result;
     }
 
@@ -60,6 +60,7 @@ class currencies {
         $buf = file_get_contents($json_file);
         $start = strpos( $buf, "\n")-1;
         $result = $this->add_keys( json_decode( substr($buf, $start), true ) );
+        
         return $result;
     }
 

@@ -135,7 +135,7 @@ class trades {
         
         // only needed to determine if currency is fiat or not.
         $currencies = new currencies();
-        $fiats = $currencies->get_all_fiat();
+        $currlist = $currencies->get_all_currencies();
         
         // remove some garbage data at beginning of file, if present.
         $fh = fopen( $json_file, 'r' );
@@ -149,24 +149,27 @@ class trades {
         
         $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
-
         // add market key        
-        foreach( $data as &$trade ) {
-            // invert price if currency is not fiat.
-            // because fiat is always primary market, otherwise BTC is primary market.
-            // note:  this is a kludge.  should be done in bitsquare app.
-            $is_fiat = isset( $fiats[ $trade['currency'] ] );
-            $trade['tradePrice'] = $is_fiat ? $trade['tradePrice'] : btcutil::btc_to_int2( 1/$trade['tradePrice'] );
-            $trade['tradeAmount'] = $is_fiat ? $trade['tradeAmount'] : $trade['tradeAmount']/$trade['tradePrice'] * 10000;
+        foreach( $data as $idx => &$trade ) {
             
-            // btc is primary market except when trades against fiat.
-            // note:  this is a kludge.  should be done in bitsquare app.
-            $trade['market'] = $is_fiat ?
-                                    sprintf( 'btc_%s', strtolower($trade['currency']) ) :
-                                    sprintf( '%s_btc', strtolower($trade['currency']) );
-            $trade['total'] = $trade['tradePrice'] * $trade['tradeAmount'];
+            list($left, $right) = explode('/', $trade['currencyPair'] );
+            $cleft = @$currlist[$left];
+            $cright = @$currlist[$right];
+            if( !$cleft || !$cright ) {
+                // This weeds out any trades with symbols that are not defined in the currency*.json files.
+                unset( $data[$idx]);
+                continue;
+            }
+            
+            // Here we normalize integers to 8 units of precision. calling code depends on this.
+            // note: all currencies are presently specified with 8 units of precision in json files
+            // but this has not always been the case and could change in the future.
+            $trade['tradePrice'] = $trade['primaryMarketTradePrice'] * pow( 10, 8 - $cright['precision'] );
+            $trade['tradeAmount'] = $trade['primaryMarketTradeAmount'] * pow( 10, 8 - $cleft['precision'] );
+            $trade['tradeVolume'] = $trade['primaryMarketTradeVolume'] * pow( 10, 8 - $cright['precision'] );
+            $trade['market'] = strtolower( str_replace( '/', '_', $trade['currencyPair'] ) );
         }
-        
         return $data;
     }
+    
 }

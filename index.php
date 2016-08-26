@@ -3,6 +3,7 @@
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="60">
 
   <title>Bitsquare Markets</title>
   <link href="css/bitsquare/style.css" media="screen" rel="stylesheet" type=
@@ -18,95 +19,16 @@
       <div id="navwrap">
         <div id="navwrap2">
           <nav>
-            <ul class="menu sf-js-enabled sf-shadow l_tinynavNaN" id="menuUl"><li class="tnskip">&nbsp;</li><li class=
-              "menu-item menu-item-type-post_type menu-item-object-page menu-item"
-              id="menu-item-40"><a href="https://bitsquare.io/">Home</a></li>
-
-
-              <li class=
-              "menu-item menu-item-type-post_type menu-item-object-page current_page_item current-menu-item-38"
-              id="menu-item-38">
-                <a href="https://market.bitsquare.io/">Markets</a>
-              </li>
-
-
-              <li class=
-              "menu-item menu-item-type-post_type menu-item-object-page menu-item-38"
-              id="menu-item-38">
-                <a href="https://bitsquare.io/philosophy/">Philosophy</a>
-              </li>
-
-
-              <li class=
-              "menu-item menu-item-type-post_type menu-item-object-page menu-item-36"
-              id="menu-item-36">
-                <a href="https://bitsquare.io/community/">Community</a>
-              </li>
-
-
-              <li class=
-              "menu-item menu-item-type-post_type menu-item-object-page menu-item-34"
-              id="menu-item-34">
-                <a href="https://bitsquare.io/contribute/">Contribute</a>
-              </li>
-
-
-              <li class=
-              "menu-item menu-item-type-post_type menu-item-object-page menu-item-468"
-              id="menu-item-468">
-                <a href="https://bitsquare.io/faq/">FAQ</a>
-              </li>
-
-
-              <li class=
-              "menu-item menu-item-type-taxonomy menu-item-object-category menu-item-597"
-              id="menu-item-597">
-                <a href="https://bitsquare.io/blog/category/news/">Blog</a>
-              </li>
-
-
-              <li class=
-              "menu-item menu-item-type-custom menu-item-object-custom menu-item-1271"
-              id="menu-item-1271">
-                <a href="https://forum.bitsquare.io/">Forum</a>
-              </li>
-
-
-              <li class="tnskip">&nbsp;</li>
-
-
-              <li class="tnskip filler">
-              </li>
+            <ul id="menuUl" class="menu"><li class="tnskip" >&nbsp;</li><li id="menu-item-40" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a href="https://bitsquare.io/">Home</a></li>
+            <li id="menu-item-1427" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1427 menu-item menu-item-type-post_type menu-item-object-page current_page_item current-menu-item-38"><a href="https://market.bitsquare.io">Markets</a></li>
+            <li id="menu-item-38" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-38"><a href="https://bitsquare.io/philosophy/">Philosophy</a></li>
+            <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36"><a href="https://bitsquare.io/community/">Community</a></li>
+            <li id="menu-item-468" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-468"><a href="https://bitsquare.io/faq/">FAQ</a></li>
+            <li id="menu-item-597" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-597"><a href="https://bitsquare.io/blog/category/news/">Blog</a></li>
+            <li id="menu-item-1271" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1271"><a href="https://forum.bitsquare.io">Forum</a></li>
+            <li id="menu-item-1602" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="https://bitsquare.io/downloads/">Downloads</a></li>
+            <li class="tnskip">&nbsp;</li><li class="tnskip filler"></li>
             </ul>
-            <select class="tinynav tinynavNaN">
-              <option selected="selected" value="https://bitsquare.io/">
-                Home
-              </option>
-
-              <option value="https://bitsquare.io/philosophy/">
-                Philosophy
-              </option>
-
-              <option value="https://bitsquare.io/community/">
-                Community
-              </option>
-
-              <option value="https://bitsquare.io/contribute/">
-                Contribute
-              </option>
-
-              <option value="https://bitsquare.io/faq/">
-                FAQ
-              </option>
-
-              <option value="https://bitsquare.io/blog/category/news/">
-                Blog
-              </option>
-
-              <option value="https://forum.bitsquare.io">
-                Forum
-              </option>
-            </select>
           </nav>
         </div>
       </div>

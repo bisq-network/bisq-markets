@@ -172,6 +172,9 @@ class offers {
             $offer['amount'] = $offer['primaryMarketAmount'] * pow( 10, 8 - $cleft['precision'] );
             $offer['volume'] = $offer['primaryMarketVolume'] * pow( 10, 8 - $cright['precision'] );
             $offer['market'] = strtolower( str_replace( '/', '_', $offer['currencyPair'] ) );
+            
+            // trade direction is given to us Bitcoin-centric.  Here we make it refer to the left side of the market pair.
+            $offer['direction'] = $left == 'BTC' ? $offer['direction'] : ( $offer['direction'] == 'SELL' ? 'BUY' : 'SELL' );
         }
         return $data;
     }

@@ -86,10 +86,8 @@ try {
     // get latest buy offers.
     $offers = new offers();
     
-    // kludge: the bitsquare app defines direction based on buy/sell of bitcoin, not secondary market.
-    // if/when bitsquare provides direction based on left-side (secondary) then this kludge can be removed.
     $offers_buy_result = $offers->get_offers( [ 'market' => $market,
-                                                'direction' => $curr_left == 'BTC' ? 'BUY' : 'SELL',
+                                                'direction' => 'BUY',
                                                 'limit'  => 100 ] );
     usort( $offers_buy_result, function($a, $b) {
         if( $b['price'] == $a['price'] ) {
@@ -99,7 +97,7 @@ try {
     });
         
     $offers_sell_result = $offers->get_offers( [ 'market' => $market,
-                                                 'direction' => $curr_left == 'BTC' ? 'SELL' : 'BUY',
+                                                 'direction' => 'SELL',
                                                  'limit'  => 100 ] );
     usort( $offers_sell_result, function($a, $b) {
         if( $b['price'] == $a['price'] ) {

@@ -170,7 +170,7 @@ class trades {
             $trade['market'] = strtolower( str_replace( '/', '_', $trade['currencyPair'] ) );
 
             // trade direction is given to us Bitcoin-centric.  Here we make it refer to the left side of the market pair.
-            $trade['direction'] = $left == 'BTC' ? $trade['direction'] : ( $trade['direction'] == 'SELL' ? 'BUY' : 'SELL' );
+            $trade['direction'] = $trade['primaryMarketDirection'];
         }
         return $data;
     }

@@ -174,7 +174,7 @@ class offers {
             $offer['market'] = strtolower( str_replace( '/', '_', $offer['currencyPair'] ) );
             
             // trade direction is given to us Bitcoin-centric.  Here we make it refer to the left side of the market pair.
-            $offer['direction'] = $left == 'BTC' ? $offer['direction'] : ( $offer['direction'] == 'SELL' ? 'BUY' : 'SELL' );
+            $offer['direction'] = $offer['primaryMarketDirection'];
         }
         return $data;
     }

@@ -230,7 +230,7 @@ function display_currency_rightside( $val, $row ) {
 <?= $table->table_with_header( $trades_result,
                               array( 'Date', 'Action', 'Price', "$curr_left", "$curr_right" ),
                               array( 'tradeDate',
-                                     'direction',
+                                     'direction' => ['cb_format' => function($val, $r) {$curr_left; return $val . ' ' .  $GLOBALS['curr_left'];}],
                                      'tradePrice' => ['cb_format' => 'display_currency_rightside'],
                                      'tradeAmount' => ['cb_format' => 'display_currency_leftside'],
                                      'tradeVolume' => ['cb_format' => 'display_currency_rightside'] )

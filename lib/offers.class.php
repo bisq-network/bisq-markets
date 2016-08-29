@@ -4,7 +4,7 @@ require_once( __DIR__ . '/settings.class.php' );
 require_once( __DIR__ . '/strict_mode.funcs.php' );
 require_once( __DIR__ . '/currencies.class.php' );
 
-class trades {
+class offers {
     function __construct() {
     }
     
@@ -14,58 +14,58 @@ class trades {
      *  + datetime_from: timestamp utc
      *  + datetime_to: timestamp utc
      *  + direction: 'buy', 'sell'
-     *  + limit: max trades
+     *  + limit: max offers
      *  + sort: asc | desc.  default = asc
      *  + integeramounts: bool.  default = true.
      *  + fields: array -- fields to return.
-     *      available:  "currency", "direction", "tradePrice", "tradeAmount",
-     *                  "tradeDate", "paymentMethod", "offerDate",
+     *      available:  "currency", "direction", "price", "amount",
+     *                  "date",
      *                  "useMarketBasedPrice", "marketPriceMargin",
-     *                  "offerAmount", "offerMinAmount", "offerId",
-     *                  "depositTxId"
+     *                  "amount", "minAmount", "id",
+     *                  "offerFeeTxId"
      */
-    public function get_trades( $criteria ) {
-        
-        $trades = $this->get_all_trades();
+    public function get_offers( $criteria ) {
+
+        $offers = $this->get_all_offers();
         extract( $criteria );  // puts keys in local namespace.
 
         $sort = @$sort ?: 'desc';
         $dtfrom_milli = @$datetime_from * 1000;
         $dtto_milli = @$datetime_to * 1000;
         $limit = @$limit ?: PHP_INT_MAX;
+        $integeramounts = @$integeramounts ?: true;
         
         $matches = [];
-        foreach( $trades as $trade ) {
-            if( @$market && $market != $trade['market']) {
+        foreach( $offers as $offer ) {
+            if( @$market && $market != $offer['market']) {
                 continue;
             }
-            if( $dtfrom_milli && $dtfrom_milli > $trade['tradeDate']) {
+            if( $dtfrom_milli && $dtfrom_milli > $offer['date']) {
                 continue;
             }
-            if( $dtto_milli && $dtto_milli < $trade['tradeDate']) {
+            if( $dtto_milli && $dtto_milli < $offer['date']) {
                 continue;
             }
-            if( @$direction && $direction != $trade['direction'] ) {
+            if( @$direction && $direction != $offer['direction'] ) {
                 continue;
             }
 
-            if( false && !@$integeramounts ) {
-                $trade['tradePrice'] = btcutil::int_to_money4( $trade['tradePrice'] );
-                $trade['tradeAmount'] = btcutil::int_to_money4( $trade['tradeAmount'] );
-                $trade['offerAmount'] = btcutil::int_to_btc( $trade['offerAmount'] );
-                $trade['offerMinAmount'] = btcutil::int_to_btc( $trade['offerMinAmount'] );
+            if( !@$integeramounts ) {
+                $offer['price'] = btcutil::int_to_money4( $offer['price'] );
+                $offer['amount'] = btcutil::int_to_money4( $offer['amount'] );
+                $offer['minAmount'] = btcutil::int_to_btc( $offer['minAmount'] );
             }
             
             // convert to user specified field order list, if present.
             if( @$fields ) {
                 $t = [];
                 foreach( $fields as $f ) {
-                    $t[$f] = @$trade[$f] ?: null;
-                    $trade = $t;
+                    $t[$f] = @$offer[$f] ?: null;
+                    $offer = $t;
                 }
             }
             
-            $matches[] = $trade;
+            $matches[] = $offer;
             
             if( count($matches) >= $limit ) {
                 break;
@@ -80,8 +80,8 @@ class trades {
         return $matches;
     }
     
-    public function get_all_trades() {
-        $json_file = settings::get('data_dir') . '/trade_statistics.json';
+    public function get_all_offers() {
+        $json_file = settings::get('data_dir') . '/offers_statistics.json';
 
         // in case apcu is not installed.   ( slow )
         if( !function_exists( 'apcu_fetch' ) ) {
@@ -96,12 +96,12 @@ class trades {
             if( $result ) {
                 return $result;
             }
-            $result = $this->get_all_trades_worker($json_file);
+            $result = $this->get_all_offers_worker($json_file);
             return $result;
         }
         
-        $result_key = 'all_trades_result';
-        $ts_key = 'all_trades_timestamp';
+        $result_key = 'all_offers_result';
+        $ts_key = 'all_offers_timestamp';
 
         // We prefer to use apcu_entry if existing, because it is atomic.        
         if( function_exists( 'apcu_entry' ) ) {
@@ -113,7 +113,7 @@ class trades {
                 apcu_delete( $result_key );
             }
             return apcu_entry( $result_key, function($key) use($json_file) {
-                return $this->get_all_trades_worker($json_file);
+                return $this->get_all_offers_worker($json_file);
             });
         }
         
@@ -124,14 +124,14 @@ class trades {
             $result = $cached_result;
         }
         else {
-            $result = $this->get_all_trades_worker($json_file);
+            $result = $this->get_all_offers_worker($json_file);
             apcu_store( $ts_key, time() );
             apcu_store( $result_key, $result );
         }
         return $result;
     }
         
-    private function get_all_trades_worker($json_file) {
+    private function get_all_offers_worker($json_file) {
         
         // only needed to determine if currency is fiat or not.
         $currencies = new currencies();
@@ -149,30 +149,33 @@ class trades {
         
         $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
+
         // add market key        
-        foreach( $data as $idx => &$trade ) {
+        foreach( $data as $idx => &$offer ) {
             
-            list($left, $right) = explode('/', $trade['currencyPair'] );
+            // change currencyCode to currency, to match trades class.
+            $curr = $offer['currency'] = $offer['currencyCode'];
+            unset( $offer['currencyCode'] );
+
+            list($left, $right) = explode('/', $offer['currencyPair'] );
             $cleft = @$currlist[$left];
             $cright = @$currlist[$right];
             if( !$cleft || !$cright ) {
-                // This weeds out any trades with symbols that are not defined in the currency*.json files.
                 unset( $data[$idx]);
                 continue;
             }
-            
+
             // Here we normalize integers to 8 units of precision. calling code depends on this.
             // note: all currencies are presently specified with 8 units of precision in json files
             // but this has not always been the case and could change in the future.
-            $trade['tradePrice'] = $trade['primaryMarketTradePrice'] * pow( 10, 8 - $cright['precision'] );
-            $trade['tradeAmount'] = $trade['primaryMarketTradeAmount'] * pow( 10, 8 - $cleft['precision'] );
-            $trade['tradeVolume'] = $trade['primaryMarketTradeVolume'] * pow( 10, 8 - $cright['precision'] );
-            $trade['market'] = strtolower( str_replace( '/', '_', $trade['currencyPair'] ) );
-
+            $offer['price'] = $offer['primaryMarketPrice'] * pow( 10, 8 - $cright['precision'] );
+            $offer['amount'] = $offer['primaryMarketAmount'] * pow( 10, 8 - $cleft['precision'] );
+            $offer['volume'] = $offer['primaryMarketVolume'] * pow( 10, 8 - $cright['precision'] );
+            $offer['market'] = strtolower( str_replace( '/', '_', $offer['currencyPair'] ) );
+            
             // trade direction is given to us Bitcoin-centric.  Here we make it refer to the left side of the market pair.
-            $trade['direction'] = $trade['primaryMarketDirection'];
+            $offer['direction'] = $offer['primaryMarketDirection'];
         }
         return $data;
     }
-    
 }

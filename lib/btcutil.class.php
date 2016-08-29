@@ -8,6 +8,11 @@ class btcutil {
         return ((int)(($val * 100000000)*10))/10;
     }
 
+    // converts btc decimal amount to integer amount, with extra precision.
+    static public function btc_to_int2( $val ) {
+        return ((($val * 100000000)*10))/10;
+    }   
+    
     // converts btc integer amount to decimal amount with full precision.
     static public function int_to_btc( $val ) {
         return $val / 100000000;

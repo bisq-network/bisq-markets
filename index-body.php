@@ -4,6 +4,7 @@ require_once( dirname( __FILE__) . '/lib/html_table.class.php' );
 require_once( dirname( __FILE__) . '/lib/trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/summarize_trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/markets.class.php' );
+require_once( dirname( __FILE__) . '/lib/offers.class.php' );
 
 ini_set('memory_limit', '1G');         // just in case.
 date_default_timezone_set ( 'UTC' );   // all dates expressed in UTC.
@@ -17,9 +18,16 @@ try {
     $marketservice = new markets();
     $markets_result = $allmarkets ? $marketservice->get_markets() : $marketservice->get_markets_with_trades();
     
+    // Sort by currency name.  ( where currency is non-btc side of market )
+    uasort( $markets_result, function( $a, $b ) {
+        $aname = $a['lsymbol'] == 'BTC' ? $a['rname'] : $a['lname'];
+        $bname = $b['lsymbol'] == 'BTC' ? $b['rname'] : $b['lname'];
+        return strcmp( $aname, $bname );
+    });
+
     // Default to eur market for now.
     if( !$market || !@$markets_result[$market]) {
-        $market = "eur_btc";
+        $market = "btc_eur";
     }
     $market_name = strtoupper( str_replace( '_', '/', $market));
     list( $curr_left, $curr_right ) = explode( '/', $market_name, 2);
@@ -28,29 +36,33 @@ try {
     // Obtain market summary info for today only.
     $summarize_trades = new summarize_trades();
     $market_result = $summarize_trades->get_trade_summaries_days( ['market' => $market,
-                                                                    'datetime_from' => strtotime( 'today 00:00:00' ),
+                                                                    'datetime_from' => strtotime( 'yesterday 00:00:00' ),
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
                                                                     'limit' => 1
                                                                    ] );
+    
     // create market select control.
     $allparam = $allmarkets ? '&allmarkets=1' : '';
     $market_select = sprintf( "<select onchange='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
     foreach( $markets_result as $id => $m ) {
-        $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $m['lname'], $m['lsymbol'] );
+        $symbol = $m['lsymbol'] == 'BTC' ? $m['rsymbol'] : $m['lsymbol'];
+        $name = $m['lsymbol'] == 'BTC' ? $m['rname'] : $m['lname'];
+        $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $name, $symbol );
     }
     $market_select .= "</select>\n";
     
     $latest = @$market_result[0];
+
     if( $latest ) {
         $market_result = ['choose' => $market_select, 
                           'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
-                          'open'=> $latest['open'],
-                          'last'=> $latest['close'],
-                          'high'=> $latest['high'],
-                          'low'=> $latest['low'],
-                          'avg'=> round( $latest['avg'], 2 ),
-                          'volume' => $latest['volume'] . " " . $curr_right
+                          'open'=> display_currency( $latest['open'], $curr_right, false ),
+                          'last'=> display_currency( $latest['close'], $curr_right, false ),
+                          'high'=> display_currency( $latest['high'], $curr_right, false ),
+                          'low'=> display_currency( $latest['low'], $curr_right, false ),
+                          'avg'=> display_currency( $latest['avg'], $curr_right, false ),
+                          'volume' => display_currency( $latest['volume'], $curr_right, false ) . " " . $curr_right
                          ];
     }
     else {
@@ -70,6 +82,38 @@ try {
     $trades = new trades();
     $trades_result = $trades->get_trades( [ 'market' => $market,
                                             'limit'  => 100 ] );
+    
+    // get latest buy offers.
+    $offers = new offers();
+    
+    $offers_buy_result = $offers->get_offers( [ 'market' => $market,
+                                                'direction' => 'BUY',
+                                                'limit'  => 100 ] );
+    usort( $offers_buy_result, function($a, $b) {
+        if( $b['price'] == $a['price'] ) {
+            return 0;
+        }
+        return $b['price'] < $a['price'] ? -1 : 1;
+    });
+        
+    $offers_sell_result = $offers->get_offers( [ 'market' => $market,
+                                                 'direction' => 'SELL',
+                                                 'limit'  => 100 ] );
+    usort( $offers_sell_result, function($a, $b) {
+        if( $b['price'] == $a['price'] ) {
+            return 0;
+        }
+        return $b['price'] > $a['price'] ? -1 : 1;
+    });
+    
+    // add running totals for primary market.
+    foreach( [&$offers_buy_result, &$offers_sell_result] as &$results ) {
+        $sum = 0;
+        foreach( $results as &$row ) {
+            $sum += $row['volume'];
+            $row['sum'] = $sum;
+        }
+    }
 }
 catch( Exception $e ) {
 //  for dev/debug.
@@ -83,15 +127,22 @@ catch( Exception $e ) {
 $table = new html_table();
 $table->timestampjs_col_names['tradeDate'] = true;
 
+function display_currency( $val, $symbol, $is_int=true ) {
+    global $currmarket, $curr_left;
+    $key = $symbol == $curr_left ? 'lprecision' : 'rprecision';
+    $precision = $currmarket[$key];
+    $val = $is_int ? $val / 100000000 : $val;
+    return number_format( $val, $precision );    
+}
 
-function display_crypto($val, $row) {
-    return $val / 100000000;
+function display_currency_leftside( $val, $row ) {
+    list($left, $right) = explode( '/', $row['currencyPair'] );
+    return display_currency( $val, $left );
 }
-function display_fiat($val, $row) {
-    return $val / 10000;
-}
-function display_cryptotimesfiat($val, $row) {
-    return $val / 1000000000000;
+
+function display_currency_rightside( $val, $row ) {
+    list($left, $right) = explode( '/', $row['currencyPair'] );
+    return display_currency( $val, $right);
 }
 
 ?>
@@ -101,15 +152,21 @@ function display_cryptotimesfiat($val, $row) {
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 <?php require_once( dirname( __FILE__) . '/widgets/timezone-js.html' ); ?>
 <style>
-#trade_history {
+#trade_history_scroll {
     display: block;
-    max-height: 30em;
     height: 30em;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
-#sell_orders td, #buy_orders td, #trade_history td {
-    width: 100%;
+
+.offers {
+    height: 21em;
+    overflow-y: auto;
 }
+.offers {
+    text-align: right;
+}
+
+
 #container {
     height: 500px;
 }
@@ -131,18 +188,53 @@ function display_cryptotimesfiat($val, $row) {
 <div class='widget' style="margin-top: 15px;">
 <div id="container"></div>
 </div>
+
+<?php $table->table_attrs = array( 'class' => 'unbordered' ); ?>
+<table width="100%" cellpadding="0" class="unbordered" style="margin-bottom: 20px">
+<tr><th style="padding-right: 10px">Buy <?= $curr_left ?> Offers</th>
+    <th style="padding-left: 10px">Sell <?= $curr_left ?> Offers</th></tr>
+<tr>
+    <td style="padding-right: 10px">
+        <div class="offers widget">
+<?= $table->table_with_header( $offers_buy_result,
+                               array( 'Price', $curr_left, $curr_right, "Sum($curr_right)" ),
+                               [ 'price' => ['cb_format' => 'display_currency_rightside'],
+                                 'amount' => ['cb_format' => 'display_currency_leftside'],
+                                 'volume' => ['cb_format' => 'display_currency_rightside'],
+                                 'sum' => ['cb_format' => 'display_currency_rightside']
+                               ] );
+                               
+?>
+        </div>
+    </td>
+    <td style="padding-left: 10px">
+        <div class="offers widget">
+<?= $table->table_with_header( $offers_sell_result,
+                               array( 'Price', $curr_left, $curr_right, "Sum($curr_right)" ),
+                               [ 'price' => ['cb_format' => 'display_currency_rightside'],
+                                 'amount' => ['cb_format' => 'display_currency_leftside'],
+                                 'volume' => ['cb_format' => 'display_currency_rightside'],
+                                 'sum' => ['cb_format' => 'display_currency_rightside']
+                               ] );
+?>
+        </div>
+    </td>
+</tr>
+
+</table>
                     
 <table width="100%" cellpadding="0" cellspacing="0" class="unbordered"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history' ); ?>
 <div id="trade_history_scroll">
 
 <?= $table->table_with_header( $trades_result,
-                              array( 'Date', 'Action', 'Price', 'Size', 'Total' ),
+                              array( 'Date', 'Action', 'Price', "$curr_left", "$curr_right" ),
                               array( 'tradeDate',
-                                     'direction',
-                                     'tradePrice' => ['cb_format' => 'display_fiat'],
-                                     'tradeAmount' => ['cb_format' => 'display_crypto'],
-                                     'total' => ['cb_format' => 'display_cryptotimesfiat'] ) ); ?>
+                                     'direction' => ['cb_format' => function($val, $r) {$curr_left; return $val . ' ' .  $GLOBALS['curr_left'];}],
+                                     'tradePrice' => ['cb_format' => 'display_currency_rightside'],
+                                     'tradeAmount' => ['cb_format' => 'display_currency_leftside'],
+                                     'tradeVolume' => ['cb_format' => 'display_currency_rightside'] )
+                              ); ?>
 </div>
 
 <script type="text/javascript">
@@ -195,21 +287,24 @@ function requestData() {
                 data[i][1], // open
                 data[i][2], // high
                 data[i][3], // low
-                data[i][4] // close
+                data[i][4], // close
+                data[i][5] // volume-left
             ]);
             avg.push([
                 data[i][0], // the date
-                data[i][6]  // the average
+                data[i][7]  // the average
             ]);
             volume.push([
                 data[i][0], // the date
-                data[i][5] // the volume
+                data[i][6] // the volume
             ]);
+            
         }                
 
         chart.series[0].setData(ohlc);
         chart.series[1].setData(avg);
         chart.series[2].setData(volume);
+        chart.series[3].setData(volume_left);
         
         chart.hideLoading();
         
@@ -263,14 +358,13 @@ $(function () {
                 ]);
                 avg.push([
                     data[i][0], // the date
-                    data[i][6]  // the average
+                    data[i][7]  // the average
                 ]);
                 volume.push([
                     data[i][0], // the date
-                    data[i][5] // the volume
+                    data[i][6] // the volume
                 ]);
             }                
-
 
         // create the chart
         $('#container').highcharts('StockChart', {
@@ -348,13 +442,14 @@ $(function () {
                     var empty_buf = txt + "No trades";
 
                     var found = false;
+                    var rprecision = <?= $currmarket['rprecision'] ?>;
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
-                            var curr = '<?= $curr_left ?>';
-                            txt += '<b>Open</b>: ' + p.point.open + ' ' + curr +
-                                   '<br/><b>High</b>: ' + p.point.high + ' ' + curr +
-                                   '<br/><b>Low</b>: ' + p.point.low +' ' + curr +
-                                   '<br/><b>Close</b>: ' + p.point.close + ' ' + curr +'<br/><br/>';
+                            var curr = '<?= $curr_right ?>';
+                            txt +=      '<b>Open</b>: '  + Highcharts.numberFormat( p.point.open, rprecision ) +
+                                   '<br/><b>High</b>: '  + Highcharts.numberFormat( p.point.high, rprecision ) +
+                                   '<br/><b>Low</b>: '   + Highcharts.numberFormat( p.point.low, rprecision ) +
+                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, rprecision ) +'<br/><br/>';
                             found = true;
                         }
 <?php /*                        
@@ -364,10 +459,9 @@ $(function () {
                         also the dataGrouping.approximation function does not accept additional params that would
                         enable us to calculate ourselves, even if we had necessary input data from server.
 */?>
-                        else if( p.series.name != 'Avg' ) {
-                            var curr = p.series.name == 'Avg' ? '<?= $curr_left ?>' : '<?= $curr_right ?>';
-                            var precision = p.series.name == 'Avg' ? 2 : 4;
-                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, precision) + " " + curr +'<br/>';
+                        else if( p.series.name == 'Vol' ) {
+                            var curr = '<?= $curr_right ?>';
+                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, rprecision) + " " + curr +'<br/>';
                         }
                     });
                 
@@ -452,6 +546,7 @@ $(function () {
                 }
             ]
         });
+
     });
 });
 }

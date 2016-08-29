@@ -31,13 +31,11 @@ table.bordered {
     box-shadow: 0 2px 6px #ccc;         
 }
 
+table.bordered tr.odd, table.bordered tr.even {
+}
+
 table.bordered tr.odd:hover, table.bordered tr.even:hover {
-    background: #fff;
-    -o-transition: all 0.1s ease-in-out;
-    -webkit-transition: all 0.1s ease-in-out;
-    -moz-transition: all 0.1s ease-in-out;
-    -ms-transition: all 0.1s ease-in-out;
-    transition: all 0.1s ease-in-out;     
+    background-color: #efffff;
 }    
     
 table.bordered td, table.bordered th {
@@ -77,22 +75,20 @@ table.bordered tr.even {
  */
 
 table.unbordered {
-    *border-collapse: collapse; /* IE7 and lower */
-    border: none;
+    *border-collapse: separate; /* IE7 and lower */
     width: 100%;
 }
 
+table.unbordered tr.odd, table.unbordered tr.even {
+    border-bottom: solid 1px transparent;
+}
+
 table.unbordered tr.odd:hover, table.unbordered tr.even:hover {
-    background: #fff;
-    -o-transition: all 0.1s ease-in-out;
-    -webkit-transition: all 0.1s ease-in-out;
-    -moz-transition: all 0.1s ease-in-out;
-    -ms-transition: all 0.1s ease-in-out;
-    transition: all 0.1s ease-in-out;     
+    border-bottom: solid 1px #aaaaaa;
 }    
     
 table.unbordered td, table.unbordered th {
-    padding: 0px;
+    padding: 1px;
     vertical-align: bottom;
 }
 
@@ -103,7 +99,7 @@ table.unbordered th {
 }
 
 table.unbordered tr.odd {
-    background-color: white;
+    background-color: #FFFFFF;
 }
 table.unbordered tr.even {
     background-color: #f2f2f2;

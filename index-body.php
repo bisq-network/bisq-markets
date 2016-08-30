@@ -36,7 +36,7 @@ try {
     // Obtain market summary info for today only.
     $summarize_trades = new summarize_trades();
     $market_result = $summarize_trades->get_trade_summaries_days( ['market' => $market,
-                                                                    'datetime_from' => strtotime( 'yesterday 00:00:00' ),
+                                                                    'datetime_from' => strtotime( 'today 00:00:00' ),
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
                                                                     'limit' => 1
                                                                    ] );

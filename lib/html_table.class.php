@@ -71,7 +71,7 @@ class html_table {
             }
             
             $td_attrs = "class='td-$key' " . $td_attrs;
-            if( $this->right_align_numeric && is_numeric( $val )) {
+            if( $this->right_align_numeric && is_numeric(@$val[0]) && is_numeric(  str_replace(',', '', $val)  )) {
                 $td_attrs .=  " align='right'";
             }
             $buf .= "<td $td_attrs>" . $val . "</td>\n";

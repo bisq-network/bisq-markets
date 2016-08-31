@@ -4,6 +4,7 @@ require_once( __DIR__ . '/../lib/strict_mode.funcs.php' );
 require_once( __DIR__ . '/../lib/html_table.class.php' );
 
 $files = rglob( __DIR__ . '/apidoc.php' );
+sort( $files );
 
 $apis = [];
 foreach( $files as $docfile ) {
@@ -127,11 +128,28 @@ div.params div {
         </div>
     </div>
     
+    <?php if( count($api->get_notes()) ): ?>
     <div class="notes">
+        <h4>Notes</h4>
+        <ul>
         <?php foreach($api->get_notes() as $note): ?>
-        <div class="apinote"><?= e($note) ?></div>
+        <li class="noteitem"><?= e($note) ?></li>
         <?php endforeach ?>
+        </ul>
     </div>
+    <?php endif ?>
+    
+    <?php if( count($api->get_seealso()) ): ?>
+    <div class="seealso">
+        <h4>See Also</h4>
+        <ul>
+        <?php foreach($api->get_seealso() as $seealso): ?>
+        <li class="seealsoitem"><a href="#<?= e($seealso) ?>"><?= e($seealso) ?></a></li>
+        <?php endforeach ?>
+        </ul>
+    </div>
+    <?php endif ?>
+    
 </div>
 <?php endforeach ?>
 

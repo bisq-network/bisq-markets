@@ -33,18 +33,19 @@ class trades {
         
         extract( $criteria );  // puts keys in local namespace.
 
-        $trades = $market ? $this->get_trades_by_market( $market ) :
-                            $this->get_all_trades();
+        $trades = @$market ? $this->get_trades_by_market( $market ) :
+                             $this->get_all_trades();
                             
         $sort = @$sort ?: 'desc';
         $dtfrom_milli = @$datetime_from * 1000;
         $dtto_milli = @$datetime_to * 1000;
         $limit = @$limit ?: PHP_INT_MAX;
+        $direction = @$direction ? strtoupper( $direction ) : null;
         $integeramounts = isset($integeramounts) ? $integeramounts : true;
         
         $matches = [];
         foreach( $trades as $trade ) {
-            if( @$market && $market != $trade['market']) {
+            if( $market && $market != $trade['market']) {
                 continue;
             }
             if( $dtfrom_milli && $dtfrom_milli > $trade['tradeDate']) {
@@ -53,7 +54,7 @@ class trades {
             if( $dtto_milli && $dtto_milli < $trade['tradeDate']) {
                 continue;
             }
-            if( @$direction && $direction != $trade['direction'] ) {
+            if( $direction && $direction != $trade['direction'] ) {
                 continue;
             }
 

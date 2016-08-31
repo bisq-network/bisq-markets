@@ -20,14 +20,13 @@ class api_ticker {
                           'response' => <<< END
 {
     "btc_eur": {
-        "open": "528.00000000",
-        "high": "528.00000000",
-        "low": "517.62850000",
-        "close": "517.62850000",
-        "volume_left": "1.09000000",
-        "volume_right": "574.48280000",
-        "buy": null,
-        "sell": null
+        "last": "524.17550000",
+        "high": "529.56210000",
+        "low": "510.20000000",
+        "volume_left": "2.76560000",
+        "volume_right": "1454.42950000",
+        "buy": "513.88580000",
+        "sell": "529.17120000"
     }
 }                          
 END
@@ -39,27 +38,32 @@ END
 
 {
     "1cr_btc": null,
-    ...
-    "sc_btc": {
-        "open": "0.00000077",
-        "high": "0.00000077",
-        "low": "0.00000075",
-        "close": "0.00000075",
-        "volume_left": "423666.82980000",
-        "volume_right": "0.32000000",
+    "btc_aud": {
+        "last": "728.89000000",
+        "high": "728.89000000",
+        "low": "728.89000000",
+        "volume_left": 0,
+        "volume_right": 0,
         "buy": null,
-        "sell": "0.00000092"
+        "sell": null
     },
-    ...
+    "btc_eur": {
+        "last": "524.17550000",
+        "high": "529.56210000",
+        "low": "510.20000000",
+        "volume_left": "2.76560000",
+        "volume_right": "1454.42950000",
+        "buy": "513.88580000",
+        "sell": "529.17120000"
+    },
     "xmr_btc": {
-        "open": "0.01455763",
-        "high": "0.01646004",
-        "low": "0.01419052",
-        "close": "0.01530002",
-        "volume_left": "525.70260000",
-        "volume_right": "7.82000000",
-        "buy": "0.01320001",
-        "sell": "0.01389993"
+        "last": "0.01437401",
+        "high": "0.01530723",
+        "low": "0.01437401",
+        "volume_left": "269.79720000",
+        "volume_right": "4.00000000",
+        "buy": "0.01427006",
+        "sell": "0.01545144"
     }
 }
 END
@@ -70,7 +74,13 @@ END
     }
     
     static function get_notes() {
-        return [];
+        return ["the response data can indicate the following market states: never traded, traded prior to 24 hours, traded within 24 hours",
+                "a null value for a market key indicates 'never traded'",
+                "volume_left or volume_right is 0 indicates 'traded prior to 24 hours'",
+                "volume_left or volume_right is > 0 indicates  'traded within 24 hours'",
+                "buy represents the highest buy offer at present, sell represents the lowest sell offer at present",
+                "either buy or sell may be null if there are not presently any respective offers"
+                ];
     }
     
     static function get_seealso() {

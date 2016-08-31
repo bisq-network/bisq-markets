@@ -74,8 +74,8 @@ class trades {
                     $old = is_string($k) ? $k : $f;
                     $new = $f;
                     $t[$new] = @$t2[$old];
-                    $trade = $t;
                 }
+                $trade = $t;
             }
             
             $matches[] = $trade;
@@ -92,10 +92,15 @@ class trades {
         
         return $matches;
     }
+
+    public function get_last_trade_by_market( $market ) {
+        $results = filecache::get( $this->json_file, 'market_last_result', [$this, 'get_markets_trades_worker'] );
+        return @$results[$market]['last'];
+    }
     
     public function get_trades_by_market( $market ) {
         $results = filecache::get( $this->json_file, 'market_trades_result', [$this, 'get_markets_trades_worker'] );
-        return @$results[$market] ?: [];
+        return @$results[$market]['trades'] ?: [];
     }
     
     public function get_all_trades() {
@@ -109,11 +114,14 @@ class trades {
         $results = [];
         foreach( $all_trades as $trade ) {
             $market = $trade['market'];
-            $results[$market][] = $trade;
+            $results[$market]['trades'][] = $trade;
+            $results[$market]['last'] = $trade;
         }
         return $results;
     }
 
+    
+    
     /* This is only public so it can be used as callback for cache class
      */
     public function get_all_trades_worker() {

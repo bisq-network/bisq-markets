@@ -202,12 +202,15 @@ class summarize_trades {
                     $period['volume_right'] = btcutil::int_to_btc( $period['volume_right'] );
                     $period['volume_left'] = btcutil::int_to_btc( $period['volume_left'] );
                 }
-    
+                
                 // convert to user specified field order list, if present.
                 if( @$fields ) {
                     $p = [];
-                    foreach( $fields as $f ) {
-                        $p[$f] = @$period[$f];
+                    $t = $period;
+                    foreach( $fields as $id =>  $f ) {
+                        $old = is_string($id) ? $id : $f;
+                        $new = $f;
+                        $p[$new] = $period[$old];
                     }
                     $period = $p;
                 }

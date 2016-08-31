@@ -4,13 +4,14 @@ require_once( __DIR__ . '/strict_mode.funcs.php' );
 require_once( __DIR__ . '/summarize_trades.class.php' );
 require_once( __DIR__ . '/markets.class.php' );
 require_once( __DIR__ . '/offers.class.php' );
+require_once( __DIR__ . '/trades.class.php' );
 
 class ticker {
     
     public function get_market_ticker( $market, $criteria ) {
         
         $criteria['market'] = $market;
-        $criteria['fields'] = ['open','high','low','close', 'volume_left','volume_right'];
+        $criteria['fields'] = ['close' => 'last', 'high','low','volume_left','volume_right'];
 
         $summarizer = new summarize_trades();
         
@@ -25,7 +26,20 @@ class ticker {
         $ticker = @$periods[0];
         
         if( !$ticker ) {
-            return null;
+            $last = $this->get_market_last( $market );
+            if( !$last ) {
+                return null;
+            }
+            if( !@$criteria['integeramounts'] ) {
+                $last = btcutil::int_to_btc( $last );
+            }
+            
+            $ticker = ['last' => $last,
+                       'high' => $last,
+                       'low' => $last,
+                       'volume_left' => 0,
+                       'volume_right' => 0,
+                      ];
         }
 
         $offers = new offers();
@@ -48,6 +62,12 @@ class ticker {
         $ticker['sell'] = @$sells[0]['price'];
 
         return $ticker;
+    }
+    
+    public function get_market_last( $market ) {
+        $trades = new trades();
+        $trade = $trades->get_last_trade_by_market( $market );
+        return @$trade['tradePrice'];
     }
     
     public function get_all_markets_ticker( $criteria ) {

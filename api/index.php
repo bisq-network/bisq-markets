@@ -82,6 +82,11 @@ div.responseexample {
     background-color: white;
     padding: 10px;
 }
+div.params {
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 20px;
+}
 </style>
 </head>
 <body>

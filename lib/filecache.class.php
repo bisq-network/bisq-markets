@@ -43,7 +43,7 @@ class filecache {
         }
         
         $result_key = $key;
-        $ts_key = 'all_trades_timestamp';
+        $ts_key = $key . '_timestamp';
 
         // We prefer to use apcu_entry if existing, because it is atomic.        
         // note: disabling this for now because the trades class get_by_market callback
@@ -68,7 +68,7 @@ class filecache {
         // Otherwise, use apcu_fetch, apcu_store.
         $cached_ts = apcu_fetch( $ts_key );
         $cached_result = apcu_fetch( $result_key );
-        
+
         if( $cached_result && $cached_ts && filemtime( $file ) < $cached_ts ) {
             $result = $cached_result;
         }

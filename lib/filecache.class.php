@@ -46,7 +46,11 @@ class filecache {
         $ts_key = 'all_trades_timestamp';
 
         // We prefer to use apcu_entry if existing, because it is atomic.        
-        if( function_exists( 'apcu_entry' ) ) {
+        // note: disabling this for now because the trades class get_by_market callback
+        //       causes a second invocation of this method and apcu_entry crashes
+        //       when this occurs.  If I ever get time it would be good to make a
+        //       simplifieid test case and submit to the apc devs.
+        if( false && function_exists( 'apcu_entry' ) ) {
             // note:  this case is untested!!!  my version of apcu is too old.
             $cached_ts = apcu_entry( $ts_key, function($key) { return time(); } );
             
@@ -54,7 +58,7 @@ class filecache {
             if( filemtime( $file ) > $cached_ts ) {
                 apcu_delete( $result_key );
             }
-            $result = apcu_entry( $result_key, function($key) use($file) {
+            $result = apcu_entry( $result_key, function($key) use($file, $value_cb, $value_cb_params) {
                 return call_user_func_array( $value_cb, $value_cb_params );
             });
             $results[$key] = $result;

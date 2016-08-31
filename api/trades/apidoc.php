@@ -21,7 +21,7 @@ class api_trades {
     static function get_examples() {
         $examples = [];
         $examples[] = 
-                        [ 'request' => '/depth?market=btc_eur&limit=2',
+                        [ 'request' => '/trades?market=btc_eur&limit=2',
                           'response' => <<< END
 [
     {

@@ -114,8 +114,14 @@ class trades {
         $results = [];
         foreach( $all_trades as $trade ) {
             $market = $trade['market'];
-            $results[$market]['trades'][] = $trade;
-            $results[$market]['last'] = $trade;
+            $mkt =& $results[$market];
+            $mkt['trades'][] = $trade;
+
+            // trades are in descending order.  So to save the latest trade,
+            // we store the first one we find for each market.
+            if( !isset( $mkt['last'] )) {
+                $mkt['last'] = $trade;
+            }
         }
         return $results;
     }

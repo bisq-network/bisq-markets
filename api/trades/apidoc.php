@@ -46,7 +46,7 @@ END
     }
     
     static function get_notes() {
-        return [];
+        return ["trade_date in response is provided in milliseconds since 1970, not seconds.  To get seconds, divide by 1000"];
     }
     
     static function get_seealso() {

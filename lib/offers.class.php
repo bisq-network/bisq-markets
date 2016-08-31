@@ -19,7 +19,7 @@ class offers {
      *  + limit: max offers
      *  + sort: asc | desc   default = asc  ( by price )
      *  + integeramounts: bool.  default = true.
-     *  + fields: array -- fields to return.
+     *  + fields: array -- fields to return. optionally use key/val to map fields to another name.
      *      available:  "currency", "direction", "price", "amount",
      *                  "date",
      *                  "useMarketBasedPrice", "marketPriceMargin",
@@ -55,19 +55,24 @@ class offers {
             if( !@$integeramounts ) {
                 $offer['price'] = btcutil::int_to_btc( $offer['price'] );
                 $offer['amount'] = btcutil::int_to_btc( $offer['amount'] );
+                $offer['volume'] = btcutil::int_to_btc( $offer['volume'] );
                 $offer['minAmount'] = btcutil::int_to_btc( $offer['minAmount'] );
             }
             
             // convert to user specified field order list, if present.
             if( @$fields ) {
                 $t = [];
-                foreach( $fields as $f ) {
-                    $t[$f] = @$offer[$f] ?: null;
-                    $offer = $t;
+                foreach( $fields as $k => $f ) {
+                    $old = is_string($k) ? $k : $f;
+                    $new = $f;
+                    $t[$new] = @$offer[$old];
                 }
+                $matches[] = $t;
+            }
+            else {
+                $matches[] = $offer;
             }
             
-            $matches[] = $offer;
             
             if( count($matches) >= $limit ) {
                 break;
@@ -132,7 +137,7 @@ class offers {
             $offer['market'] = strtolower( str_replace( '/', '_', $offer['currencyPair'] ) );
             
             // trade direction is given to us Bitcoin-centric.  Here we make it refer to the left side of the market pair.
-            $offer['direction'] = $offer['primaryMarketDirection'];
+            $offer['direction'] = $offer['primaryMarketDirection'];            
         }
 
         // sort desc by price.

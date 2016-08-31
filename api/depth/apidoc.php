@@ -3,7 +3,7 @@
 class api_depth {
     
     static function get_description() {
-        return "Provides list of open offers for a single orderbook.";
+        return "Provides list of open offer prices for a single market.";
     }
     
     static function get_params() {
@@ -42,6 +42,6 @@ END
     }
     
     static function get_seealso() {
-        return [];
+        return ['offers'];
     }
 }

@@ -22,7 +22,7 @@ class trades {
      *  + limit: max trades
      *  + sort: asc | desc.  default = asc
      *  + integeramounts: bool.  default = true.
-     *  + fields: array -- fields to return.
+     *  + fields: array -- fields to return. optionally use key/val to map fields to another name.
      *      available:  "currency", "direction", "tradePrice", "tradeAmount",
      *                  "tradeDate", "paymentMethod", "offerDate",
      *                  "useMarketBasedPrice", "marketPriceMargin",

@@ -57,12 +57,12 @@ try {
         $market_result = ['choose' => $market_select, 
                           'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
-                          'open'=> display_currency( $latest['open'], $curr_right, false ),
-                          'last'=> display_currency( $latest['close'], $curr_right, false ),
-                          'high'=> display_currency( $latest['high'], $curr_right, false ),
-                          'low'=> display_currency( $latest['low'], $curr_right, false ),
-                          'avg'=> display_currency( $latest['avg'], $curr_right, false ),
-                          'volume' => display_currency( $latest['volume'], $curr_right, false ) . " " . $curr_right
+                          'open'=> display_currency( $latest['open'], $curr_right ),
+                          'last'=> display_currency( $latest['close'], $curr_right ),
+                          'high'=> display_currency( $latest['high'], $curr_right ),
+                          'low'=> display_currency( $latest['low'], $curr_right ),
+                          'avg'=> display_currency( $latest['avg'], $curr_right ),
+                          'volume_right' => display_currency( $latest['volume_right'], $curr_right ) . " " . $curr_right
                          ];
     }
     else {
@@ -74,7 +74,7 @@ try {
                           'high'=> '--',
                           'low'=> '--',
                           'avg'=> '--',
-                          'volume' => '--'
+                          'volume_right' => '--'
                         ];
     }
 
@@ -88,23 +88,13 @@ try {
     
     $offers_buy_result = $offers->get_offers( [ 'market' => $market,
                                                 'direction' => 'BUY',
+                                                'sort' => 'desc',
                                                 'limit'  => 100 ] );
-    usort( $offers_buy_result, function($a, $b) {
-        if( $b['price'] == $a['price'] ) {
-            return 0;
-        }
-        return $b['price'] < $a['price'] ? -1 : 1;
-    });
         
     $offers_sell_result = $offers->get_offers( [ 'market' => $market,
                                                  'direction' => 'SELL',
+                                                 'sort' => 'asc',
                                                  'limit'  => 100 ] );
-    usort( $offers_sell_result, function($a, $b) {
-        if( $b['price'] == $a['price'] ) {
-            return 0;
-        }
-        return $b['price'] > $a['price'] ? -1 : 1;
-    });
     
     // add running totals for primary market.
     foreach( [&$offers_buy_result, &$offers_sell_result] as &$results ) {
@@ -178,7 +168,7 @@ function display_currency_rightside( $val, $row ) {
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'market_info' ); ?>
 <?= $table->table_with_header( array( $market_result ),
                               array( 'Currency', 'Bitsquare Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
-                              array( 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume' ) ); ?>
+                              array( 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume_right' ) ); ?>
 
 <?php if( !count( $trades_result ) ): ?>
 <div class="widget" style="margin-top: 15px; text-align: center;">
@@ -287,8 +277,7 @@ function requestData() {
                 data[i][1], // open
                 data[i][2], // high
                 data[i][3], // low
-                data[i][4], // close
-                data[i][5] // volume-left
+                data[i][4] // close
             ]);
             avg.push([
                 data[i][0], // the date
@@ -296,7 +285,7 @@ function requestData() {
             ]);
             volume.push([
                 data[i][0], // the date
-                data[i][6] // the volume
+                data[i][6]  // the volume_right
             ]);
             
         }                
@@ -304,7 +293,6 @@ function requestData() {
         chart.series[0].setData(ohlc);
         chart.series[1].setData(avg);
         chart.series[2].setData(volume);
-        chart.series[3].setData(volume_left);
         
         chart.hideLoading();
         
@@ -354,7 +342,7 @@ $(function () {
                     data[i][1], // open
                     data[i][2], // high
                     data[i][3], // low
-                    data[i][4] // close
+                    data[i][4]  // close
                 ]);
                 avg.push([
                     data[i][0], // the date
@@ -362,7 +350,7 @@ $(function () {
                 ]);
                 volume.push([
                     data[i][0], // the date
-                    data[i][6] // the volume
+                    data[i][6]  // the volume_right
                 ]);
             }                
 
@@ -446,10 +434,10 @@ $(function () {
                     each(points, function(p, i) {
                         if(p.point && p.point.open) {
                             var curr = '<?= $curr_right ?>';
-                            txt +=      '<b>Open</b>: '  + Highcharts.numberFormat( p.point.open, rprecision ) +
-                                   '<br/><b>High</b>: '  + Highcharts.numberFormat( p.point.high, rprecision ) +
-                                   '<br/><b>Low</b>: '   + Highcharts.numberFormat( p.point.low, rprecision ) +
-                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, rprecision ) +'<br/><br/>';
+                            txt +=      '<b>Open</b>: '  + Highcharts.numberFormat( p.point.open, rprecision, '.', ',' ) +
+                                   '<br/><b>High</b>: '  + Highcharts.numberFormat( p.point.high, rprecision, '.', ',' ) +
+                                   '<br/><b>Low</b>: '   + Highcharts.numberFormat( p.point.low, rprecision, '.', ',' ) +
+                                   '<br/><b>Close</b>: ' + Highcharts.numberFormat( p.point.close, rprecision, '.', ',' ) +'<br/><br/>';
                             found = true;
                         }
 <?php /*                        
@@ -461,7 +449,7 @@ $(function () {
 */?>
                         else if( p.series.name == 'Vol' ) {
                             var curr = '<?= $curr_right ?>';
-                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, rprecision) + " " + curr +'<br/>';
+                            txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, rprecision, '.', ',') + " " + curr +'<br/>';
                         }
                     });
                 

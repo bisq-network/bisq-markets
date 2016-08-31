@@ -3,6 +3,8 @@
 require_once( __DIR__ . '/settings.class.php' );
 require_once( __DIR__ . '/strict_mode.funcs.php' );
 require_once( __DIR__ . '/currencies.class.php' );
+require_once( __DIR__ . '/filecache.class.php' );
+require_once( __DIR__ . '/btcutil.class.php' );
 
 class offers {
     function __construct() {
@@ -15,7 +17,7 @@ class offers {
      *  + datetime_to: timestamp utc
      *  + direction: 'buy', 'sell'
      *  + limit: max offers
-     *  + sort: asc | desc.  default = asc
+     *  + sort: asc | desc   default = asc  ( by price )
      *  + integeramounts: bool.  default = true.
      *  + fields: array -- fields to return.
      *      available:  "currency", "direction", "price", "amount",
@@ -33,7 +35,7 @@ class offers {
         $dtfrom_milli = @$datetime_from * 1000;
         $dtto_milli = @$datetime_to * 1000;
         $limit = @$limit ?: PHP_INT_MAX;
-        $integeramounts = @$integeramounts ?: true;
+        $integeramounts = isset($integeramounts) ? $integeramounts : true;
         
         $matches = [];
         foreach( $offers as $offer ) {
@@ -51,8 +53,8 @@ class offers {
             }
 
             if( !@$integeramounts ) {
-                $offer['price'] = btcutil::int_to_money4( $offer['price'] );
-                $offer['amount'] = btcutil::int_to_money4( $offer['amount'] );
+                $offer['price'] = btcutil::int_to_btc( $offer['price'] );
+                $offer['amount'] = btcutil::int_to_btc( $offer['amount'] );
                 $offer['minAmount'] = btcutil::int_to_btc( $offer['minAmount'] );
             }
             
@@ -82,56 +84,12 @@ class offers {
     
     public function get_all_offers() {
         $json_file = settings::get('data_dir') . '/offers_statistics.json';
-
-        // in case apcu is not installed.   ( slow )
-        if( !function_exists( 'apcu_fetch' ) ) {
-            // cache in mem for present request.
-            static $result = null;
-            static $warned = false;
-            if( !$warned ) {
-                error_log( "Warning: APCu not found. Please install APCu extension for better performance." );
-                $warned = true;
-            }
-            
-            if( $result ) {
-                return $result;
-            }
-            $result = $this->get_all_offers_worker($json_file);
-            return $result;
-        }
-        
-        $result_key = 'all_offers_result';
-        $ts_key = 'all_offers_timestamp';
-
-        // We prefer to use apcu_entry if existing, because it is atomic.        
-        if( function_exists( 'apcu_entry' ) ) {
-            // note:  this case is untested!!!  my version of apcu is too old.
-            $cached_ts = apcu_entry( $ts_key, function($key) { return time(); } );
-            
-            // invalidate cache if file on disk is newer than cached value.
-            if( filemtime( $json_file ) > $cached_ts ) {
-                apcu_delete( $result_key );
-            }
-            return apcu_entry( $result_key, function($key) use($json_file) {
-                return $this->get_all_offers_worker($json_file);
-            });
-        }
-        
-        // Otherwise, use apcu_fetch, apcu_store.
-        $cached_ts = apcu_fetch( $ts_key );
-        $cached_result = apcu_fetch( $result_key );
-        if( $cached_result && $cached_ts && filemtime( $json_file ) < $cached_ts ) {
-            $result = $cached_result;
-        }
-        else {
-            $result = $this->get_all_offers_worker($json_file);
-            apcu_store( $ts_key, time() );
-            apcu_store( $result_key, $result );
-        }
-        return $result;
+        return filecache::get( $json_file, 'all_offers_result', [$this, 'get_all_offers_worker'], [$json_file] );
     }
-        
-    private function get_all_offers_worker($json_file) {
+    
+    /* This is only public so it can be used as callback for filecache class
+     */
+    public function get_all_offers_worker($json_file) {
         
         // only needed to determine if currency is fiat or not.
         $currencies = new currencies();
@@ -176,6 +134,18 @@ class offers {
             // trade direction is given to us Bitcoin-centric.  Here we make it refer to the left side of the market pair.
             $offer['direction'] = $offer['primaryMarketDirection'];
         }
+
+        // sort desc by price.
+        usort( $data, function( $a, $b ) {
+            $a = $a['price'];
+            $b = $b['price'];
+            
+            if( $a == $b ) {
+                return 0;
+            }
+            return $a > $b ? -1 : 1;
+        });
+        
         return $data;
     }
 }

@@ -15,7 +15,7 @@ class btcutil {
     
     // converts btc integer amount to decimal amount with full precision.
     static public function int_to_btc( $val ) {
-        return $val / 100000000;
+        return number_format($val / 100000000, 8, '.', '');
     }
 
     // formats btc integer amount for display as decimal amount (rounded)   

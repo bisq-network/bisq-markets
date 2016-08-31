@@ -18,23 +18,23 @@ if( $milliseconds ) {
     $end = @$_GET['timestamp_from'] ? (int)($_GET['timestamp_to'] / 1000) : $end;
 }
 
-function bail($code, $msg) {
-    header($_SERVER["SERVER_PROTOCOL"]." $code $msg", true, $code);
-    die( $msg );
+function bail($msg) {
+    $result = ["success" => 0, "error" => $msg ];
+    die( json_encode( $result, $GLOBALS['format'] == 'json' ? 0 : JSON_PRETTY_PRINT ) );
 }
 
 if( !$market ) {
-    bail( 404, "Not found" );
+    bail( "market parameter missing." );
 }
 
 if ($start && !preg_match('/^[0-9]+$/', $start)) {
-	bail(500, "Invalid start parameter: $start");
+	bail("Invalid start parameter: $start");
 }
 if ($end && !preg_match('/^[0-9]+$/', $end)) {
-	bail(500, "Invalid end parameter: $end");
+	bail("Invalid end parameter: $end");
 }
 if( $interval && !in_array( $interval, ['minute', 'hour', 'day', 'month'] )) {
-	bail(500, "Invalid interval parameter: $interval");
+	bail("Invalid interval parameter: $interval");
 }
 
 
@@ -47,7 +47,7 @@ $criteria = ['market' => $market,
              'datetime_from' => $start,
              'datetime_to' => $end,
              'integeramounts' => false,
-             'fields' => ['period_start','open','high','low','close', 'volume-left','volume', 'avg'],
+             'fields' => ['period_start','open','high','low','close', 'volume_left','volume_right', 'avg'],
              'sort' => 'asc',
              'fillgaps' => $fillgaps,
             ];
@@ -62,7 +62,8 @@ switch( $interval ) {
     case 'week':  $rows = $summarizer->get_trade_summaries_weeks($criteria); break;
     case 'month':  $rows = $summarizer->get_trade_summaries_months($criteria); break;
     case 'year':  $rows = $summarizer->get_trade_summaries_years($criteria); break;
-        
+    
+    case 'auto':
     default:
         // find the right table
         // two days range loads minute data
@@ -128,7 +129,7 @@ else if( $format == 'csv') {
     // serve response to client.
     $fh = fopen( 'php://output', 'w');
     
-    fputcsv($fh, array_values( ['period_start','open','high','low','close','volume', 'volume-left', 'avg'] ) );
+    fputcsv($fh, array_values( ['period_start','open','high','low','close','volume_left', 'volume_right', 'avg'] ) );
 
     foreach( $rows as $k => $row ) {
         if( !$timestamp ) {

@@ -3,9 +3,14 @@
 require_once( __DIR__ . '/settings.class.php' );
 require_once( __DIR__ . '/strict_mode.funcs.php' );
 require_once( __DIR__ . '/currencies.class.php' );
+require_once( __DIR__ . '/filecache.class.php' );
 
 class trades {
+    
+    private $json_file;
+    
     function __construct() {
+        $this->json_file = settings::get('data_dir') . '/trade_statistics.json';
     }
     
     /**
@@ -26,13 +31,16 @@ class trades {
      */
     public function get_trades( $criteria ) {
         
-        $trades = $this->get_all_trades();
         extract( $criteria );  // puts keys in local namespace.
 
+        $trades = $market ? $this->get_trades_by_market( $market ) :
+                            $this->get_all_trades();
+                            
         $sort = @$sort ?: 'desc';
         $dtfrom_milli = @$datetime_from * 1000;
         $dtto_milli = @$datetime_to * 1000;
         $limit = @$limit ?: PHP_INT_MAX;
+        $integeramounts = isset($integeramounts) ? $integeramounts : true;
         
         $matches = [];
         foreach( $trades as $trade ) {
@@ -49,9 +57,9 @@ class trades {
                 continue;
             }
 
-            if( false && !@$integeramounts ) {
-                $trade['tradePrice'] = btcutil::int_to_money4( $trade['tradePrice'] );
-                $trade['tradeAmount'] = btcutil::int_to_money4( $trade['tradeAmount'] );
+            if( !@$integeramounts ) {
+                $trade['tradePrice'] = btcutil::int_to_btc( $trade['tradePrice'] );
+                $trade['tradeAmount'] = btcutil::int_to_btc( $trade['tradeAmount'] );
                 $trade['offerAmount'] = btcutil::int_to_btc( $trade['offerAmount'] );
                 $trade['offerMinAmount'] = btcutil::int_to_btc( $trade['offerMinAmount'] );
             }
@@ -59,8 +67,12 @@ class trades {
             // convert to user specified field order list, if present.
             if( @$fields ) {
                 $t = [];
-                foreach( $fields as $f ) {
-                    $t[$f] = @$trade[$f] ?: null;
+                $t2 = $trade;
+
+                foreach( $fields as $k => $f ) {
+                    $old = is_string($k) ? $k : $f;
+                    $new = $f;
+                    $t[$new] = @$t2[$old];
                     $trade = $t;
                 }
             }
@@ -80,58 +92,31 @@ class trades {
         return $matches;
     }
     
-    public function get_all_trades() {
-        $json_file = settings::get('data_dir') . '/trade_statistics.json';
-
-        // in case apcu is not installed.   ( slow )
-        if( !function_exists( 'apcu_fetch' ) ) {
-            // cache in mem for present request.
-            static $result = null;
-            static $warned = false;
-            if( !$warned ) {
-                error_log( "Warning: APCu not found. Please install APCu extension for better performance." );
-                $warned = true;
-            }
-            
-            if( $result ) {
-                return $result;
-            }
-            $result = $this->get_all_trades_worker($json_file);
-            return $result;
-        }
-        
-        $result_key = 'all_trades_result';
-        $ts_key = 'all_trades_timestamp';
-
-        // We prefer to use apcu_entry if existing, because it is atomic.        
-        if( function_exists( 'apcu_entry' ) ) {
-            // note:  this case is untested!!!  my version of apcu is too old.
-            $cached_ts = apcu_entry( $ts_key, function($key) { return time(); } );
-            
-            // invalidate cache if file on disk is newer than cached value.
-            if( filemtime( $json_file ) > $cached_ts ) {
-                apcu_delete( $result_key );
-            }
-            return apcu_entry( $result_key, function($key) use($json_file) {
-                return $this->get_all_trades_worker($json_file);
-            });
-        }
-        
-        // Otherwise, use apcu_fetch, apcu_store.
-        $cached_ts = apcu_fetch( $ts_key );
-        $cached_result = apcu_fetch( $result_key );
-        if( $cached_result && $cached_ts && filemtime( $json_file ) < $cached_ts ) {
-            $result = $cached_result;
-        }
-        else {
-            $result = $this->get_all_trades_worker($json_file);
-            apcu_store( $ts_key, time() );
-            apcu_store( $result_key, $result );
-        }
-        return $result;
+    public function get_trades_by_market( $market ) {
+        $results = filecache::get( $this->json_file, 'market_trades_result', [$this, 'get_markets_trades_worker'] );
+        return @$results[$market] ?: [];
     }
-        
-    private function get_all_trades_worker($json_file) {
+    
+    public function get_all_trades() {
+        return filecache::get( $this->json_file, 'all_trades_result', [$this, 'get_all_trades_worker'] );
+    }
+
+    /* This is only public so it can be used as callback for cache class
+     */
+    public function get_markets_trades_worker() {
+        $all_trades = $this->get_all_trades();
+        $results = [];
+        foreach( $all_trades as $trade ) {
+            $market = $trade['market'];
+            $results[$market][] = $trade;
+        }
+        return $results;
+    }
+
+    /* This is only public so it can be used as callback for cache class
+     */
+    public function get_all_trades_worker() {
+        $json_file = $this->json_file;
         
         // only needed to determine if currency is fiat or not.
         $currencies = new currencies();

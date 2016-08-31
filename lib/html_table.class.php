@@ -120,7 +120,11 @@ class html_table {
         return $table_attrs;
     }
     
-    function table_with_header( $rows, $header, $cols = null ) {
+    function table_with_header( $rows, $header=null, $cols = null ) {
+
+        if( !$header ) {
+            $header = @array_keys(reset($rows));
+        }
         
         $attrs = $this->_get_attrs_buf( $this->table_attrs );
         

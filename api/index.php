@@ -43,7 +43,7 @@ function e($buf) {
         
 <style>
 h1, h2, h3, h4, h5, h6 {
-    margin-top: 10px;
+    margin-top: 12px;
     margin-bottom: 10px;
 }
 #apiversion {
@@ -82,7 +82,7 @@ div.responseexample {
     background-color: white;
     padding: 10px;
 }
-div.params {
+div.params div {
     margin-left: 25px;
     margin-right: 25px;
     margin-bottom: 20px;
@@ -122,7 +122,9 @@ div.params {
     
     <div class="params">
         <h4>Parameters</h4>
+        <div>
         <?= $table->table_with_header($api->get_params()) ?>
+        </div>
     </div>
     
     <div class="notes">

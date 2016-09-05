@@ -14,7 +14,7 @@ class api_trades {
                  ['param' => 'timestamp_to', 'desc' => 'end time, in seconds since 1970', 'required' => false, 'values' => null, 'default' => 'now'],
                  ['param' => 'direction', 'desc' => 'trade direction: buy or sell. omit or leave null for both.', 'required' => false, 'values' => 'buy | sell', 'default' => null],
                  ['param' => 'limit', 'desc' => 'maximum trades to return.  max is 2000.', 'required' => false, 'values' => null, 'default' => 100],
-                 ['param' => 'sort', 'desc' => 'Sort by date', 'required' => false, 'values' => ['asc', 'desc'], 'default' => 'desc'],
+                 ['param' => 'sort', 'desc' => 'Sort by date', 'required' => false, 'values' => 'asc | desc', 'default' => 'desc'],
                ];
     }
 
@@ -25,18 +25,18 @@ class api_trades {
                           'response' => <<< END
 [
     {
-        "direction": "BUY",
-        "price": 51762850000,
-        "amount": 10000000,
-        "trade_id": "d4ec1973-0105-4898-b7b7-fb5a5e802545",
-        "trade_date": 1472550676861
+        "direction": "SELL",
+        "price": "562.51610000",
+        "amount": "0.30000000",
+        "trade_id": "df7bd928-2940-4524-90cf-8dc5717fcad8",
+        "trade_date": 1472947568822
     },
     {
         "direction": "SELL",
-        "price": 52800000000,
-        "amount": 99000000,
-        "trade_id": "43f11983-3d93-4a42-ac3d-c199ac816883",
-        "trade_date": 1472540631366
+        "price": "552.48340000",
+        "amount": "0.20000000",
+        "trade_id": "e9b4f424-61b1-494a-bd1e-9142ce65b1d4",
+        "trade_date": 1472937060362
     }
 ]
 END

@@ -22,7 +22,7 @@ $criteria = [
     'direction' => @$_GET['direction'],
     'limit' => @$_GET['limit'] ?: 100,
     'sort' => @$_GET['sort'] ?: 'desc',
-    'integeramounts' => @$_GET['integeramounts'],
+    'integeramounts' => (bool)@$_GET['integeramounts'],
     'fields' => ['direction', 'tradePrice' => 'price', 'tradeAmount' => 'amount', 'offerId' => 'trade_id', 'tradeDate' => 'trade_date']
 ];
 

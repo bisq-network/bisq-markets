@@ -12,6 +12,7 @@ class html_table {
     public $row_title_mask = '%s';
     public $row_id_field;
     public $row_id_mask = '%s';
+    public $htmlescape = true;
     public $timestamptz_col_names = array( 'timest' => 1, 'timestamp' => 1, 'datetime' => 1 );
     public $timestampjs_col_names = array();
     
@@ -74,6 +75,7 @@ class html_table {
             if( $this->right_align_numeric && is_numeric(@$val[0]) && is_numeric(  str_replace(',', '', $val)  )) {
                 $td_attrs .=  " align='right'";
             }
+            $val = $this->htmlescape ? htmlentities( $val ) : $val;
             $buf .= "<td $td_attrs>" . $val . "</td>\n";
         }
         $buf .= "</tr>\n";

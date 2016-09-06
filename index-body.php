@@ -115,6 +115,7 @@ catch( Exception $e ) {
 
 
 $table = new html_table();
+$table->htmlescape = false;
 $table->timestampjs_col_names['tradeDate'] = true;
 
 function display_currency( $val, $symbol, $is_int=true ) {

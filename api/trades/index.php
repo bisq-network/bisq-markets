@@ -15,15 +15,20 @@ if( !$market ) {
     bail( "market parameter missing" );
 }
 
+$fields = ['market' => 'market', 'direction', 'tradePrice' => 'price', 'tradeAmount' => 'amount', 'offerId' => 'trade_id', 'tradeDate' => 'trade_date'];
+if( $market != 'all' ) {
+    unset( $fields['market'] );
+}
+
 $criteria = [
-    'market' => $market,
+    'market' => $market == 'all' ? null : $market,
     'datetime_from' => @$_GET['timestamp_from'] ?: strtotime('2016-01-01'),
     'datetime_to' => @$_GET['timestamp_to'] ?: time(),
     'direction' => @$_GET['direction'],
     'limit' => @$_GET['limit'] ?: 100,
     'sort' => @$_GET['sort'] ?: 'desc',
     'integeramounts' => (bool)@$_GET['integeramounts'],
-    'fields' => ['direction', 'tradePrice' => 'price', 'tradeAmount' => 'amount', 'offerId' => 'trade_id', 'tradeDate' => 'trade_date']
+    'fields' => $fields
 ];
 
 $criteria['limit'] = $criteria['limit'] <= 2000 ? $criteria['limit'] : 2000;

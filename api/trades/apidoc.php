@@ -8,7 +8,7 @@ class api_trades {
     
     static function get_params() {
         return [
-                 ['param' => 'market', 'desc' => 'market identifier', 'required' => true, 'values' => null, 'default' => null],
+                 ['param' => 'market', 'desc' => 'market identifier', 'required' => true, 'values' => '<market pair> | all', 'default' => null],
                  ['param' => 'format', 'desc' => 'format of return data', 'required' => false, 'values' => 'json | jsonpretty', 'default' => 'jsonpretty'],
                  ['param' => 'timestamp_from', 'desc' => 'start time, in seconds since 1970', 'required' => false, 'values' => null, 'default' => '2016-01-01'],
                  ['param' => 'timestamp_to', 'desc' => 'end time, in seconds since 1970', 'required' => false, 'values' => null, 'default' => 'now'],
@@ -46,7 +46,9 @@ END
     }
     
     static function get_notes() {
-        return ["trade_date in response is provided in milliseconds since 1970, not seconds.  To get seconds, divide by 1000"];
+        return ["trade_date in response is provided in milliseconds since 1970, not seconds.  To get seconds, divide by 1000",
+                'if the market parameter is "all" then up to limit trades will be returned, date sorted, across all markets. Also a "market" field is added to each trade result.'
+                ];
     }
     
     static function get_seealso() {

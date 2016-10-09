@@ -36,6 +36,10 @@ class offers {
         $dtto_milli = @$datetime_to * 1000;
         $limit = @$limit ?: PHP_INT_MAX;
         $integeramounts = isset($integeramounts) ? $integeramounts : true;
+
+        if( $sort == 'asc') {
+            $offers = array_reverse( $offers );
+        }
         
         $matches = [];
         foreach( $offers as $offer ) {
@@ -73,15 +77,9 @@ class offers {
                 $matches[] = $offer;
             }
             
-            
             if( count($matches) >= $limit ) {
                 break;
             }
-        }
-        
-
-        if( $sort == 'asc') {
-            $matches = array_reverse( $matches );
         }
         
         return $matches;

@@ -42,7 +42,11 @@ class trades {
         $limit = @$limit ?: PHP_INT_MAX;
         $direction = @$direction ? strtoupper( $direction ) : null;
         $integeramounts = isset($integeramounts) ? $integeramounts : true;
-        
+
+        if( $sort == 'asc') {
+            $trades = array_reverse( $trades );
+        }
+
         $matches = [];
         foreach( $trades as $trade ) {
             if( $market && $market != $trade['market']) {
@@ -86,10 +90,6 @@ class trades {
         }
         
 
-        if( $sort == 'asc') {
-            $matches = array_reverse( $matches );
-        }
-        
         return $matches;
     }
 

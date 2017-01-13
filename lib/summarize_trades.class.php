@@ -88,6 +88,7 @@ class summarize_trades {
      *  + interval.  required. in seconds.
      *  + datetime_from: timestamp utc. required.
      *  + datetime_to: timestamp utc.  required.
+     *  + one_period: if true, create only a single summary period.
      *  + direction: buy, sell
      *  + integeramounts: bool.  default = true.
      *  + fillgaps: bool.  default = false.
@@ -110,7 +111,7 @@ class summarize_trades {
         
         foreach( $trades as $trade ) {
             $traded_at = $trade['tradeDate'] / 1000;
-            $interval_start = $this->interval_start($traded_at, $interval)*$this->ts_multiplier;
+            $interval_start = @$one_period ? $datetime_from : $this->interval_start($traded_at, $interval)*$this->ts_multiplier;
 
             if( !isset($intervals[$interval_start]) ) {
                 $intervals[$interval_start] = ['open' => 0,

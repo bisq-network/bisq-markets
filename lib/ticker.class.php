@@ -12,6 +12,7 @@ class ticker {
         
         $criteria['market'] = $market;
         $criteria['fields'] = ['close' => 'last', 'high','low','volume_left','volume_right'];
+        $criteria['one_period'] = true;
 
         $summarizer = new summarize_trades();
         
@@ -23,6 +24,7 @@ class ticker {
         }
         $periods = $summarizer->get_trade_summaries($criteria);
 
+        // summarizer only returns a single period because we set one_period flag.
         $ticker = @$periods[0];
         
         if( !$ticker ) {
@@ -34,7 +36,8 @@ class ticker {
                 $last = btcutil::int_to_btc( $last );
             }
             
-            $ticker = ['last' => $last,
+            $ticker = [
+                       'last' => $last,
                        'high' => $last,
                        'low' => $last,
                        'volume_left' => 0,

@@ -213,7 +213,7 @@ function display_currency_rightside( $val, $row ) {
 </tr>
 
 </table>
-                    
+                   
 <table width="100%" cellpadding="0" cellspacing="0" class="unbordered"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history' ); ?>
 <div id="trade_history_scroll">
@@ -227,6 +227,11 @@ function display_currency_rightside( $val, $row ) {
                                      'tradeVolume' => ['cb_format' => 'display_currency_rightside'] )
                               ); ?>
 </div>
+
+<div style="text-align: center; padding: 10px; padding-top: 25px">
+    Looking for automated access to market data?  Check out the <a href="api/">API</a>.
+</div>
+
 
 <script type="text/javascript">
 createStockChart();

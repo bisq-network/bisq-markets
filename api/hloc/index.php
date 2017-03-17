@@ -33,7 +33,7 @@ if ($start && !preg_match('/^[0-9]+$/', $start)) {
 if ($end && !preg_match('/^[0-9]+$/', $end)) {
 	bail("Invalid end parameter: $end");
 }
-if( $interval && !in_array( $interval, ['minute', 'hour', 'day', 'month'] )) {
+if( $interval && !in_array( $interval, ['minute', 'half_hour', 'hour', 'half_day', 'day', 'week', 'month', 'year', 'auto'] )) {
 	bail("Invalid interval parameter: $interval");
 }
 

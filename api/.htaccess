@@ -1,0 +1,27 @@
+
+## Goal: prevent apache from redirecting URLs of the form
+##          http://server/api/hloc?market=xmr_btc
+##       to
+##          http://server/api/hloc/?market=xmr_btc 
+##
+## To achieve this, we must first disable DirectorySlash
+## and then redirect all subdirectory requests to subdir/index.php
+##
+## Another problem then arises that the "/api" url does not redirect
+## to "/api/".  This is fixed by using AllowNoSlash option and
+## adding a client-side redirect just for this url.
+##
+## Other requests are not affected.
+
+DirectorySlash Off
+
+RewriteEngine on
+RewriteOptions AllowNoSlash
+
+RewriteCond "%{REQUEST_URI}" "(.*)/api$"
+RewriteRule ^(.*)/api$ %1/api/ [R]
+
+RewriteCond "%{REQUEST_FILENAME}" -d 
+RewriteCond "%{REQUEST_FILENAME}" "^.*/api/[A-z]+$"
+RewriteRule ^(.*)$ $1/index.php [L]
+

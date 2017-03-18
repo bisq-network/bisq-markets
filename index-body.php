@@ -548,5 +548,3 @@ $(function () {
 </script>
 
 <?php endif; ?>
-
-

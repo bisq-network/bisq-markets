@@ -78,7 +78,7 @@
         <br>
 
 
-        <p>© 2016 Bitsquare</p>
+        <p>© <?= date('Y') ?> Bitsquare</p>
       </footer>
     </div>
   </div>

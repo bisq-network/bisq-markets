@@ -1,6 +1,7 @@
 <?php
 
 require_once( __DIR__ . '/../../lib/summarize_trades.class.php');
+require_once( __DIR__ . '/../../lib/primary_market.class.php');
 
 $market = @$_GET['market'];
 $format = @$_GET['format'] ?: 'jsonpretty';  // jsonpretty, or json.
@@ -14,6 +15,8 @@ function bail($msg) {
 if( !$market ) {
     bail( "market parameter missing" );
 }
+
+primary_market::init_primary_market_path_setting($market);
 
 $fields = ['market' => 'market', 'direction', 'tradePrice' => 'price', 'tradeAmount' => 'amount', 'offerId' => 'trade_id', 'tradeDate' => 'trade_date'];
 if( $market != 'all' ) {

@@ -1,6 +1,7 @@
 <?php
 
 require_once( __DIR__ . '/../../lib/summarize_trades.class.php');
+require_once( __DIR__ . '/../../lib/primary_market.class.php');
 
 $market = @$_GET['market'];
 $interval = @$_GET['interval'];
@@ -26,6 +27,8 @@ function bail($msg) {
 if( !$market ) {
     bail( "market parameter missing." );
 }
+
+primary_market::init_primary_market_path_setting($market);
 
 if ($start && !preg_match('/^[0-9]+$/', $start)) {
 	bail("Invalid start parameter: $start");

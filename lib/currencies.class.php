@@ -35,7 +35,7 @@ class currencies {
      * returns all fiat currences, sorted by code
      */
     public function get_all_fiat() {
-        $json_file = settings::get('data_dir') . '/fiat_currency_list.json';
+        $json_file = settings::get('primary_market_data_path') . '/fiat_currency_list.json';
         
         static $result = null;
         if( $result ) {
@@ -51,7 +51,7 @@ class currencies {
      * returns all crypto currences, sorted by code
      */
     public function get_all_crypto() {
-        $json_file = settings::get('data_dir') . '/crypto_currency_list.json';
+        $json_file = settings::get('primary_market_data_path') . '/crypto_currency_list.json';
         
         static $result = null;
         if( $result ) {

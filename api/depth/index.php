@@ -1,6 +1,7 @@
 <?php
 
 require_once( __DIR__ . '/../../lib/offers.class.php');
+require_once( __DIR__ . '/../../lib/primary_market.class.php');
 
 $market = @$_GET['market'];
 $format = @$_GET['format'] ?: 'jsonpretty';  // jsonpretty, or json.
@@ -13,6 +14,8 @@ function bail($msg) {
     $result = ["success" => 0, "error" => $msg ];
     die( json_encode( $result, $GLOBALS['format'] == 'json' ? 0 : JSON_PRETTY_PRINT ) );
 }
+
+primary_market::init_primary_market_path_setting($market);
 
 $offers = new offers();
 

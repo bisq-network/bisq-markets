@@ -30,7 +30,7 @@ The website code can then be installed by:
 1. git clone this repository to your docroot or somewhere beneath it.
 2. cp settings.json.example settings.json
 3. edit settings.json and edit the value of "data_dir" to reflect the location of
-the bitsquare trade data files on your system.
+the bitsquare data files on your system.
 4. Make sure that bitsquare is running with flag --dumpStatistics true
 
 Navigate in your browser to your webserver docroot.

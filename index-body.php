@@ -5,30 +5,48 @@ require_once( dirname( __FILE__) . '/lib/trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/summarize_trades.class.php' );
 require_once( dirname( __FILE__) . '/lib/markets.class.php' );
 require_once( dirname( __FILE__) . '/lib/offers.class.php' );
+require_once( dirname( __FILE__) . '/lib/primary_market.class.php' );
 
 ini_set('memory_limit', '1G');         // just in case.
 date_default_timezone_set ( 'UTC' );   // all dates expressed in UTC.
 
 $market = @$_GET['market'];
 $allmarkets = @$_GET['allmarkets'];
+$pmarket = @$_GET['pmarket'];
 
 try {
+    if( $market ) {
+        primary_market::init_primary_market_path_setting($market);
+        $pmarket = primary_market::determine_primary_market_symbol_from_market($market);
+    }
+    else {
+        primary_market::init_primary_market_path_setting_by_symbol($pmarket);
+        $pmarket = primary_market::get_normalized_primary_market_symbol($pmarket);
+    }
+    
+    // get list of primary markets.
+    $primary_markets = primary_market::get_primary_market_list();
 
     // get list of markets.    
     $marketservice = new markets();
-    $markets_result = $allmarkets ? $marketservice->get_markets() : $marketservice->get_markets_with_trades();
+    $markets_result = $allmarkets ? $marketservice->get_markets($pmarket) : $marketservice->get_markets_with_trades($pmarket);
     
     // Sort by currency name.  ( where currency is non-btc side of market )
-    uasort( $markets_result, function( $a, $b ) {
-        $aname = $a['lsymbol'] == 'BTC' ? $a['rname'] : $a['lname'];
-        $bname = $b['lsymbol'] == 'BTC' ? $b['rname'] : $b['lname'];
+    uasort( $markets_result, function( $a, $b ) use($pmarket) {
+        $aname = $a['lsymbol'] == $pmarket ? $a['rname'] : $a['lname'];
+        $bname = $b['lsymbol'] == $pmarket ? $b['rname'] : $b['lname'];
         return strcmp( $aname, $bname );
     });
 
     // Default to eur market for now.
     if( !$market || !@$markets_result[$market]) {
-        $market = "btc_eur";
+        $market = strtolower($pmarket) . "_eur";
+        if( !@$markets_result[$market] ) {
+            // default to first market in results if EUR market is not found.
+            list($market) = array_keys($markets_result);  
+        }
     }
+    
     $market_name = strtoupper( str_replace( '_', '/', $market));
     list( $curr_left, $curr_right ) = explode( '/', $market_name, 2);
     $currmarket = $markets_result[$market];
@@ -40,13 +58,21 @@ try {
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
                                                                     'limit' => 1
                                                                    ] );
+
+    // create primary market select control.
+    $allparam = $allmarkets ? '&allmarkets=1' : '';
+    $pmarket_select = sprintf( "<select onchange='document.location.replace(\"?pmarket=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $pmarket );
+    foreach( $primary_markets as $pm ) {
+        $pmarket_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $pm, $pm == $pmarket ? ' selected' : '', $pm );
+    }
+    $pmarket_select .= "</select>\n";
+
     
     // create market select control.
-    $allparam = $allmarkets ? '&allmarkets=1' : '';
     $market_select = sprintf( "<select onchange='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
     foreach( $markets_result as $id => $m ) {
-        $symbol = $m['lsymbol'] == 'BTC' ? $m['rsymbol'] : $m['lsymbol'];
-        $name = $m['lsymbol'] == 'BTC' ? $m['rname'] : $m['lname'];
+        $symbol = $m['lsymbol'] == $pmarket ? $m['rsymbol'] : $m['lsymbol'];
+        $name = $m['lsymbol'] == $pmarket ? $m['rname'] : $m['lname'];
         $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $name, $symbol );
     }
     $market_select .= "</select>\n";
@@ -54,7 +80,8 @@ try {
     $latest = @$market_result[0];
 
     if( $latest ) {
-        $market_result = ['choose' => $market_select, 
+        $market_result = ['pchoose' => $pmarket_select,
+                          'choose' => $market_select, 
                           'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
                           'open'=> display_currency( $latest['open'], $curr_right ),
@@ -66,7 +93,8 @@ try {
                          ];
     }
     else {
-        $market_result = ['choose' => $market_select, 
+        $market_result = ['pchoose' => $pmarket_select,
+                          'choose' => $market_select, 
                           'market'=>  $market_name,
                           'market_date'=> date('Y-m-d'),
                           'open'=> '--',
@@ -168,8 +196,8 @@ function display_currency_rightside( $val, $row ) {
 
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'market_info' ); ?>
 <?= $table->table_with_header( array( $market_result ),
-                              array( 'Currency', 'Bitsquare Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
-                              array( 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume_right' ) ); ?>
+                              array( 'Primary Market', 'Currency', 'Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
+                              array( 'pchoose', 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume_right' ) ); ?>
 
 <?php if( !count( $trades_result ) ): ?>
 <div class="widget" style="margin-top: 15px; text-align: center;">

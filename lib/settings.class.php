@@ -3,14 +3,21 @@
 date_default_timezone_set ( 'UTC' );
 
 class settings {
+
+    static $settings = null;
     
-    static public function get($key) {
-        static $settings = null;
-        if( !$settings ) {
-            $settings = self::get_settings();
+    static public function get($key, $missing_ok = false) {
+        if( !self::$settings ) {
+            self::$settings = self::get_settings();
         }
-        return $settings[$key];
+        return $missing_ok ? @self::$settings[$key] : self::$settings[$key];
     }
+    
+    static public function set($key, $val) {
+        // we call get method to ensure that settings file has been read, and we don't later overwrite the value.
+        self::get($key, $missing_ok = true);
+        self::$settings[$key] = $val;
+    }    
     
     static private function get_settings() {
         

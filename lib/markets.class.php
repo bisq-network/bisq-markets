@@ -6,14 +6,14 @@ require_once( __DIR__ . '/trades.class.php' );
 
 class markets {
     
-    public function get_markets() {
+    public function get_markets($pmarket = 'BTC') {
         $currencies = new currencies();
         $clist = $currencies->get_all_currencies();
         
         $markets = [];
         foreach( $clist as $symbol => $c ) {
             
-            if( $symbol == 'BTC' ) {
+            if( $symbol == $pmarket ) {
                 continue;
             }
             
@@ -21,12 +21,13 @@ class markets {
             // and BTC always primary against other crypto, eg XMR/BTC.
             // This is a kludge.  should be getting this info from bitsquare json.
             
-            $is_fiat = $c['type'] == 'fiat';            
+            $is_fiat = $c['type'] == 'fiat';
+            $pmarketname = $clist[$pmarket]['name'];
             
-            $lsymbol = $is_fiat ? 'BTC' : $symbol;
-            $rsymbol = $is_fiat ? $symbol : 'BTC';
-            $lname = $is_fiat ? 'Bitcoin' : $c['name'];
-            $rname = $is_fiat ? $c['name']: 'Bitcoin';
+            $lsymbol = $is_fiat ? $pmarket : $symbol;
+            $rsymbol = $is_fiat ? $symbol : $pmarket;
+            $lname = $is_fiat ? $pmarketname : $c['name'];
+            $rname = $is_fiat ? $c['name']: $pmarketname;
             $ltype = $is_fiat ? 'crypto' : $c['type'];
             $rtype = $is_fiat ? 'fiat' : 'crypto';
             $lprecision = 8;
@@ -51,15 +52,14 @@ class markets {
         }
 
         ksort( $markets );        
-
         return $markets;
     }
     
-    public function get_markets_with_trades() {
+    public function get_markets_with_trades($pmarket = 'BTC') {
         $t = new trades();
         $all = $t->get_all_trades();
         
-        $markets = $this->get_markets();
+        $markets = $this->get_markets($pmarket);
         $traded = [];
         foreach( $all as $trade ) {
             $pair = $trade['market'];

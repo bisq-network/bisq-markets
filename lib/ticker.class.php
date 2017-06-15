@@ -5,6 +5,7 @@ require_once( __DIR__ . '/summarize_trades.class.php' );
 require_once( __DIR__ . '/markets.class.php' );
 require_once( __DIR__ . '/offers.class.php' );
 require_once( __DIR__ . '/trades.class.php' );
+require_once( __DIR__ . '/primary_market.class.php' );
 
 class ticker {
     
@@ -77,10 +78,23 @@ class ticker {
         $markets = new markets();
 
         $result = [];
-        foreach( $markets->get_markets() as $market ) {
-            $pair = $market['pair'];
-            $result[$pair] = $this->get_market_ticker( $pair, $criteria);
+        
+        $tmp = settings::get('primary_market_data_path', $missing_ok = true);
+
+        $pmarkets = primary_market::get_primary_market_list();
+        foreach( $pmarkets as $pmarket ) {
+            
+            // warning; this changes the primary_market_data_path, which is basically a global var.
+            primary_market::init_primary_market_path_setting_by_symbol($pmarket);
+            
+            foreach( $markets->get_markets($pmarket) as $market ) {
+                $pair = $market['pair'];
+                $result[$pair] = $this->get_market_ticker( $pair, $criteria);
+            }
         }
+        
+        // restore original setting.
+        settings::set('primary_market_data_path', $tmp);
         
         return $result;
     }

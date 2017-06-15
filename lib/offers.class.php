@@ -86,7 +86,7 @@ class offers {
     }
     
     public function get_all_offers() {
-        $json_file = settings::get('data_dir') . '/offers_statistics.json';
+        $json_file = settings::get('primary_market_data_path') . '/offers_statistics.json';
         return filecache::get( $json_file, 'all_offers_result', [$this, 'get_all_offers_worker'], [$json_file] );
     }
     
@@ -111,6 +111,11 @@ class offers {
         $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
 
+        // handle case of empty offers file.        
+        if( !$data ) {
+            $data = [];
+        }
+        
         // add market key        
         foreach( $data as $idx => &$offer ) {
             

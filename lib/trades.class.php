@@ -10,7 +10,7 @@ class trades {
     private $json_file;
     
     function __construct() {
-        $this->json_file = settings::get('data_dir') . '/trade_statistics.json';
+        $this->json_file = settings::get('primary_market_data_path') . '/trade_statistics.json';
     }
     
     /**

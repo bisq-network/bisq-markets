@@ -1,11 +1,16 @@
 <?php
 
 require_once( __DIR__ . '/../../lib/ticker.class.php');
+require_once( __DIR__ . '/../../lib/primary_market.class.php');
 
 $market = @$_GET['market'];
 $start = strtotime('-24 hour') ;
 $end = time();
 $format = @$_GET['format'] ?: 'jsonpretty';  // jsonpretty, or json.
+
+if( $market ) {
+    primary_market::init_primary_market_path_setting($market);
+}
 
 // set some utility variables
 $range = $end - $start;

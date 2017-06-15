@@ -1,3 +1,5 @@
 {
-"data_dir": "/home/myuser/.local/share/Bitsquare/mainnet/db/"
+"data_dir": "/home/myuser/.local/share/Bitsquare",
+"btc_network": "mainnet",
+"ltc_network": "mainnet"
 }

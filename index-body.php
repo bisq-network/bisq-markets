@@ -168,7 +168,7 @@ function display_currency_rightside( $val, $row ) {
 
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'market_info' ); ?>
 <?= $table->table_with_header( array( $market_result ),
-                              array( 'Currency', 'Bitsquare Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
+                              array( 'Currency', 'Bisq Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
                               array( 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume_right' ) ); ?>
 
 <?php if( !count( $trades_result ) ): ?>
@@ -407,7 +407,7 @@ $(function () {
             },
 
             title: {
-                text: 'Bitsquare : <?= $market_name ?> Market'
+                text: 'Bisq : <?= $market_name ?> Market'
             },
 
             tooltip:{

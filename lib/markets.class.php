@@ -6,8 +6,17 @@ require_once( __DIR__ . '/trades.class.php' );
 
 class markets {
     
-    public function get_markets($pmarket = 'BTC') {
-        $currencies = new currencies();
+    private $network;
+    
+    public function __construct($network) {
+        $this->network = $network;
+    }
+    
+    public function get_markets() {
+        list($pmarket) = explode('_', $this->network);
+        $pmarket = strtoupper($pmarket);
+        
+        $currencies = new currencies($this->network);
         $clist = $currencies->get_all_currencies();
         
         $markets = [];
@@ -55,11 +64,11 @@ class markets {
         return $markets;
     }
     
-    public function get_markets_with_trades($pmarket = 'BTC') {
-        $t = new trades();
+    public function get_markets_with_trades() {
+        $t = new trades($this->network);
         $all = $t->get_all_trades();
         
-        $markets = $this->get_markets($pmarket);
+        $markets = $this->get_markets();
         $traded = [];
         foreach( $all as $trade ) {
             $pair = $trade['market'];
@@ -72,8 +81,12 @@ class markets {
         return $traded;
     }
     
-    public function get_market_name( $pair ) {
-        $m = $markets['pair'];
+    public function validate_market($market) {
+        $markets = $this->get_markets();
+        $match = @$markets[$market];
         
+        if( !$match ) {
+            throw new Exception("Unknown market $market", 2);
+        }
     }
 }

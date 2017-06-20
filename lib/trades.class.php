@@ -8,9 +8,11 @@ require_once( __DIR__ . '/filecache.class.php' );
 class trades {
     
     private $json_file;
+    private $network;
     
-    function __construct() {
-        $this->json_file = settings::get('primary_market_data_path') . '/trade_statistics.json';
+    function __construct($network) {
+        $this->network = $network;
+        $this->json_file = sprintf( '%s/%s/db/trade_statistics.json', settings::get('data_dir'), $network);
     }
     
     /**
@@ -134,7 +136,7 @@ class trades {
         $json_file = $this->json_file;
         
         // only needed to determine if currency is fiat or not.
-        $currencies = new currencies();
+        $currencies = new currencies($this->network);
         $currlist = $currencies->get_all_currencies();
         
         // remove some garbage data at beginning of file, if present.

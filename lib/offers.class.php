@@ -7,7 +7,11 @@ require_once( __DIR__ . '/filecache.class.php' );
 require_once( __DIR__ . '/btcutil.class.php' );
 
 class offers {
-    function __construct() {
+    
+    private $network;
+    
+    function __construct($network) {
+        $this->network = $network;
     }
     
     /**
@@ -86,7 +90,7 @@ class offers {
     }
     
     public function get_all_offers() {
-        $json_file = settings::get('primary_market_data_path') . '/offers_statistics.json';
+        $json_file = sprintf( '%s/%s/db/offers_statistics.json', settings::get('data_dir'), $this->network );
         return filecache::get( $json_file, 'all_offers_result', [$this, 'get_all_offers_worker'], [$json_file] );
     }
     
@@ -95,7 +99,7 @@ class offers {
     public function get_all_offers_worker($json_file) {
         
         // only needed to determine if currency is fiat or not.
-        $currencies = new currencies();
+        $currencies = new currencies($this->network);
         $currlist = $currencies->get_all_currencies();
         
         // remove some garbage data at beginning of file, if present.

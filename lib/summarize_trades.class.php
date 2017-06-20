@@ -6,6 +6,11 @@ require_once( __DIR__ . '/btcutil.class.php' );
 
 class summarize_trades {
     private $ts_multiplier = 1;  // use seconds
+    private $network;
+    
+    public function __construct($network) {
+        $this->network = $network;
+    }
     
     private function summarize( $trades ) {
     }
@@ -98,7 +103,7 @@ class summarize_trades {
      */
     public function get_trade_summaries( $criteria ) {
         extract( $criteria );
-        $tradesobj = new trades();
+        $tradesobj = new trades($this->network);
         unset( $criteria['fields'] );
         unset( $criteria['limit'] );
         $criteria['sort'] = 'asc';

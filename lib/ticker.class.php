@@ -9,13 +9,19 @@ require_once( __DIR__ . '/primary_market.class.php' );
 
 class ticker {
     
+    private $network;
+    
+    public function __construct($network) {
+        $this->network = $network;
+    }
+    
     public function get_market_ticker( $market, $criteria ) {
         
         $criteria['market'] = $market;
         $criteria['fields'] = ['close' => 'last', 'high','low','volume_left','volume_right'];
         $criteria['one_period'] = true;
 
-        $summarizer = new summarize_trades();
+        $summarizer = new summarize_trades($this->network);
         
         // ensure we will only have a single period result row from summarize_trades.
         $timerange = $criteria['datetime_to'] - $criteria['datetime_from'];
@@ -46,7 +52,7 @@ class ticker {
                       ];
         }
 
-        $offers = new offers();
+        $offers = new offers($this->network);
         
         $criteria = ['market' => $market,
                      'datetime_from' => $criteria['datetime_from'],
@@ -69,32 +75,24 @@ class ticker {
     }
     
     public function get_market_last( $market ) {
-        $trades = new trades();
+        $trades = new trades($this->network);
         $trade = $trades->get_last_trade_by_market( $market );
         return @$trade['tradePrice'];
     }
     
-    public function get_all_markets_ticker( $criteria ) {
-        $markets = new markets();
+    public static function get_all_markets_ticker( $criteria ) {
 
         $result = [];
         
-        $tmp = settings::get('primary_market_data_path', $missing_ok = true);
-
-        $pmarkets = primary_market::get_primary_market_list();
-        foreach( $pmarkets as $pmarket ) {
+        $networks = primary_market::get_network_list();
+        foreach( $networks as $network ) {
             
-            // warning; this changes the primary_market_data_path, which is basically a global var.
-            primary_market::init_primary_market_path_setting_by_symbol($pmarket);
-            
-            foreach( $markets->get_markets($pmarket) as $market ) {
+            $markets = new markets($network);
+            foreach( $markets->get_markets() as $market ) {
                 $pair = $market['pair'];
                 $result[$pair] = $this->get_market_ticker( $pair, $criteria);
             }
         }
-        
-        // restore original setting.
-        settings::set('primary_market_data_path', $tmp);
         
         return $result;
     }

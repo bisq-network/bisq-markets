@@ -9,38 +9,56 @@ require_once( __DIR__ . '/strict_mode.funcs.php' );
  */
 class primary_market {
 
-    /* returns a list of primary markets.
+    /* returns a list of active primary market symbols, eg BTC, LTC.
+     */
+    static public function get_primary_market_list() {
+        $networks = self::get_network_list();
+        $list = [];
+        
+        foreach($networks as $network) {
+            list($symbol) = explode( '_', $network);
+            $list[] = self::get_normalized_primary_market_symbol($symbol);
+        }
+        return $list;
+    }
+
+    /* returns a list of active networks.
      * 
-     * primary markets are defined as those that exist
+     * active networks are defined as those that exist
      * in Bitsquare appdata, eg:
      *    ~/.local/share/Bitsquare/btc_mainnet
      *    ~/.local/share/Bitsquare/ltc_mainnet
      * and also match the network setting for each symbol.
      */
-    static public function get_primary_market_list() {
+    static public function get_network_list() {
         $data_dir = settings::get( 'data_dir' );
         $dirs = glob( $data_dir . '/*_*/db', GLOB_ONLYDIR);
         
         $list = [];
         foreach( $dirs as $dir ) {
-            list($symbol, $network) = explode( '_', basename(dirname($dir)));
+             $network = basename(dirname($dir));
+             list($symbol, $net) = explode('_', $network);
             
             // filter out any that do not match the network setting for this symbol.
-            if( self::get_primary_market_network($symbol) == $network ) {
-                $list[] = self::get_normalized_primary_market_symbol($symbol);
+            if( self::get_primary_market_network($symbol) == $net ) {
+                $list[] = $network;
             }
         }
         return $list;
     }
-    
+
     static public function get_normalized_primary_market_symbol($symbol) {
-        // normalize and default to btc.
-        return @strtoupper($symbol) ?: 'BTC';
+        // normalize and default to ltc.
+        return @strtoupper($symbol) ?: 'LTC';
     }
     
     static public function get_primary_market_network($symbol) {
         $symbol = strtolower($symbol);
         return settings::get( $symbol . '_' . 'network', $missing_ok = true) ?: 'mainnet';
+    }
+    
+    static public function get_network($symbol) {
+        return strtolower($symbol) . '_' . self::get_primary_market_network($symbol);
     }
     
     static public function get_primary_market_path($symbol) {
@@ -52,18 +70,15 @@ class primary_market {
                         self::get_primary_market_network($symbol) ); 
     }
     
-    /**
-     * This function will determine the primary market data path and store it in the
-     * settings for later use by classes that deal with accessing .json data files.
-     */
-    static public function init_primary_market_path_setting_by_symbol($symbol) {
-        settings::set('primary_market_data_path', self::get_primary_market_path($symbol) );
+    static public function determine_network_from_market($market) {
+        $network = self::get_network( self::determine_primary_market_symbol_from_market($market));
+        return $network;
     }
-
+    
     static public function determine_primary_market_symbol_from_market($market) {
         list($left, $right) = @explode('_', $market);
         if( !$left || !$right) {
-            throw new Exception( "Invalid market identifier" );
+            throw new Exception( "Invalid market identifier", 2 );
         }
         
         if(is_dir(self::get_primary_market_path($right))) {
@@ -74,7 +89,7 @@ class primary_market {
             return self::get_normalized_primary_market_symbol($left);
         }
         
-        throw new Exception("Could not determine primary market from market id");
+        throw new Exception("Invalid market identifier", 2);
     }
     
     static public function determine_primary_market_path_from_market($market) {
@@ -82,17 +97,4 @@ class primary_market {
         return self::get_primary_market_path($symbol);
     }
     
-    /**
-     * Given a market id, eg "btc_usd" or "xmr_btc" or "xmr_ltc", this function
-     * will determine the primary market data path and store it in the
-     * settings for later use by classes that deal with accessing .json data files.
-     *
-     * btc_usd --> btc_mainnet
-     * xmr_btc --> btc_mainnet
-     * xmr_ltc --> ltc_mainnet
-     * btc_ltc --> ltc_mainnet
-     */
-    static public function init_primary_market_path_setting($market) {
-        settings::set('primary_market_data_path', self::determine_primary_market_path_from_market($market) );
-    }
 };

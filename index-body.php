@@ -15,20 +15,16 @@ $allmarkets = @$_GET['allmarkets'];
 $pmarket = @$_GET['pmarket'];
 
 try {
-    if( $market ) {
-        primary_market::init_primary_market_path_setting($market);
-        $pmarket = primary_market::determine_primary_market_symbol_from_market($market);
-    }
-    else {
-        primary_market::init_primary_market_path_setting_by_symbol($pmarket);
-        $pmarket = primary_market::get_normalized_primary_market_symbol($pmarket);
-    }
+    $pmarket = $market ? primary_market::determine_primary_market_symbol_from_market($market) :
+                         primary_market::get_normalized_primary_market_symbol($pmarket);
+                         
+    $network = primary_market::get_network($pmarket);
     
     // get list of primary markets.
     $primary_markets = primary_market::get_primary_market_list();
 
     // get list of markets.    
-    $marketservice = new markets();
+    $marketservice = new markets($network);
     $markets_result = $allmarkets ? $marketservice->get_markets($pmarket) : $marketservice->get_markets_with_trades($pmarket);
     
     // Sort by currency name.  ( where currency is non-btc side of market )
@@ -52,7 +48,7 @@ try {
     $currmarket = $markets_result[$market];
     
     // Obtain market summary info for today only.
-    $summarize_trades = new summarize_trades();
+    $summarize_trades = new summarize_trades($network);
     $market_result = $summarize_trades->get_trade_summaries_days( ['market' => $market,
                                                                     'datetime_from' => strtotime( 'today 00:00:00' ),
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
@@ -107,12 +103,12 @@ try {
     }
 
     // get latest trades.
-    $trades = new trades();
+    $trades = new trades($network);
     $trades_result = $trades->get_trades( [ 'market' => $market,
                                             'limit'  => 100 ] );
     
     // get latest buy offers.
-    $offers = new offers();
+    $offers = new offers($network);
     
     $offers_buy_result = $offers->get_offers( [ 'market' => $market,
                                                 'direction' => 'BUY',

@@ -4,6 +4,12 @@ require_once( __DIR__ . '/settings.class.php' );
 require_once( __DIR__ . '/strict_mode.funcs.php' );
 
 class currencies {
+    
+    private $network;
+    
+    public function __construct($network) {
+        $this->network = $network;
+    }
 
     /**
      * returns all currences, sorted by code, with type identifer.
@@ -35,7 +41,7 @@ class currencies {
      * returns all fiat currences, sorted by code
      */
     public function get_all_fiat() {
-        $json_file = settings::get('primary_market_data_path') . '/fiat_currency_list.json';
+        $json_file = sprintf( '%s/%s/db/fiat_currency_list.json', settings::get('data_dir'), $this->network);
         
         static $result = null;
         if( $result ) {
@@ -51,7 +57,7 @@ class currencies {
      * returns all crypto currences, sorted by code
      */
     public function get_all_crypto() {
-        $json_file = settings::get('primary_market_data_path') . '/crypto_currency_list.json';
+        $json_file = sprintf( '%s/%s/db/crypto_currency_list.json', settings::get('data_dir'), $this->network);
         
         static $result = null;
         if( $result ) {

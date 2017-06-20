@@ -93,7 +93,7 @@ div.params div {
 <body>
 
 <div class="toc widget">
-    <h4>Bitsquare public webservice APIs:</h4>
+    <h4>Bisq public webservice APIs:</h4>
     <p id="apiversion">Version: <?= $apiversion ?></p>
     <ul>
 <?php foreach( $apis as $method => $api ): ?>
@@ -114,7 +114,7 @@ div.params div {
         <?php foreach($api->get_examples() as $example): ?>
         <div class="example">
             <h4>Sample Request</h4>
-            <div class="requestexample">https://market.bitsquare.io/api<?= e($example['request']) ?></div>
+            <div class="requestexample">https://market.bisq.io/api<?= e($example['request']) ?></div>
             <h4>Sample Response</h4>
             <div class="responseexample"><?= e($example['response']) ?></div>
         </div>

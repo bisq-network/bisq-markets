@@ -431,7 +431,7 @@ $(function () {
             },
 
             title: {
-                text: 'Bitsquare : <?= $market_name ?> Market'
+                text: 'Bisq : <?= $market_name ?> Market'
             },
 
             tooltip:{

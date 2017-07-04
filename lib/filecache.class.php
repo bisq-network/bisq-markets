@@ -32,7 +32,7 @@ class filecache {
         }        
 
         // in case apcu is not installed.
-        if( !function_exists( 'apcu_fetch' ) ) {
+        if( true || !function_exists( 'apcu_fetch' ) ) {
             static $warned = false;
             if( !$warned ) {
                 error_log( "Warning: APCu not found. Please install APCu extension for better performance." );

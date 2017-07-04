@@ -49,7 +49,7 @@ class primary_market {
 
     static public function get_normalized_primary_market_symbol($symbol) {
         // normalize and default to ltc.
-        return @strtoupper($symbol) ?: 'LTC';
+        return @strtoupper($symbol) ?: 'BTC';
     }
     
     static public function get_primary_market_network($symbol) {

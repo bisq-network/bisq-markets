@@ -148,6 +148,8 @@ class trades {
         }
         $buf = stream_get_contents( $fh );
         fclose( $fh );
+
+        $ltc_start_ts = strtotime('2017-06-28') * 1000;
         
         $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
@@ -160,6 +162,14 @@ class trades {
             if( !$cleft || !$cright ) {
                 // This weeds out any trades with symbols that are not defined in the currency*.json files.
                 unset( $data[$idx]);
+                continue;
+            }
+
+
+            // HACK: filter out LTC base currency trades before 2017-06-28, because the historic data has some
+            // bogus data that was made for testing or something.
+            if($this->network == 'ltc_mainnet' && $trade['tradeDate'] < $ltc_start_ts) {
+		unset( $data[$idx]);
                 continue;
             }
             

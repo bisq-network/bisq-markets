@@ -25,7 +25,7 @@ try {
         $result = [$ticker->get_market_ticker($market, $criteria)];
     }
     else {
-        $ticker::get_all_markets_ticker($criteria);
+        $result = ticker::get_all_markets_ticker($criteria);
     }
             
     echo json_encode( $result, $format == 'json' ? 0 : JSON_PRETTY_PRINT );

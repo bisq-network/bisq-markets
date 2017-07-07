@@ -86,11 +86,12 @@ class ticker {
         
         $networks = primary_market::get_network_list();
         foreach( $networks as $network ) {
+            $ticker = new ticker($network);
             
             $markets = new markets($network);
             foreach( $markets->get_markets() as $market ) {
                 $pair = $market['pair'];
-                $result[$pair] = $this->get_market_ticker( $pair, $criteria);
+                $result[$pair] = $ticker->get_market_ticker( $pair, $criteria);
             }
         }
         

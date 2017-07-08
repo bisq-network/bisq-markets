@@ -57,7 +57,7 @@
             <li class=
             "menu-item menu-item-type-post_type menu-item-object-page menu-item-451"
             id="menu-item-451">
-              <a href="https://bisq.io/team/">Team</a>
+              <a href="https://bisq.io/dao/">DAO</a>
             </li>
 
 

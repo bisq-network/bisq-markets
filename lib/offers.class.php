@@ -138,11 +138,9 @@ class offers {
             // Here we normalize integers to 8 units of precision. calling code depends on this.
             // note: all currencies are presently specified with 8 units of precision in json files
             // but this has not always been the case and could change in the future.
-
-            // note: multiplication by 10000 is a temp hack to workaround bug in offers_statistics.json
-            $offer['price'] = $offer['primaryMarketPrice'] * pow( 10, 8 - $cright['precision'] ) * 10000;
+            $offer['price'] = $offer['primaryMarketPrice'] * pow( 10, 8 - $cright['precision'] );
             $offer['amount'] = $offer['primaryMarketAmount'] * pow( 10, 8 - $cleft['precision'] );
-            $offer['volume'] = $offer['primaryMarketVolume'] * pow( 10, 8 - $cright['precision'] ) * 10000;
+            $offer['volume'] = $offer['primaryMarketVolume'] * pow( 10, 8 - $cright['precision'] );
             $offer['market'] = strtolower( str_replace( '/', '_', $offer['currencyPair'] ) );
             
             // trade direction is given to us Bitcoin-centric.  Here we make it refer to the left side of the market pair.

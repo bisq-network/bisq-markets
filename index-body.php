@@ -25,8 +25,13 @@ try {
 
     // get list of markets.    
     $marketservice = new markets($network);
-    $markets_result = $allmarkets ? $marketservice->get_markets($pmarket) : $marketservice->get_markets_with_trades($pmarket);
-    
+    $markets_result = $allmarkets ? null : $marketservice->get_markets_with_trades($pmarket);
+
+    // in case no markets have trades, we get all markets then.
+    if( !$markets_result ) {
+        $markets_result = $marketservice->get_markets($pmarket);
+    }
+
     // Sort by currency name.  ( where currency is non-btc side of market )
     uasort( $markets_result, function( $a, $b ) use($pmarket) {
         $aname = $a['lsymbol'] == $pmarket ? $a['rname'] : $a['lname'];
@@ -39,7 +44,7 @@ try {
         $market = strtolower($pmarket) . "_eur";
         if( !@$markets_result[$market] ) {
             // default to first market in results if EUR market is not found.
-            list($market) = array_keys($markets_result);  
+            list($market) = array_keys($markets_result);
         }
     }
     

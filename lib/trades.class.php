@@ -153,6 +153,12 @@ class trades {
         
         $start = strpos( $buf, "\n")-1;
         $data = json_decode( substr($buf, $start), true );
+
+        // handle case of empty trades file.        
+        if( !$data ) {
+            $data = [];
+        }
+
         // add market key        
         foreach( $data as $idx => &$trade ) {
             

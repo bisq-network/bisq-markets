@@ -192,7 +192,7 @@ function display_currency_rightside( $val, $row ) {
 
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'market_info' ); ?>
 <?= $table->table_with_header( array( $market_result ),
-                              array( 'Primary Market', 'Currency', 'Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
+                              array( 'Base Currency', 'Currency', 'Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
                               array( 'pchoose', 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume_right' ) ); ?>
 
 <?php if( !count( $trades_result ) ): ?>

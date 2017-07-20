@@ -12,6 +12,8 @@ class api_trades {
                  ['param' => 'format', 'desc' => 'format of return data', 'required' => false, 'values' => 'json | jsonpretty', 'default' => 'jsonpretty'],
                  ['param' => 'timestamp_from', 'desc' => 'start time, in seconds since 1970', 'required' => false, 'values' => null, 'default' => '2016-01-01'],
                  ['param' => 'timestamp_to', 'desc' => 'end time, in seconds since 1970', 'required' => false, 'values' => null, 'default' => 'now'],
+                 ['param' => 'trade_id_from', 'desc' => 'identifies first trade to include', 'required' => false, 'values' => null, 'default' => null],
+                 ['param' => 'trade_id_to', 'desc' => 'identifies last trade to include', 'required' => false, 'values' => null, 'default' => null],
                  ['param' => 'direction', 'desc' => 'trade direction: buy or sell. omit or leave null for both.', 'required' => false, 'values' => 'buy | sell', 'default' => null],
                  ['param' => 'limit', 'desc' => 'maximum trades to return.  max is 2000.', 'required' => false, 'values' => null, 'default' => 100],
                  ['param' => 'sort', 'desc' => 'Sort by date', 'required' => false, 'values' => 'asc | desc', 'default' => 'desc'],
@@ -47,7 +49,10 @@ END
     
     static function get_notes() {
         return ["trade_date in response is provided in milliseconds since 1970, not seconds.  To get seconds, divide by 1000",
-                'if the market parameter is "all" then up to limit trades will be returned, date sorted, across all markets. Also a "market" field is added to each trade result.'
+                'if the market parameter is "all" then up to limit trades will be returned, date sorted, across all markets. Also a "market" field is added to each trade result.',
+                'this api will return a maximum of 2000 trades per call',
+                'if trade_id_from or trade_id_to is used and a matching trade is not found for each, then no results are returned',
+                'The Bisq app does not presently use a trade_id internally.  The trade_id in this api is actually the bisq offerId.'
                 ];
     }
     

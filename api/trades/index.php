@@ -28,6 +28,8 @@ try {
         'market' => $market == 'all' ? null : $market,
         'datetime_from' => @$_GET['timestamp_from'] ?: strtotime('2016-01-01'),
         'datetime_to' => @$_GET['timestamp_to'] ?: time(),
+        'offer_id_from' => @$_GET['trade_id_from'],
+        'offer_id_to' => @$_GET['trade_id_to'],
         'direction' => @$_GET['direction'],
         'limit' => @$_GET['limit'] ?: 100,
         'sort' => @$_GET['sort'] ?: 'desc',
@@ -39,7 +41,6 @@ try {
     
     $trades = new trades($network);
     $results = $trades->get_trades($criteria);
-    
     echo json_encode( $results, $format == 'json' ? 0 : JSON_PRETTY_PRINT );
 }
 catch( Exception $e ) {

@@ -20,6 +20,8 @@ class trades {
      *  + market: eg 'dash_btc', or 'all'
      *  + datetime_from: timestamp utc
      *  + datetime_to: timestamp utc
+     *  + offer_id_from: bisq trade id
+     *  + offer_id_to:   bisq trade id
      *  + direction: 'buy', 'sell'
      *  + limit: max trades
      *  + sort: asc | desc.  default = asc
@@ -44,13 +46,31 @@ class trades {
         $limit = @$limit ?: PHP_INT_MAX;
         $direction = @$direction ? strtoupper( $direction ) : null;
         $integeramounts = isset($integeramounts) ? $integeramounts : true;
-
-        if( $sort == 'asc') {
-            $trades = array_reverse( $trades );
-        }
+        $offer_id_from = @$offer_id_from;
+        $offer_id_to = @$offer_id_to;
+        
+        $offer_id_from_ts = null;
+        $offer_id_to_ts = null;
 
         $matches = [];
+        
+        // note: the offer_id_from/to depends on iterating over trades in
+        // descending chronological order.
         foreach( $trades as $trade ) {
+            if($offer_id_from == $trade['offerId']) {
+                $offer_id_from_ts = $trade['tradeDate'];
+            }
+            if($offer_id_to == $trade['offerId']) {
+                $offer_id_to_ts = $trade['tradeDate'];
+            }
+            
+            if($offer_id_to && $offer_id_to_ts === null) {
+                continue;
+            }
+            if( $offer_id_from && $offer_id_from_ts != null && $offer_id_from_ts != $trade['tradeDate'] ) {
+                continue;
+            }
+            
             if( $market && $market != $trade['market']) {
                 continue;
             }
@@ -63,6 +83,7 @@ class trades {
             if( $direction && $direction != $trade['direction'] ) {
                 continue;
             }
+            
 
             if( !@$integeramounts ) {
                 $trade['tradePrice'] = btcutil::int_to_btc( $trade['tradePrice'] );
@@ -90,7 +111,17 @@ class trades {
                 break;
             }
         }
-        
+
+        // if we offer_id_from or to is specified and we did not
+        // find matching trade(s), then all trades are excluded from set.
+        if( ($offer_id_from && !$offer_id_from_ts) ||
+            ($offer_id_to && !$offer_id_to_ts) ) {
+            $matches = [];
+        }
+
+        if( $sort == 'asc') {
+            $matches = array_reverse( $matches );
+        }
 
         return $matches;
     }

@@ -112,9 +112,10 @@ div.params div {
     <div class="description"><?= e($api->get_description()) ?></div>
     <div class="examples">
         <?php foreach($api->get_examples() as $example): ?>
+        <?php $url = 'https://market.bisq.io/api' . e($example['request']); ?>
         <div class="example">
             <h4>Sample Request</h4>
-            <div class="requestexample">https://market.bisq.io/api<?= e($example['request']) ?></div>
+            <div class="requestexample"><a href="<?= $url ?>"><?= $url ?></a></div>
             <h4>Sample Response</h4>
             <div class="responseexample"><?= e($example['response']) ?></div>
         </div>

@@ -342,6 +342,10 @@ function requestData() {
     });
 }
 
+function ucfirst(s) {
+    return s && s[0].toUpperCase() + s.slice(1);
+}
+
 $(function () {
     
     Highcharts.setOptions({
@@ -467,7 +471,9 @@ $(function () {
                             date_format = '%B %e, %Y - %l:%M %p';
                     }
                     
+                    var emptyline = '<span style="visibility: hidden;">-</span><br/>';
                     txt += '<span style="font-size: 10px"><b>' + Highcharts.dateFormat( date_format, point.x) + '</b></span><br/>';
+                    txt += emptyline;
                     var empty_buf = txt + "No trades";
 
                     var found = false;
@@ -493,6 +499,8 @@ $(function () {
                             txt +=  "<b>" + p.series.name + '</b>: ' + Highcharts.numberFormat(p.y, rprecision, '.', ',') + " " + curr +'<br/>';
                         }
                     });
+                    txt += emptyline;
+                    txt += '<b>Period</b>: ' + ucfirst(unit) + '<br/>';
                 
                     return found ? txt : empty_buf;
                 }

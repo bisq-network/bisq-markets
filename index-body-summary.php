@@ -240,6 +240,10 @@ function sum_cb(series) {
     return s / 100000000;
 }
 
+function ucfirst(s) {
+    return s && s[0].toUpperCase() + s.slice(1);
+}
+
 $(function () {
     
     Highcharts.setOptions({
@@ -307,7 +311,10 @@ $(function () {
                             date_format = '%B %e, %Y - %l:%M %p';
                     }
                     
-                    txt += '<span style="font-size: 10px"><b>' + Highcharts.dateFormat( date_format, point.x) + '</b></span><br/><br/>\n\n';
+                    // workaround display bug.
+                    var emptyline = '<span style="visibility: hidden;">-</span><br/>';
+                    txt += '<span style="font-size: 10px"><b>' + Highcharts.dateFormat( date_format, point.x) + '</b></span><br/>\n';
+                    txt += emptyline;
 
                     var rprecision = 8;
                     each(points, function(p) {
@@ -322,6 +329,9 @@ console.log(p);
                             txt +=  "<b>" + 'Trades' + '</b>: ' + p.y  +'<br/>';
                         }
                     });
+                    
+                    txt += emptyline;
+                    txt += '<b>Period</b>: ' + ucfirst(unit) + '<br/>';
                 
                     return txt;
                 }

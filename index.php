@@ -1,9 +1,28 @@
+<?php
+function get_refresh_interval() {
+  
+  static $refresh = null;
+  if( $refresh ) {
+    return $refresh;
+  }
+  
+  $get_refresh = @$_GET['refresh'];
+  $cookie_refresh = @$_COOKIE['refresh'];
+  if( (int)$get_refresh && $get_refresh != $cookie_refresh ) {
+    setcookie("refresh", $get_refresh, strtotime('2032-01-01') );
+  }
+  $refresh = (int)$get_refresh ?: (int)$cookie_refresh;
+  return $refresh && $refresh >= 60 ? $refresh : 60;    // default to 60 secs.  enforce 60 sec min.
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="60">
+<?php if(get_refresh_interval() != 'no'): ?>
+  <meta http-equiv="refresh" content="<?= get_refresh_interval() ?>">
+<?php endif ?>  
 
   <title>Bisq Markets</title>
   <link href="css/bitsquare/style.css" media="screen" rel="stylesheet" type=
@@ -37,6 +56,11 @@
 
     <div style="margin-top: 20px; margin-bottom: 20px">
      <?php include( __DIR__ . '/index-body.php' ) ?>
+<?php if( get_refresh_interval() != 1956556800 ): ?>
+     <div style="text-align: center" title="This page automatically reloads every 60 seconds.  Click this link to disable it."><a href="?refresh=1956556800">Disable auto page reload.</a></div>
+<?php else: ?>
+     <div style="text-align: center" title="This page can automatically reload every 60 seconds.  Click to enable it."><a href="?refresh=60">Enable auto page reload.</a></div>
+<?php endif ?>
     </div>
 
     <div class="center" id="wrapper_bg">

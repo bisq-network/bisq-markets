@@ -180,11 +180,8 @@ function display_currency_rightside( $val, $row ) {
     display: block;
     height: 30em;
     overflow-y: auto;
-    border-bottom: solid 1px #ccc;
-    -webkit-box-shadow: 0 2px 2px #ccc;
-    -moz-box-shadow: 0 2px 6px #ccc;
+    border: solid 1px #ccc;
     box-shadow: 0 2px 6px #ccc;
-    
 }
 
 .offers {
@@ -253,7 +250,7 @@ function display_currency_rightside( $val, $row ) {
 </table>
                    
 <table width="100%" cellpadding="0" cellspacing="0" class="unbordered"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
-<?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history' ); ?>
+<?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history', 'style'=>"border: none; box-shadow: none" ); ?>
 <div id="trade_history_scroll">
 
 <?= $table->table_with_header( $trades_result,

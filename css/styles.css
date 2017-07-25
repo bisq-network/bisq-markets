@@ -26,8 +26,6 @@ table.bordered {
 
 table.bordered {
     border: solid #ccc 1px;
-    -webkit-box-shadow: 0 2px 2px #ccc; 
-    -moz-box-shadow: 0 2px 6px #ccc; 
     box-shadow: 0 2px 6px #ccc;         
 }
 
@@ -42,6 +40,21 @@ table.bordered td, table.bordered th {
     border-left: 1px solid #ccc;
     border-top: 1px solid #ccc;
     padding: 10px;
+}
+
+table.bordered tr:first-child th {
+  border-top: 0;
+}
+table.bordered tr:last-child td {
+  border-bottom: 0;
+}
+table.bordered tr td:first-child,
+table.bordered tr th:first-child {
+  border-left: 0;
+}
+table.bordered tr td:last-child,
+table.bordered tr th:last-child {
+  border-right: 0;
 }
 
 table.bordered th {

@@ -67,7 +67,7 @@ try {
     // Display all markets summary if market not found.
     if( !@$markets_result[$market]) {
         require_once( 'index-body-summary.php' );
-        exit;
+        return;
     }
     
     $market_name = strtoupper( str_replace( '_', '/', $market));
@@ -180,6 +180,11 @@ function display_currency_rightside( $val, $row ) {
     display: block;
     height: 30em;
     overflow-y: auto;
+    border-bottom: solid 1px #ccc;
+    -webkit-box-shadow: 0 2px 2px #ccc;
+    -moz-box-shadow: 0 2px 6px #ccc;
+    box-shadow: 0 2px 6px #ccc;
+    
 }
 
 .offers {

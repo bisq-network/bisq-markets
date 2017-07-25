@@ -109,6 +109,10 @@ function ibs_display_tradeamount_other( $val, $row ) {
     display: block;
     height: 30em;
     overflow-y: auto;
+    border-bottom: solid 1px #ccc;
+    -webkit-box-shadow: 0 2px 2px #ccc;
+    -moz-box-shadow: 0 2px 6px #ccc;
+    box-shadow: 0 2px 6px #ccc;
 }
 
 .offers {

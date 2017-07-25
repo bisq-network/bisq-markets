@@ -37,9 +37,10 @@ class trades {
         
         extract( $criteria );  // puts keys in local namespace.
 
-        $trades = @$market ? $this->get_trades_by_market( $market ) :
-                             $this->get_all_trades();
-                            
+        $market = @$market;                            
+        $trades = $market ? $this->get_trades_by_market( $market ) :
+                            $this->get_all_trades();
+
         $sort = @$sort ?: 'desc';
         $dtfrom_milli = @$datetime_from * 1000;
         $dtto_milli = @$datetime_to * 1000;
@@ -84,6 +85,12 @@ class trades {
                 continue;
             }
             
+            // Filter out bogus trades with BTC/BTC or XXX/XXX market.
+            // See github issue: https://github.com/bitsquare/bitsquare/issues/883
+            list($left, $right) = explode('/', $trade['currencyPair']);
+            if( $left == $right ) {
+                continue;
+            }            
 
             if( !@$integeramounts ) {
                 $trade['tradePrice'] = btcutil::int_to_btc( $trade['tradePrice'] );

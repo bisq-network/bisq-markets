@@ -14,6 +14,11 @@ $market = @$_GET['market'];
 $allmarkets = @$_GET['allmarkets'];
 $pmarket = @$_GET['pmarket'];
 
+// normalize market=all to null.
+if( $market == 'all') {
+    $market = null;
+}
+
 try {
     $pmarket = $market ? primary_market::determine_primary_market_symbol_from_market($market) :
                          primary_market::get_normalized_primary_market_symbol($pmarket);
@@ -39,13 +44,30 @@ try {
         return strcmp( $aname, $bname );
     });
 
-    // Default to eur market for now.
-    if( !$market || !@$markets_result[$market]) {
-        $market = strtolower($pmarket) . "_eur";
-        if( !@$markets_result[$market] ) {
-            // default to first market in results if EUR market is not found.
-            list($market) = array_keys($markets_result);
-        }
+    // create primary market select control.
+    $allparam = $allmarkets ? '&allmarkets=1' : '';
+    $pmarket_select = sprintf( "<select onchange='document.location.replace(\"?pmarket=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $pmarket );
+    foreach( $primary_markets as $pm ) {
+        $pmarket_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $pm, $pm == $pmarket ? ' selected' : '', $pm );
+    }
+    $pmarket_select .= "</select>\n";
+
+    
+    // create market select control.
+    $market_select = sprintf( "<select onchange='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
+    $market_select .= sprintf( "<option value=\"all\"%s>All Currency Summary</option>\n", $market == 'all' ? ' selected' : '' );
+    foreach( $markets_result as $id => $m ) {
+        $symbol = $m['lsymbol'] == $pmarket ? $m['rsymbol'] : $m['lsymbol'];
+        $name = $m['lsymbol'] == $pmarket ? $m['rname'] : $m['lname'];
+        $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $name, $symbol );
+    }
+    $market_select .= "</select>\n";
+    
+    
+    // Display all markets summary if market not found.
+    if( !@$markets_result[$market]) {
+        require_once( 'index-body-summary.php' );
+        exit;
     }
     
     $market_name = strtoupper( str_replace( '_', '/', $market));
@@ -59,24 +81,6 @@ try {
                                                                     'datetime_to' => strtotime( 'today 23:59:00' ),
                                                                     'limit' => 1
                                                                    ] );
-
-    // create primary market select control.
-    $allparam = $allmarkets ? '&allmarkets=1' : '';
-    $pmarket_select = sprintf( "<select onchange='document.location.replace(\"?pmarket=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $pmarket );
-    foreach( $primary_markets as $pm ) {
-        $pmarket_select .= sprintf( "<option value=\"%s\"%s>%s</option>\n", $pm, $pm == $pmarket ? ' selected' : '', $pm );
-    }
-    $pmarket_select .= "</select>\n";
-
-    
-    // create market select control.
-    $market_select = sprintf( "<select onchange='document.location.replace(\"?market=\" + this.options[this.selectedIndex].value+\"%s\")'>%s\n", $allparam, $market );
-    foreach( $markets_result as $id => $m ) {
-        $symbol = $m['lsymbol'] == $pmarket ? $m['rsymbol'] : $m['lsymbol'];
-        $name = $m['lsymbol'] == $pmarket ? $m['rname'] : $m['lname'];
-        $market_select .= sprintf( "<option value=\"%s\"%s>%s (%s)</option>\n", $id, $id == $market ? ' selected' : '', $name, $symbol );
-    }
-    $market_select .= "</select>\n";
     
     $latest = @$market_result[0];
 

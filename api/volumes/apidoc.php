@@ -1,14 +1,15 @@
 <?php
 
-class api_hloc {
+class api_volumes {
     
     static function get_description() {
-        return "Provides hi/low/open/close data for a given market.  This can be used to generate a candlestick chart.";
+        return "Provides periodic volume data in terms of base currency for one or all markets.";
     }
     
     static function get_params() {
-        return [
-                 ['param' => 'market', 'desc' => 'market identifier', 'required' => true, 'values' => null, 'default' => null],
+        return [            
+                 ['param' => 'basecurrency', 'desc' => 'base currency identifier.', 'optional' => true, 'values' => null, 'default' => null],
+                 ['param' => 'market', 'desc' => 'market identifier.', 'optional' => true, 'values' => null, 'default' => null],
                  ['param' => 'interval', 'desc' => 'length of time blocks to summarize. auto will pick appropriate interval based on total time range', 'required' => false, 'values' => 'minute | half_hour | hour | half_day | day | week | month | year | auto', 'default' => 'auto'],
                  ['param' => 'timestamp_from', 'desc' => 'start time, in seconds since 1970', 'required' => false, 'values' => null, 'default' => '2016-01-01'],
                  ['param' => 'timestamp_to', 'desc' => 'end time, in seconds since 1970', 'required' => false, 'values' => null, 'default' => 'now'],
@@ -19,29 +20,18 @@ class api_hloc {
     static function get_examples() {
         $examples = [];
         $examples[] = 
-                        [ 'request' => '/hloc?market=xmr_btc',
+                        [ 'request' => '/volumes?basecurrency=BTC',
                           'response' => <<< END
 [
     {
-        "period_start": 1463875200,
-        "open": "0.00198039",
-        "high": "0.00198039",
-        "low": "0.00180809",
-        "close": "0.00180809",
-        "volume_left": "528.73200000",
-        "volume_right": "1.04300000",
-        "avg": "0.00197264"
+        "period_start": 1451606400,
+        "volume": "1128.38570000",
+        "num_trades": 2009
     },
-    ...
     {
-        "period_start": 1472342400,
-        "open": "0.00982318",
-        "high": "0.01911520",
-        "low": "0.00982318",
-        "close": "0.01530002",
-        "volume_left": "3412.86880000",
-        "volume_right": "47.21000000",
-        "avg": "0.01383294"
+        "period_start": 1483228800,
+        "volume": "1322.77960000",
+        "num_trades": 2376
     }
 ]                          
 END
@@ -51,7 +41,11 @@ END
     }
     
     static function get_notes() {
-        return [];
+        return ['A Base currency is a blockchain (eg Bitcoin) that is traded against other currencies utilizing the base currency\'s multisig capability.  eg XMR/BTC, LTC/BTC, BTC/USD, and BTC/EUR all use the base currency BTC.  In contrast, XMR/LTC, BTC/LTC, LTC/EUR, LTC/USD all use the base currency LTC.',
+                'Either basecurrency or market param must be specified.',
+                'basecurrency must be supported by Bisq app.',
+                'As of 2017-07-24, supported basecurrency are BTC, DOGE, LTC, DASH',
+                ];
     }
     
     static function get_seealso() {

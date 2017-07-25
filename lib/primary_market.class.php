@@ -97,4 +97,10 @@ class primary_market {
         return self::get_primary_market_path($symbol);
     }
     
+    static public function extract_symbol_from_network($network) {
+        // expected input looks like:  'btc_mainnet', 'ltc_testnet', etc.
+        list($left) = @explode('_', $market);
+        return strtoupper($left);
+    }
+    
 };

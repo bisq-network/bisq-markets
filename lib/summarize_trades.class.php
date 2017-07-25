@@ -5,8 +5,7 @@ require_once( __DIR__ . '/trades.class.php' );
 require_once( __DIR__ . '/btcutil.class.php' );
 
 class summarize_trades {
-    private $ts_multiplier = 1;  // use seconds
-    private $network;
+    protected $network;
     
     public function __construct($network) {
         $this->network = $network;
@@ -116,7 +115,7 @@ class summarize_trades {
         
         foreach( $trades as $trade ) {
             $traded_at = $trade['tradeDate'] / 1000;
-            $interval_start = @$one_period ? $datetime_from : $this->interval_start($traded_at, $interval)*$this->ts_multiplier;
+            $interval_start = @$one_period ? $datetime_from : $this->interval_start($traded_at, $interval);
 
             if( !isset($intervals[$interval_start]) ) {
                 $intervals[$interval_start] = ['open' => 0,
@@ -162,7 +161,7 @@ class summarize_trades {
             $cnt = 0;
             $max = 50000;   // avoid breaking server.  ;-)
             while( $next < $datetime_to && $cnt++ < $max ) {
-                $interval_start = $this->interval_start($next, $interval)*$this->ts_multiplier;
+                $interval_start = $this->interval_start($next, $interval);
 
                 $cur = @$intervals[$interval_start];
                 if( !$cur ) {
@@ -226,7 +225,7 @@ class summarize_trades {
         return array_values( $intervals );
     }
     
-    private function interval_start( $ts, $interval ) {
+    protected function interval_start( $ts, $interval ) {
         switch( $interval ) {
             case 'minute':
                 return (int)($ts - ($ts % 60));
@@ -251,7 +250,7 @@ class summarize_trades {
         }
     }
 
-    private function interval_end( $ts, $interval ) {
+    protected function interval_end( $ts, $interval ) {
         switch( $interval ) {
             case '10_minute':
                 return ($this->interval_start($ts, $interval) + 600 -1);

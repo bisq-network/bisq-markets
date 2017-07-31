@@ -204,8 +204,8 @@ function requestData() {
         
         var m = munge_data(data);
         
-        chart.series[0].setData(m.volume);
-        chart.series[1].setData(m.num_trades);
+        chart.series[0].setData(m.num_trades);
+        chart.series[1].setData(m.volume);
         
         chart.hideLoading();
         

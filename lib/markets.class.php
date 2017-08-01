@@ -13,6 +13,11 @@ class markets {
     }
     
     public function get_markets() {
+        static $cache = null;
+        if( $cache ) {
+            return $cache;
+        }
+        
         list($pmarket) = explode('_', $this->network);
         $pmarket = strtoupper($pmarket);
         
@@ -60,7 +65,8 @@ class markets {
             $markets[$pair] = $market;
         }
 
-        ksort( $markets );        
+        ksort( $markets );
+        $cache = $markets;
         return $markets;
     }
     
@@ -79,6 +85,29 @@ class markets {
         }
 
         return $traded;
+    }
+
+    public function get_markets_with_offers() {
+        $o = new offers($this->network);
+        $all = $o->get_all_offers();
+        
+        $markets = $this->get_markets();
+        $traded = [];
+        foreach( $all as $offer ) {
+            $pair = $offer['market'];
+            $market = @$markets[$pair];
+            if( $market ) {
+                $offered[$pair] = $markets[$pair];
+            }
+        }
+
+        return $offered;
+    }
+    
+    
+    public function get_markets_with_trades_or_offers() {
+        return array_merge($this->get_markets_with_trades(),
+                           $this->get_markets_with_offers() );
     }
     
     public function validate_market($market) {

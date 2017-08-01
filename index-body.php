@@ -30,7 +30,7 @@ try {
 
     // get list of markets.    
     $marketservice = new markets($network);
-    $markets_result = $allmarkets ? null : $marketservice->get_markets_with_trades($pmarket);
+    $markets_result = $allmarkets ? null : $marketservice->get_markets_with_trades_or_offers($pmarket);
 
     // in case no markets have trades, we get all markets then.
     if( !$markets_result ) {

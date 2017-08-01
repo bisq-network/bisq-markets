@@ -56,6 +56,12 @@ function get_refresh_interval() {
 
     <div style="margin-top: 20px; margin-bottom: 20px">
      <?php include( __DIR__ . '/index-body.php' ) ?>
+
+<div style="text-align: center; padding: 10px; padding-top: 15px">
+    Looking for automated access to market data?  Check out the <a href="api/">API</a>.
+</div>
+
+
 <?php if( get_refresh_interval() != 1956556800 ): ?>
      <div style="text-align: center" title="This page automatically reloads every 60 seconds.  Click this link to disable it."><a href="?refresh=1956556800">Disable auto page reload.</a></div>
 <?php else: ?>

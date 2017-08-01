@@ -206,21 +206,21 @@ function display_currency_rightside( $val, $row ) {
                               array( 'Base Currency', 'Currency', 'Market', 'Market Date (UTC)', "Open", "Last", "High", "Low", "Avg", "Volume" ),
                               array( 'pchoose', 'choose', 'market', 'market_date', 'open', 'last', 'high', 'low', 'avg', 'volume_right' ) ); ?>
 
-<?php if( !count( $trades_result ) ): ?>
-<div class="widget" style="margin-top: 15px; text-align: center;">
-    There have been no trades in this market recently.   You can get the ball rolling by placing an order now.
-</div>
-<?php else: ?>
+<?php if( count( $trades_result )): ?>
 <div class='widget' style="margin-top: 15px;">
 <div id="container"></div>
 </div>
+<?php endif ?>
+
+<?php if( !count($trades_result) && !count( $offers_buy_result ) && !count($offers_sell_result)): ?>
+<?php else: ?>
 
 <?php $table->table_attrs = array( 'class' => 'unbordered' ); ?>
-<table width="100%" cellpadding="0" class="unbordered" style="margin-bottom: 20px">
+<table width="100%" cellpadding="0" class="unbordered" style="margin-top: 20px">
 <tr><th style="padding-right: 10px">Buy <?= $curr_left ?> Offers</th>
     <th style="padding-left: 10px">Sell <?= $curr_left ?> Offers</th></tr>
 <tr>
-    <td style="padding-right: 10px">
+    <td style="padding-right: 10px; width: 50%">
         <div class="offers widget">
 <?= $table->table_with_header( $offers_buy_result,
                                array( 'Price', $curr_left, $curr_right, "Sum($curr_right)" ),
@@ -248,8 +248,16 @@ function display_currency_rightside( $val, $row ) {
 </tr>
 
 </table>
+<?php endif ?>
+
                    
-<table width="100%" cellpadding="0" cellspacing="0" class="unbordered"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
+<?php if( !count( $trades_result ) ): ?>
+<div class="widget" style="margin-top: 0px; text-align: center;">
+    There have been no trades in this market recently.
+</div>
+<?php else: ?>
+
+<table width="100%" cellpadding="0" cellspacing="0" class="unbordered" style="margin-top: 0px"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
 <?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history', 'style'=>"border: none; box-shadow: none" ); ?>
 <div id="trade_history_scroll">
 
@@ -263,9 +271,6 @@ function display_currency_rightside( $val, $row ) {
                               ); ?>
 </div>
 
-<div style="text-align: center; padding: 10px; padding-top: 25px">
-    Looking for automated access to market data?  Check out the <a href="api/">API</a>.
-</div>
 
 
 <script type="text/javascript">

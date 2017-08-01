@@ -137,7 +137,7 @@ function ibs_display_tradeamount_other( $val, $row ) {
 
 <?php if( !count( $trades_result ) ): ?>
 <div class="widget" style="margin-top: 15px; text-align: center;">
-    There have been no trades in this market recently.   You can get the ball rolling by placing an order now.
+    There have been no trades in this base currency recently.
 </div>
 <?php else: ?>
 <div class='widget' style="margin-top: 15px;">

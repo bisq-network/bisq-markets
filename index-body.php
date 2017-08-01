@@ -258,8 +258,8 @@ function display_currency_rightside( $val, $row ) {
 <?php else: ?>
 
 <table width="100%" cellpadding="0" cellspacing="0" class="unbordered" style="margin-top: 0px"><tr><th>Trade History</th><th align="right">( Last <?= count($trades_result) ?> trades )</th></tr></table>
-<?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history', 'style'=>"border: none; box-shadow: none" ); ?>
-<div id="trade_history_scroll">
+<?php $table->table_attrs = array( 'class' => 'bordered', 'id' => 'trade_history', 'style'=>"border: none; box-shadow: none;" ); ?>
+<div id="trade_history_scroll" style="margin-bottom: 20px"">
 
 <?= $table->table_with_header( $trades_result,
                               array( 'Date', 'Action', 'Price', "$curr_left", "$curr_right" ),

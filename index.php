@@ -57,7 +57,7 @@ function get_refresh_interval() {
     <div style="margin-top: 20px; margin-bottom: 20px">
      <?php include( __DIR__ . '/index-body.php' ) ?>
 
-<div style="text-align: center; padding: 10px; padding-top: 15px">
+<div style="text-align: center; padding: 10px;">
     Looking for automated access to market data?  Check out the <a href="api/">API</a>.
 </div>
 

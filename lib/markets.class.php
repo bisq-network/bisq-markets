@@ -92,7 +92,7 @@ class markets {
         $all = $o->get_all_offers();
         
         $markets = $this->get_markets();
-        $traded = [];
+        $offered = [];
         foreach( $all as $offer ) {
             $pair = $offer['market'];
             $market = @$markets[$pair];

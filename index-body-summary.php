@@ -158,10 +158,6 @@ function ibs_display_tradeamount_other( $val, $row ) {
                               ); ?>
 </div>
 
-<div style="text-align: center; padding: 10px; padding-top: 25px">
-    Looking for automated access to market data?  Check out the <a href="api/">API</a>.
-</div>
-
 <script>
     
 createStockChart();

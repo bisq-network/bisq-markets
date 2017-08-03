@@ -200,8 +200,8 @@ function requestData() {
         
         var m = munge_data(data);
         
-        chart.series[0].setData(m.num_trades);
-        chart.series[1].setData(m.volume);
+        chart.series[0].setData(m.volume);
+        chart.series[1].setData(m.num_trades);
         
         chart.hideLoading();
         
@@ -378,19 +378,6 @@ console.log(p);
             },    
             series: [
                         {
-                            type: 'spline',
-                            name: 'NumTrades',
-                            data: m.num_trades,
-                            color: 'white',
-                            dataGrouping: {                        
-                                units: groupingUnits,
-                                approximation: sum_cb,
-                                groupPixelWidth: 40,
-                                enabled: true,
-                                forced: true
-                            }                    
-                        },
-                        {
                             type: 'column',
                             name: 'Volume',
                             data: m.volume,
@@ -401,6 +388,27 @@ console.log(p);
                                 enabled: true,
                                 forced: true                        
                             },
+                        },
+                        {
+                            type: 'spline',
+                            name: 'NumTrades',
+                            data: m.num_trades,
+                            lineWidth: 2,
+                            marker: {
+                                enabled: true,
+                                fillColor: "lightblue",
+                                lineColor: "darkblue",
+                                lineWidth: 1,
+                                radius: 6
+                                
+                            },
+                            dataGrouping: {                        
+                                units: groupingUnits,
+                                approximation: sum_cb,
+                                groupPixelWidth: 40,
+                                enabled: true,
+                                forced: true
+                            }                    
                         }
             ]
         });

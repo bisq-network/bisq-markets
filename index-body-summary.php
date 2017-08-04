@@ -395,11 +395,11 @@ console.log(p);
                             data: m.num_trades,
                             lineWidth: 2,
                             marker: {
-                                enabled: true,
+                                enabled: null, 
                                 fillColor: "lightblue",
                                 lineColor: "darkblue",
                                 lineWidth: 1,
-                                radius: 6
+                                radius: 4 
                                 
                             },
                             dataGrouping: {                        

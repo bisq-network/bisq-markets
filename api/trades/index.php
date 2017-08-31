@@ -17,7 +17,6 @@ if( !$market ) {
 }
 
 try {
-    $network = primary_market::determine_network_from_market($market);
     
     $fields = ['market' => 'market', 'direction', 'tradePrice' => 'price', 'tradeAmount' => 'amount', 'offerId' => 'trade_id', 'tradeDate' => 'trade_date'];
     if( $market != 'all' ) {
@@ -38,9 +37,22 @@ try {
     ];
     
     $criteria['limit'] = $criteria['limit'] <= 2000 ? $criteria['limit'] : 2000;
-    
-    $trades = new trades($network);
-    $results = $trades->get_trades($criteria);
+
+    if($market == 'all') {
+        $networks = primary_market::get_network_list();
+
+        $results = [];
+        foreach( $networks as $network ) {
+            $trades = new trades($network);
+            $results = array_merge($results, $trades->get_trades($criteria));
+        }
+    }
+    else {    
+        $network = primary_market::determine_network_from_market($market);
+        $trades = new trades($network);
+        $results = $trades->get_trades($criteria);  
+    }
+
     echo json_encode( $results, $format == 'json' ? 0 : JSON_PRETTY_PRINT );
 }
 catch( Exception $e ) {

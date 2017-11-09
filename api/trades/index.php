@@ -46,6 +46,14 @@ try {
             $trades = new trades($network);
             $results = array_merge($results, $trades->get_trades($criteria));
         }
+        // now we must apply sort and limit to merged results.
+        usort($results, function ($a, $b) use($criteria) {
+            return $criteria['sort'] == 'asc' ? strcmp($a['trade_date'], $b['trade_date']) : 
+                                                strcmp($b['trade_date'], $a['trade_date']);
+        });
+        if(count($results) > $criteria['limit']) {
+            $results = array_slice($results, 0, $criteria['limit']);
+        }
     }
     else {    
         $network = primary_market::determine_network_from_market($market);

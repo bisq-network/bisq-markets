@@ -13,9 +13,9 @@ class markets {
     }
     
     public function get_markets() {
-        static $cache = null;
-        if( $cache ) {
-            return $cache;
+        static $cache = [];
+        if( @$cache[$this->network] ) {
+            return $cache[$this->network];
         }
         
         list($pmarket) = explode('_', $this->network);
@@ -66,7 +66,7 @@ class markets {
         }
 
         ksort( $markets );
-        $cache = $markets;
+        $cache[$this->network] = $markets;
         return $markets;
     }
     

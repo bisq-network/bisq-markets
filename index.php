@@ -39,7 +39,7 @@ function get_refresh_interval() {
         <div id="navwrap2">
           <nav>
             <ul id="menuUl" class="menu"><li class="tnskip" >&nbsp;</li><li id="menu-item-40" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a href="https://bisq.io/">Home</a></li>
-            <li id="menu-item-1427" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1427 menu-item menu-item-type-post_type menu-item-object-page current_page_item current-menu-item-38"><a href="https://market.bisq.io">Markets</a></li>
+            <li id="menu-item-1427" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1427 menu-item menu-item-type-post_type menu-item-object-page current_page_item current-menu-item-38"><a href="https://markets.bisq.network">Markets</a></li>
             <li id="menu-item-38" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-38"><a href="https://bisq.io/philosophy/">Philosophy</a></li>
             <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36"><a href="https://bisq.io/community/">Community</a></li>
             <li id="menu-item-468" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-468"><a href="https://bisq.io/faq/">FAQ</a></li>

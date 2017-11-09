@@ -26,7 +26,8 @@ class filecache {
         // todo: check if file has changed during same request/process. (lazy, eg after 2 secs)
         //       (checking mtime is slower and not really needed for use in a web app that is request oriented.)
         static $results = null;
-        $val = @$results[$key];
+        $statickey = $file . $key;
+        $val = @$results[$statickey];
         if( $val ) {
             return $val;
         }        
@@ -41,9 +42,9 @@ class filecache {
             $results[$key] = $val = call_user_func_array( $value_cb, $value_cb_params );
             return $val;
         }
-        
+
         $result_key = $key;
-        $ts_key = $key . '_timestamp';
+        $ts_key = $file . $key . '_timestamp';
 
         // We prefer to use apcu_entry if existing, because it is atomic.        
         // note: disabling this for now because the trades class get_by_market callback

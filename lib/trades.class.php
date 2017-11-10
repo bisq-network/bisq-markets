@@ -54,6 +54,11 @@ class trades {
         $offer_id_to_ts = null;
 
         $matches = [];
+
+
+        if( $sort == 'asc') {
+            $trades = array_reverse( $trades );
+        }
         
         // note: the offer_id_from/to depends on iterating over trades in
         // descending chronological order.
@@ -126,9 +131,6 @@ class trades {
             $matches = [];
         }
 
-        if( $sort == 'asc') {
-            $matches = array_reverse( $matches );
-        }
 
         return $matches;
     }

@@ -16,9 +16,9 @@ class currencies {
      */
     public function get_all_currencies() {
         
-        static $result = null;
-        if( $result ) {
-            return $result;
+        static $results = [];
+        if( @$results[$this->network] ) {
+            return $results[$this->network];
         }
         
         $fiat = $this->get_all_fiat();
@@ -32,9 +32,9 @@ class currencies {
         }
         $all = array_merge( $fiat, $crypto );
         ksort( $all );
-        $result = $all;
+        $results[$this->network] = $all;
 
-        return $result;
+        return $results[$this->network];
     }
 
     /**
@@ -43,14 +43,15 @@ class currencies {
     public function get_all_fiat() {
         $json_file = sprintf( '%s/%s/db/fiat_currency_list.json', settings::get('data_dir'), $this->network);
         
-        static $result = null;
-        if( $result ) {
-            return $result;
+        static $results = [];
+        if( @$results[$this->network] ) {
+            return $results[$this->network];
         }
+
         $buf = file_get_contents($json_file);
         $start = strpos( $buf, '[');
-        $result = $this->add_keys( json_decode( substr($buf, $start), true ) );
-        return $result;
+        $results[$this->network] = $this->add_keys( json_decode( substr($buf, $start), true ) );
+        return $results[$this->network];
     }
     
     /**
@@ -58,16 +59,17 @@ class currencies {
      */
     public function get_all_crypto() {
         $json_file = sprintf( '%s/%s/db/crypto_currency_list.json', settings::get('data_dir'), $this->network);
-        
-        static $result = null;
-        if( $result ) {
-            return $result;
-        }
+
+        static $results = [];
+        if( @$results[$this->network] ) {
+            return $results[$this->network];
+        } 
+
         $buf = file_get_contents($json_file);
         $start = strpos( $buf, "\n")-1;
-        $result = $this->add_keys( json_decode( substr($buf, $start), true ) );
+        $results[$this->network] = $this->add_keys( json_decode( substr($buf, $start), true ) );
         
-        return $result;
+        return $results[$this->network];
     }
 
     /**

@@ -22,7 +22,7 @@ Params:
 Sample Call and Result:
 
 ```
-curl "http://market.bisq.io/api/hloc/?market=eur_btc&interval=day"
+curl "http://markets.bisq.network/api/hloc/?market=eur_btc&interval=day"
 [
     {
         "period_start": "2016-04-20T00:00:00+00:00",
@@ -71,7 +71,7 @@ Params:
 Sample Call and Result:
 
 ```
-curl "http://market.bisq.io/api/trades/?market=eur_btc&limit=1"
+curl "http://markets.bisq.network/api/trades/?market=eur_btc&limit=1"
 [
     {
         "currency": "EUR",

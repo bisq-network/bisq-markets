@@ -25,12 +25,13 @@ class filecache {
         // So we use apcu for inter-request cache, and static var to cache during same request/process.
         // todo: check if file has changed during same request/process. (lazy, eg after 2 secs)
         //       (checking mtime is slower and not really needed for use in a web app that is request oriented.)
-        static $results = null;
-        $val = @$results[$key];
+        static $results = [];
+        $fullkey = $file . $key;
+        $val = @$results[$fullkey];
         if( $val ) {
             return $val;
-        }        
-
+        } 
+       
         // in case apcu is not installed.
         if( true || !function_exists( 'apcu_fetch' ) ) {
             static $warned = false;
@@ -38,12 +39,12 @@ class filecache {
                 error_log( "Warning: APCu not found. Please install APCu extension for better performance." );
                 $warned = true;
             }
-            $results[$key] = $val = call_user_func_array( $value_cb, $value_cb_params );
+            $results[$fullkey] = $val = call_user_func_array( $value_cb, $value_cb_params );
             return $val;
         }
-        
-        $result_key = $key;
-        $ts_key = $key . '_timestamp';
+
+        $result_key = $fullkey;
+        $ts_key = $fullkey . '_timestamp';
 
         // We prefer to use apcu_entry if existing, because it is atomic.        
         // note: disabling this for now because the trades class get_by_market callback
@@ -61,7 +62,7 @@ class filecache {
             $result = apcu_entry( $result_key, function($key) use($file, $value_cb, $value_cb_params) {
                 return call_user_func_array( $value_cb, $value_cb_params );
             });
-            $results[$key] = $result;
+            $results[$fullkey] = $result;
             return $result;
         }
         
@@ -77,7 +78,7 @@ class filecache {
             apcu_store( $ts_key, time() );
             apcu_store( $result_key, $result );
         }
-        $results[$key] = $result;
+        $results[$fullkey] = $result;
         return $result;
     }
 }

@@ -17,7 +17,6 @@ if( !$market ) {
 }
 
 try {
-    $network = primary_market::determine_network_from_market($market);
     
     $fields = ['market' => 'market', 'direction', 'tradePrice' => 'price', 'tradeAmount' => 'amount', 'offerId' => 'trade_id', 'tradeDate' => 'trade_date'];
     if( $market != 'all' ) {
@@ -38,9 +37,30 @@ try {
     ];
     
     $criteria['limit'] = $criteria['limit'] <= 2000 ? $criteria['limit'] : 2000;
-    
-    $trades = new trades($network);
-    $results = $trades->get_trades($criteria);
+
+    if($market == 'all') {
+        $networks = primary_market::get_network_list();
+
+        $results = [];
+        foreach( $networks as $network ) {
+            $trades = new trades($network);
+            $results = array_merge($results, $trades->get_trades($criteria));
+        }
+        // now we must apply sort and limit to merged results.
+        usort($results, function ($a, $b) use($criteria) {
+            return $criteria['sort'] == 'asc' ? strcmp($a['trade_date'], $b['trade_date']) : 
+                                                strcmp($b['trade_date'], $a['trade_date']);
+        });
+        if(count($results) > $criteria['limit']) {
+            $results = array_slice($results, 0, $criteria['limit']);
+        }
+    }
+    else {    
+        $network = primary_market::determine_network_from_market($market);
+        $trades = new trades($network);
+        $results = $trades->get_trades($criteria);  
+    }
+
     echo json_encode( $results, $format == 'json' ? 0 : JSON_PRETTY_PRINT );
 }
 catch( Exception $e ) {

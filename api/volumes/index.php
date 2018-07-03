@@ -29,6 +29,12 @@ if( !$market && !$basecurrency ) {
     bail( "missing parameter.  either market or basecurrency must be present." );
 }
 
+// make it harder to inject random things into the output.
+if( $callback && (substr($callback, 0, 6) != 'jQuery' ||
+                  strlen($callback) > 50)) {
+	bail( "Invalid callback parameter." );
+}
+
 // normalize market=all to null.
 if( $market == 'all') {
     $market = null;
@@ -129,7 +135,7 @@ try {
 	}
 	
 	if( $format == 'jscallback' ) {
-		echo $callback . "([\n";
+		echo htmlentities($callback) . "([\n";
 		foreach( $rows as $k => $row ) {
 			if( $milliseconds ) {
 				$row['period_start'] *= 1000;

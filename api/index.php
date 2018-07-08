@@ -33,6 +33,10 @@ function e($buf) {
     return htmlentities( $buf );
 }
 
+function linkify($buf) {
+    return preg_replace('/\[(.*)\]\(http(.*)\)/', '<a href="http\\2">\\1</a>', $buf);
+}
+
 ?>
 
 <html>
@@ -109,7 +113,7 @@ div.params div {
 <?php foreach( $apis as $method => $api ): ?>
 <div class="api widget">
     <div class="method" id="<?= e($method) ?>">/api/<?= e($method) ?></div>
-    <div class="description"><?= e($api->get_description()) ?></div>
+    <div class="description"><?= linkify(e($api->get_description())) ?></div>
     <div class="examples">
         <?php foreach($api->get_examples() as $example): ?>
         <?php $url = 'https://markets.bisq.network/api' . e($example['request']); ?>
@@ -134,7 +138,7 @@ div.params div {
         <h4>Notes</h4>
         <ul>
         <?php foreach($api->get_notes() as $note): ?>
-        <li class="noteitem"><?= e($note) ?></li>
+        <li class="noteitem"><?= linkify(e($note)) ?></li>
         <?php endforeach ?>
         </ul>
     </div>

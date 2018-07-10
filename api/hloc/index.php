@@ -28,6 +28,13 @@ if( !$market ) {
     bail( "market parameter missing." );
 }
 
+// make it harder to inject random things into the output.
+if( $callback && (substr($callback, 0, 6) != 'jQuery' ||
+                  strlen($callback) > 50)) {
+	bail( "Invalid callback parameter." );
+}
+
+
 try {
 
 	$network = primary_market::determine_network_from_market($market);
@@ -121,7 +128,7 @@ try {
 	}
 	
 	if( $format == 'jscallback' ) {
-		echo $callback . "([\n";
+		echo htmlentities($callback) . "([\n";
 		foreach( $rows as $k => $row ) {
 			if( $milliseconds ) {
 				$row['period_start'] *= 1000;

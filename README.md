@@ -17,7 +17,7 @@ more efficient strategies.
 # Requirements
 
 * Apache or other webserver with php 5.5+
-* apcu extension.  ( for shared mem caching. will run without, but slower. )
+* opcache extension.  ( for data caching. will run without, but much slower. )
 
 # Installation
 

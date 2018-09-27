@@ -18,7 +18,15 @@ if( !$market ) {
 
 try {
     
-    $fields = ['market' => 'market', 'direction', 'tradePrice' => 'price', 'tradeAmount' => 'amount', 'offerId' => 'trade_id', 'tradeDate' => 'trade_date'];
+    $fields = ['market' => 'market',
+               'direction',
+               'tradePrice' => 'price',
+               'tradeAmount' => 'amount',
+               'tradeVolume' => 'volume',
+               'paymentMethod' => 'payment_method',
+               'offerId' => 'trade_id',
+               'tradeDate' => 'trade_date',
+              ];
     if( $market != 'all' ) {
         unset( $fields['market'] );
     }

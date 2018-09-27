@@ -100,6 +100,7 @@ class trades {
             if( !@$integeramounts ) {
                 $trade['tradePrice'] = btcutil::int_to_btc( $trade['tradePrice'] );
                 $trade['tradeAmount'] = btcutil::int_to_btc( $trade['tradeAmount'] );
+                $trade['tradeVolume'] = btcutil::int_to_btc( $trade['tradeVolume'] );
                 $trade['offerAmount'] = btcutil::int_to_btc( $trade['offerAmount'] );
                 $trade['offerMinAmount'] = btcutil::int_to_btc( $trade['offerMinAmount'] );
             }
@@ -215,7 +216,7 @@ class trades {
             // HACK: filter out LTC base currency trades before 2017-06-28, because the historic data has some
             // bogus data that was made for testing or something.
             if($this->network == 'ltc_mainnet' && $trade['tradeDate'] < $ltc_start_ts) {
-		unset( $data[$idx]);
+                unset( $data[$idx]);
                 continue;
             }
             

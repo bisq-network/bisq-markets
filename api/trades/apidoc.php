@@ -28,17 +28,21 @@ class api_trades {
 [
     {
         "direction": "SELL",
-        "price": "562.51610000",
-        "amount": "0.30000000",
-        "trade_id": "df7bd928-2940-4524-90cf-8dc5717fcad8",
-        "trade_date": 1472947568822
+        "price": "2375.72500000",
+        "amount": "0.05000000",
+        "volume": "118.78620000",
+        "payment_method": "SEPA",
+        "trade_id": "BLBJHGL-b644851d-f822-418a-8035-955f7a02eff9-051",
+        "trade_date": 1501095828824
     },
     {
         "direction": "SELL",
-        "price": "552.48340000",
+        "price": "2148.50230000",
         "amount": "0.20000000",
-        "trade_id": "e9b4f424-61b1-494a-bd1e-9142ce65b1d4",
-        "trade_date": 1472937060362
+        "volume": "429.70040000",
+        "payment_method": "SEPA",
+        "trade_id": "dcwyx9-1a89dece-5039-4ff7-89c9-7ed52b84bc88-051",
+        "trade_date": 1501088841011
     }
 ]
 END
@@ -52,7 +56,8 @@ END
                 'if the market parameter is "all" then up to limit trades will be returned, date sorted, across all markets. Also a "market" field is added to each trade result.',
                 'this api will return a maximum of 2000 trades per call',
                 'if trade_id_from or trade_id_to is used and a matching trade is not found for each, then no results are returned',
-                'The Bisq app does not presently use a trade_id internally.  The trade_id in this api is actually the bisq offerId.'
+                'The Bisq app does not presently use a trade_id internally.  The trade_id in this api is actually the bisq offerId.',
+                'Possible values for payment_method can change over time.  For most current, see [PaymentMethod.java](https://raw.githubusercontent.com/bisq-network/bisq-core/master/src/main/java/bisq/core/payment/payload/PaymentMethod.java)',
                 ];
     }
     

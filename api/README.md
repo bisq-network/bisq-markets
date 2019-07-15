@@ -1,4 +1,4 @@
-# bitsquare_market APIs
+# Bisq_market APIs
 
 These APIs are open to the public with no authorization required.
 

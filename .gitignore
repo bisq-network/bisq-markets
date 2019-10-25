@@ -1,2 +1,2 @@
-bitsquare_files/
-settings.json
+target/
+.DS_Store

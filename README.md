@@ -1,43 +1,28 @@
-# Bisq Markets Website+API
-A simple web interface to view Bisq markets.
+# Bisq Markets API
 
-This is a bare-bones implementation that reads the JSON files created by Bisq
-and publishes an API for web clients to access them.
+Visit https://markets.bisq.network/api for the current API documentation.
 
-# Performance, or lack thereof.
+## Architecture
 
-At present, no database is used and backend operations are very inefficient.
+This new architecture replaces the previous Bisq node -> JSON file -> PHP frontend. We now use Risq behind a caching reverse-proxy on Google Appengine to serve Bisq Markets data.
 
-This is OK for the moment as there is little Bisq data, but the implementation
-will need to be optimized when Bisq volume picks up.
+## Proxy Caching Scheme
 
-I have separated the data access classes such that it should be simple to plugin
-more efficient strategies.
+HTTP cache = 60 seconds
+memcache = 60 seconds
+datastore = forever
+```
+if (full query URL key exists in memcache)
+    return response
+else
+    if (query live node succeeds)
+        insert into memcache + datastore 
+        return response
+    else // query failed
+        if (full query URL key exists in datastore)
+            return response
+        else // not in datastore
+            return 502
+```
+## Demo
 
-# Requirements
-
-* Apache or other webserver with php 5.5+
-* opcache extension.  ( for data caching. will run without, but much slower. )
-
-# Installation
-
-On ubuntu apcu can be installed with:
-
-   apt-get install php5-apcu
-
-The website code can then be installed by:
-
-1. git clone this repository to your docroot or somewhere beneath it.
-2. cp settings.json.example settings.json
-3. edit settings.json and edit the value of "data_dir" to reflect the location of
-the Bisq data files on your system.
-4. Make sure that Bisq is running with flag --dumpStatistics true
-
-Navigate in your browser to your webserver docroot.
-
-That's it!
-
-
-# API
-
-For now, just check out the API subdirectory.  docs are todo.

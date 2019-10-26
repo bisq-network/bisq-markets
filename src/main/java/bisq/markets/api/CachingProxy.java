@@ -557,10 +557,10 @@ public class CachingProxy extends HttpServlet
         {
             LOG.log(Level.WARNING, "Fetching data from bisqMarkets for "+apiURL);
 
+            GraphQLQuery query = GraphQLQuery.forRequest(bisqMarketsURI, queryMap);
             try
             {
-                GraphQLQuery query = GraphQLQuery.forRequest(bisqMarketsURI, queryMap);
-                response = gson.toJson(query.translateResponse(parseJsonData(requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, gson.toJson(query)))));
+                response = requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, gson.toJson(query));
             }
             catch (Exception e)
             {
@@ -568,7 +568,7 @@ public class CachingProxy extends HttpServlet
             }
             if (response != null)
             {
-                responseData = parseJsonData(response);
+                responseData = query.translateResponse(response);
                 if (responseData == null)
                     LOG.log(Level.WARNING, "Failed parsing requested bisqMarkets response for "+apiURL);
             }

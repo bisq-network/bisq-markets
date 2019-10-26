@@ -1,14 +1,15 @@
 package bisq.markets.api;
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public abstract class GraphQLQuery {
+    public static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
+
     static public bisq.markets.api.GraphQLQuery forRequest(String path, Map<String,String> params) {
         if (path.startsWith("/api/currencies")) {
           return new CurrenciesQuery();
@@ -16,10 +17,16 @@ public abstract class GraphQLQuery {
             return null;
         }
     }
-    public abstract Object translateResponse(Object response);
+    public abstract Object translateResponse(String response);
 
 
     private static class CurrenciesQuery extends GraphQLQuery {
+        private static class Currency {
+            String code;
+            String name;
+            String type;
+            int precision;
+        }
         private static final String currenciesQuery = "{ currencies { code name precision type: currencyTypeLowerCase } }";
         private final String query;
         private CurrenciesQuery() {
@@ -27,20 +34,16 @@ public abstract class GraphQLQuery {
         }
 
         @Override
-        public Object translateResponse(Object response) {
-            List<Map<String,Object>> currencies = (List<Map<String, Object>>) GraphQLQuery.extractFromJson(GraphQLQuery.extractFromJson(response,"data"),"currencies");
-            Map<String,Object> ret = new HashMap();
-            Iterator iterator = currencies.iterator();
-            while(iterator.hasNext()) {
-                Map<String,Object> currency = (Map<String, Object>) iterator.next();
-                String code = (String) currency.get("code");
-                ret.put(code,currency);
+        public Object translateResponse(String response) {
+            GraphQLResponse<List<Currency>> currencies = gson.fromJson(response,new TypeToken<GraphQLResponse<ArrayList<Currency>>>(){}.getType());
+            Iterator<Currency> iter = currencies.getData().iterator();
+            Map<String,Currency> ret = new HashMap();
+            while(iter.hasNext()) {
+                Currency currency = iter.next();
+                ret.put(currency.code,currency);
             }
             return ret;
-        }
-    }
 
-    private static Object extractFromJson(Object json, String key) {
-        return ((Map<String,Object>)json).get(key);
+        }
     }
 }

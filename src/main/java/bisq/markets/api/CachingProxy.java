@@ -523,9 +523,13 @@ public class CachingProxy extends HttpServlet
     private Object getCachedMarketsApiData(HttpServletRequest req, String bisqMarketsURI, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
     {
         URL bisqMarketsURL = buildMarketsApiURL(req, bisqMarketsURI);
-        return getCachedData(bisqMarketsURL.toString(), bisqMarketsURI,getQueryMap(req.getQueryString()), secondsToMemcache, useCache, forceUpdate);
+        Map<String,String> params = new HashMap();
+        if (req.getQueryString() != null) {
+          params = getQueryMap(req.getQueryString());
+        }
+        return getCachedData(bisqMarketsURL.toString(), bisqMarketsURI, params, secondsToMemcache, useCache, forceUpdate);
     } // }}}
-    private Object getCachedData(String apiURL, String bisqMarketsURI,Map<String,String> queryMap,int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
+    private Object getCachedData(String apiURL, String bisqMarketsURI, Map<String,String> queryMap, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
     {
         String response = null;
         Object responseData = null;
@@ -556,7 +560,9 @@ public class CachingProxy extends HttpServlet
             try
             {
                 GraphQLQuery query = GraphQLQuery.forRequest(bisqMarketsURI, queryMap);
-                response = requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, null);
+                        LOG.log(Level.WARNING, "query: " + gson.toJson(query));
+                response = requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, gson.toJson(query));
+                LOG.log(Level.WARNING, response);
             }
             catch (Exception e)
             {

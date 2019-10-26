@@ -560,9 +560,7 @@ public class CachingProxy extends HttpServlet
             try
             {
                 GraphQLQuery query = GraphQLQuery.forRequest(bisqMarketsURI, queryMap);
-                        LOG.log(Level.WARNING, "query: " + gson.toJson(query));
-                response = requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, gson.toJson(query));
-                LOG.log(Level.WARNING, response);
+                response = gson.toJson(query.translateResponse(parseJsonData(requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, gson.toJson(query)))));
             }
             catch (Exception e)
             {

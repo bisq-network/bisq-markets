@@ -63,6 +63,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.JsonParseException;
+import org.graalvm.compiler.graph.Graph;
 
 // }}}
 
@@ -87,7 +88,7 @@ public class CachingProxy extends HttpServlet
     // hostnames of bisq markets node to source data from
     private static final String BISQNODE_HOSTNAME_PRODUCTION = "https://markets.bisq.network";
     private static final String BISQNODE_HOSTNAME_DEVELOPMENT = "https://markets.bisq.network";
-    private static final String BISQNODE_HOSTNAME_DEVSERVER = "http://127.0.0.1:8080";
+    private static final String BISQNODE_HOSTNAME_DEVSERVER = "http://127.0.0.1:7477";
 
     // init gson
     public static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
@@ -510,7 +511,7 @@ public class CachingProxy extends HttpServlet
                 bisqMarketsBaseURL = BISQNODE_HOSTNAME_PRODUCTION;
             }
 
-            bisqMarketsURL = new URL(bisqMarketsBaseURL + bisqMarketsURI);
+            bisqMarketsURL = new URL(bisqMarketsBaseURL + "/graphql");
         }
         catch (MalformedURLException e)
         {
@@ -522,9 +523,9 @@ public class CachingProxy extends HttpServlet
     private Object getCachedMarketsApiData(HttpServletRequest req, String bisqMarketsURI, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
     {
         URL bisqMarketsURL = buildMarketsApiURL(req, bisqMarketsURI);
-        return getCachedData(bisqMarketsURL.toString(), secondsToMemcache, useCache, forceUpdate);
+        return getCachedData(bisqMarketsURL.toString(), bisqMarketsURI,getQueryMap(req.getQueryString()), secondsToMemcache, useCache, forceUpdate);
     } // }}}
-    private Object getCachedData(String apiURL, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
+    private Object getCachedData(String apiURL, String bisqMarketsURI,Map<String,String> queryMap,int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
     {
         String response = null;
         Object responseData = null;
@@ -554,7 +555,8 @@ public class CachingProxy extends HttpServlet
 
             try
             {
-                response = requestDataAsString(HTTPMethod.GET, new URL(apiURL), null, null);
+                GraphQLQuery query = GraphQLQuery.forRequest(bisqMarketsURI, queryMap);
+                response = requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, null);
             }
             catch (Exception e)
             {

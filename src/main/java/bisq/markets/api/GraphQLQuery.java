@@ -27,6 +27,8 @@ public abstract class GraphQLQuery {
             return new TradesQuery(params);
         }else if (path.startsWith("/api/hloc")) {
             return new HlocQuery(params);
+        }else if (path.startsWith("/api/volumes")) {
+            return new VolumesQuery(params);
         } else {
             return null;
         }
@@ -280,6 +282,34 @@ public abstract class GraphQLQuery {
         @Override
         public Object translateResponse(String response) {
             GraphQLResponse<List<Hloc>> ret = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Hloc>>>(){}.getType());
+            return ret.getData();
+        }
+    }
+    private static class VolumesQuery extends GraphQLQuery {
+        private static class Volume {
+            long period_start;
+            String volume;
+            int num_trades;
+        }
+        private static final String volumeQuery = "query Volumes($market: MarketPair "+
+                "$interval: Interval) { " +
+                "volumes(market: $market interval: $interval) " +
+                "{ period_start: periodStart volume: formattedVolume num_trades: numTrades } }";
+        private final String query = volumeQuery;
+
+        private final Map<String,String> variables;
+
+        VolumesQuery(Map<String,String> params){
+            String interval = params.get("interval");
+            if (interval != null) {
+                params.put("interval", interval.toUpperCase());
+            }
+            variables = params;
+        }
+
+        @Override
+        public Object translateResponse(String response) {
+            GraphQLResponse<List<Volume>> ret = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Volume>>>(){}.getType());
             return ret.getData();
         }
     }

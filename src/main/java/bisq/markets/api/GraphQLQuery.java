@@ -21,6 +21,8 @@ public abstract class GraphQLQuery {
             return new OffersQuery(params);
         }else if (path.startsWith("/api/depth")) {
             return new DepthQuery(params);
+        }else if (path.startsWith("/api/ticker")) {
+            return new TickerQuery(params);
         } else {
             return null;
         }
@@ -160,11 +162,50 @@ public abstract class GraphQLQuery {
 
         @Override
         public Object translateResponse(String response) {
-            LOG.warning(response);
             GraphQLResponse<Depth> markets = gson.fromJson(response,new TypeToken<GraphQLResponse<Depth>>(){}.getType());
             Depth depth = markets.getData();
             Map<String,Depth> ret = new HashMap<>();
             ret.put(variables.get("market"), depth);
+            return ret;
+        }
+    }
+
+    private static class TickerQuery extends GraphQLQuery {
+        private static class Ticker {
+            String market;
+            String last;
+            String high;
+            String low;
+            String volume_left;
+            String volume_right;
+            String buy;
+            String sell;
+        }
+        private static final String tickerQuery = "query Ticker($market: MarketPair)" +
+                "{ ticker(market: $market) { market: marketPair " +
+                "last: formattedLast high: formattedHigh "+
+                "low: formattedLow volume_left: formattedVolumeLeft " +
+                "volume_right: formattedVolumeRight } }";
+        private final String query = tickerQuery;
+        private final Map<String,String> variables;
+
+        TickerQuery(Map<String, String> params){
+            variables = params;
+        }
+
+        @Override
+        public Object translateResponse(String response) {
+            GraphQLResponse<List<Ticker>> markets = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Ticker>>>(){}.getType());
+            List<Ticker> tickers = markets.getData();
+            if (variables.get("market") != null){
+                return tickers;
+            }
+            Map<String,Ticker> ret = new HashMap<>();
+            Iterator<Ticker> iter = tickers.iterator();
+            while(iter.hasNext()) {
+                Ticker ticker = iter.next();
+                ret.put(ticker.market, ticker);
+            }
             return ret;
         }
     }

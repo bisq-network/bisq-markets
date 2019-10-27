@@ -19,6 +19,8 @@ public abstract class GraphQLQuery {
             return new MarketsQuery();
         }else if (path.startsWith("/api/offers")) {
             return new OffersQuery(params);
+        }else if (path.startsWith("/api/depth")) {
+            return new DepthQuery(params);
         } else {
             return null;
         }
@@ -114,7 +116,6 @@ public abstract class GraphQLQuery {
 
         @Override
         public Object translateResponse(String response) {
-            //LOG.warning(response);
             GraphQLResponse<List<OpenOffer>> offers = gson.fromJson(response,new TypeToken<GraphQLResponse<List<OpenOffer>>>(){}.getType());
 
             Iterator<OpenOffer> iter = offers.getData().iterator();
@@ -139,6 +140,31 @@ public abstract class GraphQLQuery {
                     Collections.sort(sells);
                 }
             }
+            return ret;
+        }
+    }
+
+    private static class DepthQuery extends GraphQLQuery {
+        private static class Depth {
+            List<String> buys;
+            List<String> sells;
+        }
+        private static final String depthQuery = "query Depth($market: MarketPair!)" +
+                "{ depth(market: $market) { buys: formattedBuys sells: formattedSells } }";
+        private final String query = depthQuery;
+        private final Map<String,String> variables;
+
+        DepthQuery(Map<String, String> params){
+            variables = params;
+        }
+
+        @Override
+        public Object translateResponse(String response) {
+            LOG.warning(response);
+            GraphQLResponse<Depth> markets = gson.fromJson(response,new TypeToken<GraphQLResponse<Depth>>(){}.getType());
+            Depth depth = markets.getData();
+            Map<String,Depth> ret = new HashMap<>();
+            ret.put(variables.get("market"), depth);
             return ret;
         }
     }

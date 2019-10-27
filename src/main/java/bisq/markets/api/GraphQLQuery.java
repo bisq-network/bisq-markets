@@ -25,6 +25,8 @@ public abstract class GraphQLQuery {
             return new TickerQuery(params);
         }else if (path.startsWith("/api/trades")) {
             return new TradesQuery(params);
+        }else if (path.startsWith("/api/hloc")) {
+            return new HlocQuery(params);
         } else {
             return null;
         }
@@ -226,7 +228,7 @@ public abstract class GraphQLQuery {
                 "$timestamp_from: UnixSecs $timestamp_to: UnixSecs " +
                 "$limit: Int $sort: Sort ) { " +
                 "trades(market: $market direction: $direction timestampFrom: $timestamp_from " +
-                " timestampTo: $timestamp_to limit: $limit sort: $sort) " +
+                "timestampTo: $timestamp_to limit: $limit sort: $sort) " +
                 "{ direction price: formattedPrice amount: formattedAmount volume: formattedVolume " +
                 "payment_method: paymentMethodId trade_id: offerId trade_date: tradeDate } }";
         private final String query = tradesQuery;
@@ -240,6 +242,44 @@ public abstract class GraphQLQuery {
         @Override
         public Object translateResponse(String response) {
             GraphQLResponse<List<Trade>> ret = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Trade>>>(){}.getType());
+            return ret.getData();
+        }
+    }
+
+    private static class HlocQuery extends GraphQLQuery {
+        private static class Hloc {
+            long period_start;
+            String open;
+            String high;
+            String low;
+            String close;
+            String volume_left;
+            String volume_right;
+            String avg;
+        }
+        private static final String hlocQuery = "query Hloc($market: MarketPair! "+
+                "$timestamp_from: UnixSecs $timestamp_to: UnixSecs " +
+                "$interval: Interval) { " +
+                "hloc(market: $market timestampFrom: $timestamp_from " +
+                "timestampTo: $timestamp_to interval: $interval) " +
+                "{ period_start: periodStart open: formattedOpen high: formattedHigh low: formattedLow " +
+                "close: formattedClose volume_left: formattedVolumeLeft volume_right: formattedVolumeRight "+
+                "avg: formattedAvg } }";
+        private final String query = hlocQuery;
+
+        private final Map<String,String> variables;
+
+        HlocQuery(Map<String,String> params){
+            String interval = params.get("interval");
+            if (interval != null) {
+                params.put("interval", interval.toUpperCase());
+            }
+            variables = params;
+        }
+
+        @Override
+        public Object translateResponse(String response) {
+            GraphQLResponse<List<Hloc>> ret = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Hloc>>>(){}.getType());
             return ret.getData();
         }
     }

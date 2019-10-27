@@ -23,6 +23,8 @@ public abstract class GraphQLQuery {
             return new DepthQuery(params);
         }else if (path.startsWith("/api/ticker")) {
             return new TickerQuery(params);
+        }else if (path.startsWith("/api/trades")) {
+            return new TradesQuery(params);
         } else {
             return null;
         }
@@ -207,6 +209,38 @@ public abstract class GraphQLQuery {
                 ret.put(ticker.market, ticker);
             }
             return ret;
+        }
+    }
+
+    private static class TradesQuery extends GraphQLQuery {
+        private static class Trade {
+            String direction;
+            String price;
+            String amount;
+            String volume;
+            String payment_method;
+            String trade_id;
+            long trade_date;
+        }
+        private static final String tradesQuery = "query Trades($market: MarketPair! $direction: Direction "+
+                "$timestamp_from: UnixSecs $timestamp_to: UnixSecs " +
+                "$limit: Int $sort: Sort ) { " +
+                "trades(market: $market direction: $direction timestampFrom: $timestamp_from " +
+                " timestampTo: $timestamp_to limit: $limit sort: $sort) " +
+                "{ direction price: formattedPrice amount: formattedAmount volume: formattedVolume " +
+                "payment_method: paymentMethodId trade_id: offerId trade_date: tradeDate } }";
+        private final String query = tradesQuery;
+
+        private final Map<String,String> variables;
+
+       TradesQuery(Map<String,String> params){
+            variables = params;
+        }
+
+        @Override
+        public Object translateResponse(String response) {
+            GraphQLResponse<List<Trade>> ret = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Trade>>>(){}.getType());
+            return ret.getData();
         }
     }
 }

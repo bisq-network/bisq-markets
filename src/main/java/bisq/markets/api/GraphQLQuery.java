@@ -108,13 +108,16 @@ public abstract class GraphQLQuery {
                 }
             }
         }
+        private static final String offerFields = "{ " +
+                "market: marketPair offer_id: id offer_date: offerDate " +
+                        "direction min_amount: formattedMinAmount " +
+                        "amount: formattedAmount price: formattedPrice " +
+                        "volume: formattedVolume payment_method: paymentMethodId " +
+                        "offer_fee_txid: offerFeeTxId } ";
         private static final String offersQuery = "query Offers($market: MarketPair, $direction: Direction)" +
                 "{ offers(market: $market, direction: $direction) { " +
-                "market: marketPair offer_id: id offer_date: offerDate " +
-                "direction min_amount: formattedMinAmount " +
-                "amount: formattedAmount price: formattedPrice " +
-                "volume: formattedVolume payment_method: paymentMethodId " +
-                "offer_fee_txid: offerFeeTxId } }";
+                "buys " + offerFields +
+                "sells " + offerFields + " } }";
         private final String query = offersQuery;
         private final Map<String,String> variables;
 
@@ -124,31 +127,8 @@ public abstract class GraphQLQuery {
 
         @Override
         public Object translateResponse(String response) {
-            GraphQLResponse<List<OpenOffer>> offers = gson.fromJson(response,new TypeToken<GraphQLResponse<List<OpenOffer>>>(){}.getType());
-
-            Iterator<OpenOffer> iter = offers.getData().iterator();
-            Map<String,Map<String,List<OpenOffer>>> ret = new HashMap<>();
-            while(iter.hasNext()) {
-                OpenOffer offer = iter.next();
-                if (!ret.containsKey(offer.market)) {
-                    Map<String,List<OpenOffer>> directions = new HashMap<>();
-                    directions.put("buys",new ArrayList<>());
-                    directions.put("sells",new ArrayList<>());
-                    ret.put(offer.market, directions);
-                }
-                Map<String,List<OpenOffer>> directions = ret.get(offer.market);
-                if (offer.direction.equals("BUY")) {
-                    List<OpenOffer> buys = directions.get("buys");
-                    buys.add(offer);
-                    Collections.sort(buys);
-                    Collections.reverse(buys);
-                } else {
-                    List<OpenOffer> sells = directions.get("sells");
-                    sells.add(offer);
-                    Collections.sort(sells);
-                }
-            }
-            return ret;
+            GraphQLResponse<Map<String,List<OpenOffer>>> offers = gson.fromJson(response,new TypeToken<GraphQLResponse<Map<String,List<OpenOffer>>>>(){}.getType());
+            return offers.getData();
         }
     }
 
@@ -158,7 +138,8 @@ public abstract class GraphQLQuery {
             List<String> sells;
         }
         private static final String depthQuery = "query Depth($market: MarketPair!)" +
-                "{ depth(market: $market) { buys: formattedBuys sells: formattedSells } }";
+                "{ offers(market: $market) { " +
+                "buys: formattedBuyPrices sells: formattedSellPrices } }";
         private final String query = depthQuery;
         private final Map<String,String> variables;
 

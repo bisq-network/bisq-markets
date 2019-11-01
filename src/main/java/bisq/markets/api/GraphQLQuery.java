@@ -216,11 +216,19 @@ public abstract class GraphQLQuery {
                 "payment_method: paymentMethodId trade_id: offerId trade_date: tradeDate } }";
         private final String query = tradesQuery;
 
-        private final Map<String,String> variables;
+        private final Map<String,Object> variables;
 
        TradesQuery(Map<String,String> params){
-            variables = params;
-        }
+           variables = new HashMap<>();
+           Iterator<Map.Entry<String,String>> entries = params.entrySet().iterator();
+           while (entries.hasNext()) {
+               Map.Entry<String,String> next = entries.next();
+               variables.put(next.getKey(), next.getValue());
+           }
+           if (params.containsKey("limit")) {
+                   variables.put("limit", Integer.parseInt(params.get("limit")));
+           }
+       }
 
         @Override
         public Object translateResponse(String response) {

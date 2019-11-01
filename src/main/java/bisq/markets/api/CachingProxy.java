@@ -82,12 +82,12 @@ public class CachingProxy extends HttpServlet
     private static final double REQUEST_DEADLINE = 30.0;
 
     // hostnames used by this CDN app
-    private static final String FRONTEND_HOSTNAME_PRODUCTION = "api.wiz.biz";
-    private static final String FRONTEND_HOSTNAME_DEVELOPMENT = "dev.wiz.biz";
+    private static final String FRONTEND_HOSTNAME_PRODUCTION = "markets.bisq.network";
+    private static final String FRONTEND_HOSTNAME_DEVELOPMENT = "bisq-markets.appspot.com";
 
     // hostnames of bisq markets node to source data from
-    private static final String BISQNODE_HOSTNAME_PRODUCTION = "https://markets.bisq.network";
-    private static final String BISQNODE_HOSTNAME_DEVELOPMENT = "https://markets.bisq.network";
+    private static final String BISQNODE_HOSTNAME_PRODUCTION = "https://markets.wiz.biz";
+    private static final String BISQNODE_HOSTNAME_DEVELOPMENT = "https://markets.wiz.biz";
     private static final String BISQNODE_HOSTNAME_DEVSERVER = "http://127.0.0.1:7477";
 
     // init gson

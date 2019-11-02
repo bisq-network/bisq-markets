@@ -191,9 +191,7 @@ public abstract class GraphQLQuery {
                 return tickers;
             }
             Map<String,Ticker> ret = new HashMap<>();
-            Iterator<Ticker> iter = tickers.iterator();
-            while(iter.hasNext()) {
-                Ticker ticker = iter.next();
+            for (Ticker ticker : tickers) {
                 ret.put(ticker.market, ticker);
             }
             return ret;
@@ -280,13 +278,14 @@ public abstract class GraphQLQuery {
     private static class VolumesQuery extends GraphQLQuery {
         private static class Volume {
             long period_start;
+            String periodStartDateTime;
             String volume;
             int num_trades;
         }
         private static final String volumeQuery = "query Volumes($market: MarketPair "+
                 "$interval: Interval) { " +
                 "volumes(market: $market interval: $interval) " +
-                "{ period_start: periodStart volume: formattedVolume num_trades: numTrades } }";
+                "{ period_start: periodStart periodStartDateTime volume: formattedVolume num_trades: numTrades } }";
         private final String query = volumeQuery;
 
         private final Map<String,String> variables;
@@ -301,8 +300,22 @@ public abstract class GraphQLQuery {
 
         @Override
         public Object translateResponse(String response) {
-            GraphQLResponse<List<Volume>> ret = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Volume>>>(){}.getType());
-            return ret.getData();
+            GraphQLResponse<List<Volume>> res = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Volume>>>(){}.getType());
+            List<Map<String,Object>> ret = new ArrayList<>();
+            for (Volume volume : res.getData()) {
+                Map<String,Object> v = new HashMap<>();
+                String timestamp = variables.get("timestamp");
+                if (timestamp != null && timestamp.equals("no")) {
+                    v.put("period_start", volume.periodStartDateTime);
+                } else {
+                    v.put("period_start", volume.period_start);
+                }
+                v.put("num_trades", volume.num_trades);
+                v.put("volume", volume.volume);
+                ret.add(v);
+            }
+
+            return ret;
         }
     }
 }

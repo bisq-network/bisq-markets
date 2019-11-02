@@ -335,8 +335,11 @@ public class CachingProxy extends HttpServlet
         Map<String, String> map = new HashMap<String, String>();
         for (String param : params)
         {
-            String name = param.split("=")[0];
-            String value = param.split("=")[1];
+            String name, value;
+            try { name = param.split("=")[0]; }
+            catch (Exception e) { name = ""; }
+            try { value = param.split("=")[1]; }
+            catch (Exception e) { value = ""; }
             map.put(name, value);
         }
         return map;

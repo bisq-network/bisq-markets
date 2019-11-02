@@ -1,10 +1,12 @@
 #!/bin/zsh
-PRODUCTION_HOSTNAME=markets.bisq.network
 DEVELOPMENT_HOSTNAME=bisq-markets.appspot.com
+DEVELOPMENT_HOSTNAME=markets.bisq.network
 
 for query in `cat tests`;do
-    curl -i -n -s \
-        -w "%{url_effective} %{http_code} %{time_total}\n" \
+    curl -s \
         -o /dev/null \
-        "https://${DEVELOPMENT_HOSTNAME}${query}" &
+        --resolve "${DEVELOPMENT_HOSTNAME}:80:216.239.32.21" \
+        -w "%{url_effective} %{http_code} %{time_total}\n" \
+        "http://${DEVELOPMENT_HOSTNAME}${query}" &
+    sleep 0.1
 done

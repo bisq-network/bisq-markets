@@ -86,9 +86,9 @@ public class CachingProxy extends HttpServlet
     private static final String FRONTEND_HOSTNAME_DEVELOPMENT = "bisq-markets.appspot.com";
 
     // hostnames of bisq markets node to source data from
-    private static final String BISQNODE_HOSTNAME_PRODUCTION = "https://markets.wiz.biz";
-    private static final String BISQNODE_HOSTNAME_DEVELOPMENT = "https://markets.wiz.biz";
-    private static final String BISQNODE_HOSTNAME_DEVSERVER = "http://127.0.0.1:7477";
+    private static final String RISQNODE_HOSTNAME_PRODUCTION = "https://markets.wiz.biz";
+    private static final String RISQNODE_HOSTNAME_DEVELOPMENT = "https://markets.wiz.biz";
+    private static final String RISQNODE_HOSTNAME_DEVSERVER = "http://127.0.0.1:7477";
 
     // init gson
     public static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
@@ -97,8 +97,8 @@ public class CachingProxy extends HttpServlet
     private static final class MarketsApiResponseCache // {{{
     {
         private static final String KIND = "MarketsApiResponseCache";
-        private static final String BISQNODE_URL = "marketsapi_url";
-        private static final String BISQNODE_RESPONSE = "marketsapi_response";
+        private static final String RISQNODE_URL = "marketsapi_url";
+        private static final String RISQNODE_RESPONSE = "marketsapi_response";
     } // }}}
 
     @Override
@@ -121,8 +121,13 @@ public class CachingProxy extends HttpServlet
         // get request URL
         String reqURI = req.getRequestURI().toString();
 
-        // get query string
-        String queryString = req.getQueryString();
+        // get query string, strip forceUpdate if present
+        String queryString = req.getQueryString().replaceAll("&forceUpdate=1", "");
+
+        // flag to force update of datastore/memcache
+        boolean forceUpdate = false;
+        if (req.getParameter("forceUpdate") != null)
+            forceUpdate = true;
 
         // settings to use datastore
         boolean useCacheForMarketsApi = true;
@@ -130,20 +135,17 @@ public class CachingProxy extends HttpServlet
         if (isDevelopment)
         {
             useCacheForMarketsApi = false;
+            LOG.log(Level.WARNING, "Caching disabled in development mode");
         }
-
-        // flag to force update of datastore/memcache
-        boolean forceUpdate = false;
-        if (req.getParameter("forceUpdate") != null)
-            forceUpdate = true;
 
         // get URI after /api for apiPath
         String apiPath = reqURI.substring( "/api".length(), reqURI.length() );
         //LOG.log(Level.WARNING, "reqURI is "+reqURI);
         //LOG.log(Level.WARNING, "apiPath is "+apiPath);
 
-        // request URL
-        String url = "";
+        // set CORS headers
+        setResponseCORS(res);
+
         // response nugget
         Object responseData = new HashMap<String, Object>();
         // }}}
@@ -163,7 +165,7 @@ public class CachingProxy extends HttpServlet
             apiPath.startsWith("/volumes")
         )
         {
-            url = reqURI + "?" + queryString;
+            responseData = getCachedRisqData(req, reqURI, queryString, API_CACHE_SECONDS, useCacheForMarketsApi, forceUpdate);
         } // }}}
         else // {{{ 404
         {
@@ -171,9 +173,6 @@ public class CachingProxy extends HttpServlet
             return;
         } // }}}
         //{{{ send response
-        // fetch data, pass forceUpdate arg if requested
-        if (forceUpdate) url = url + "&forceUpdate=1";
-        responseData = getCachedMarketsApiData(req, url, API_CACHE_SECONDS, useCacheForMarketsApi, forceUpdate);
 
         // return 503 if unable to get data
         if (responseData == null)
@@ -181,9 +180,6 @@ public class CachingProxy extends HttpServlet
             res.sendError(503);
             return;
         }
-
-        // set CORS headers
-        setResponseCORS(res);
 
         // set cache header if not a forced update
         if (!forceUpdate)
@@ -259,12 +255,12 @@ public class CachingProxy extends HttpServlet
         if (incomingRequestBean == Map.class)
         {
             // pass original raw body to outgoing request
-            bisqMarketsResponse = requestData(reqMethod, buildMarketsApiURL(req, reqURI), getSafeHeadersFromRequest(req), reqBody);
+            bisqMarketsResponse = requestData(reqMethod, buildRisqGraphURL(req, reqURI), getSafeHeadersFromRequest(req), reqBody);
         }
         else
         {
             // pass sanitized body to outgoing request
-            bisqMarketsResponse = requestData(reqMethod, buildMarketsApiURL(req, reqURI), getSafeHeadersFromRequest(req), sanitizedReqBody);
+            bisqMarketsResponse = requestData(reqMethod, buildRisqGraphURL(req, reqURI), getSafeHeadersFromRequest(req), sanitizedReqBody);
         }
 
         if (bisqMarketsResponse == null) // request failed
@@ -491,48 +487,44 @@ public class CachingProxy extends HttpServlet
         res.setHeader("Cache-Control", "private, max-age="+seconds);
     } // }}}
 
-    private URL buildMarketsApiURL(HttpServletRequest req, String bisqMarketsURI) // {{{
+    private URL buildRisqGraphURL(HttpServletRequest req, String bisqMarketsURI) // {{{
     {
-        URL bisqMarketsURL = null;
+        URL risqGraphURL = null;
 
-        try // build bisqMarketsURL
+        try // build risqGraphURL
         {
             // determine API endpoint
-            String bisqMarketsBaseURL = null;
+            String risqNodeBaseURL = null;
 
             if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Development)
             {
                 // for local devserver - don't use TLS
-                bisqMarketsBaseURL = BISQNODE_HOSTNAME_DEVSERVER;
+                risqNodeBaseURL = RISQNODE_HOSTNAME_DEVSERVER;
             }
             else if (req.getServerName().equals(FRONTEND_HOSTNAME_DEVELOPMENT)) // cloud development
             {
-                bisqMarketsBaseURL = BISQNODE_HOSTNAME_DEVELOPMENT;
+                risqNodeBaseURL = RISQNODE_HOSTNAME_DEVELOPMENT;
             }
             else // cloud production
             {
-                bisqMarketsBaseURL = BISQNODE_HOSTNAME_PRODUCTION;
+                risqNodeBaseURL = RISQNODE_HOSTNAME_PRODUCTION;
             }
 
-            bisqMarketsURL = new URL(bisqMarketsBaseURL + "/graphql");
+            risqGraphURL = new URL(risqNodeBaseURL + "/graphql");
         }
         catch (MalformedURLException e)
         {
-            bisqMarketsURL = null;
+            risqGraphURL = null;
         }
-        return bisqMarketsURL;
+        return risqGraphURL;
     } // }}}
 
-    private Object getCachedMarketsApiData(HttpServletRequest req, String bisqMarketsURI, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
+    private Object getCachedRisqData(HttpServletRequest req, String bisqMarketsURI, String bisqMarketsQueryString, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
     {
-        URL bisqMarketsURL = buildMarketsApiURL(req, bisqMarketsURI);
-        Map<String,String> params = new HashMap();
-        if (req.getQueryString() != null) {
-          params = getQueryMap(req.getQueryString());
-        }
-        return getCachedData(bisqMarketsURL.toString(), bisqMarketsURI, params, secondsToMemcache, useCache, forceUpdate);
+        URL risqGraphURL = buildRisqGraphURL(req, bisqMarketsURI);
+        return getCachedData(risqGraphURL.toString(), bisqMarketsURI, bisqMarketsQueryString, secondsToMemcache, useCache, forceUpdate);
     } // }}}
-    private Object getCachedData(String apiURL, String bisqMarketsURI, Map<String,String> queryMap, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
+    private Object getCachedData(String backendURL, String bisqMarketsURI, String queryString, int secondsToMemcache, boolean useCache, boolean forceUpdate) // {{{
     {
         String response = null;
         Object responseData = null;
@@ -540,17 +532,17 @@ public class CachingProxy extends HttpServlet
         boolean inDatastore = false;
 
         // strip forceUpdate=1 if present
-        String apiURLstripped = apiURL.replaceAll("&forceUpdate=1", "");
+        String dataKey = bisqMarketsURI + "?" + queryString;
 
-        // {{{ first check memcache, use apiURL as key
+        // {{{ first check memcache, use backendURL as key
         if (useCache)
-            response = (String)mc.get(apiURLstripped);
+            response = (String)mc.get(dataKey);
 
         if (!forceUpdate && response != null)
         {
             responseData = parseJsonData(response);
             if (responseData == null)
-                LOG.log(Level.WARNING, "Failed parsing memcache bisqMarkets response for "+apiURL);
+                LOG.log(Level.WARNING, "Failed parsing memcache bisqMarkets response for "+backendURL);
             else
                 inMemcache = true;
         }
@@ -558,22 +550,36 @@ public class CachingProxy extends HttpServlet
         // {{{ if not in memcache, try request it from backend node
         if (responseData == null)
         {
-            LOG.log(Level.WARNING, "Fetching data from bisqMarkets for "+apiURL);
+            LOG.log(Level.WARNING, "Fetching data for "+bisqMarketsURI+" from "+backendURL);
+            GraphQLQuery query = null;
 
-            GraphQLQuery query = GraphQLQuery.forRequest(bisqMarketsURI, queryMap);
             try
             {
-                response = requestDataAsString(HTTPMethod.POST, new URL(apiURL), null, gson.toJson(query));
+                Map<String,String> queryMap = new HashMap();
+                if (queryString != null)
+                    queryMap = getQueryMap(queryString);
+                query = GraphQLQuery.forRequest(bisqMarketsURI, queryMap);
             }
             catch (Exception e)
             {
-                response = null;
+                LOG.log(Level.WARNING, "GraphQLQuery failed for "+dataKey);
+            }
+            if (query != null)
+            {
+                try
+                {
+                    response = requestDataAsString(HTTPMethod.POST, new URL(backendURL), null, gson.toJson(query));
+                }
+                catch (Exception e)
+                {
+                    response = null;
+                }
             }
             if (response != null)
             {
                 responseData = query.translateResponse(response);
                 if (responseData == null)
-                    LOG.log(Level.WARNING, "Failed parsing requested bisqMarkets response for "+apiURL);
+                    LOG.log(Level.WARNING, "Failed parsing requested bisqMarkets response for "+backendURL);
             }
         }
         // }}}
@@ -582,21 +588,23 @@ public class CachingProxy extends HttpServlet
         {
             if (useCache && !inMemcache)
             {
+                LOG.log(Level.WARNING, "Adding memcache key for "+dataKey);
                 if (forceUpdate)
-                    mc.put(apiURLstripped, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.SET_ALWAYS);
+                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.SET_ALWAYS);
                 else
-                    mc.put(apiURLstripped, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
             }
             if (useCache && !inDatastore)
             {
-                Key cacheKey = KeyFactory.createKey(MarketsApiResponseCache.KIND, apiURLstripped);
+                LOG.log(Level.WARNING, "Adding datastore key for "+dataKey);
+                Key cacheKey = KeyFactory.createKey(MarketsApiResponseCache.KIND, dataKey);
                 Transaction tx = DS.beginTransaction();
                 Entity cache = new Entity(cacheKey);
                 try
                 {
-                    cache.setProperty(MarketsApiResponseCache.BISQNODE_URL, apiURLstripped);
+                    cache.setProperty(MarketsApiResponseCache.RISQNODE_URL, dataKey);
                     Text responseText = new Text(response);
-                    cache.setProperty(MarketsApiResponseCache.BISQNODE_RESPONSE, responseText);
+                    cache.setProperty(MarketsApiResponseCache.RISQNODE_RESPONSE, responseText);
                     DS.put(tx, cache);
                     tx.commit();
                 }
@@ -617,7 +625,7 @@ public class CachingProxy extends HttpServlet
         // {{{ if backend node not available, try querying the datastore
         if (useCache && !forceUpdate && responseData == null)
         {
-            Key entityKey = KeyFactory.createKey(MarketsApiResponseCache.KIND, apiURLstripped);
+            Key entityKey = KeyFactory.createKey(MarketsApiResponseCache.KIND, dataKey);
             Filter bisqMarketsURLFilter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, entityKey);
             response = null;
             Entity result = null;
@@ -635,11 +643,11 @@ public class CachingProxy extends HttpServlet
             }
             if (result != null)
             {
-                Text responseText = (Text)result.getProperty(MarketsApiResponseCache.BISQNODE_RESPONSE);
+                Text responseText = (Text)result.getProperty(MarketsApiResponseCache.RISQNODE_RESPONSE);
                 response = (String)responseText.getValue();
                 responseData = parseJsonData(response);
                 if (responseData == null)
-                    LOG.log(Level.WARNING, "Failed parsing datastore bisqMarkets response for "+apiURL);
+                    LOG.log(Level.WARNING, "Failed parsing datastore bisqMarkets response for "+backendURL);
                 else
                     inDatastore = true;
             }
@@ -673,7 +681,7 @@ public class CachingProxy extends HttpServlet
 
     private String requestMarketsApiData(HttpServletRequest req, HTTPMethod requestMethod, String bisqMarketsURI, List<HTTPHeader> headers, String body) // {{{
     {
-        URL bisqMarketsURL = buildMarketsApiURL(req, bisqMarketsURI);
+        URL bisqMarketsURL = buildRisqGraphURL(req, bisqMarketsURI);
         return requestDataAsString(requestMethod, bisqMarketsURL, headers, body);
     } // }}}
 

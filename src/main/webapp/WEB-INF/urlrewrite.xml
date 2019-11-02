@@ -3,34 +3,10 @@
 <urlrewrite>
 	<!-- for API requests, if Origin header was passed, make sure it matches one of our hosts, if so let it through and add CORS headers -->
 	<rule>
-		<condition name="host" next="and">^api.wiz.farm$</condition>
-		<condition name="origin">^https://wiz.farm$</condition>
+		<condition name="host" next="and">^markets.bisq.network$</condition>
+		<condition name="origin">^https://bisq.network$</condition>
 		<set type="response-header" name="Strict-Transport-Security">max-age=10886400; preload</set>
-		<set type="response-header" name="Access-Control-Allow-Origin">https://wiz.farm</set>
-		<set type="response-header" name="Access-Control-Allow-Methods">GET, POST, OPTIONS</set>
-		<set type="response-header" name="Access-Control-Allow-Headers">Access-Control-Allow-Origin, Cookie, Origin, Content-Type, Content-Range, Content-Disposition, Content-Description</set>
-		<set type="response-header" name="Access-Control-Allow-Credentials">true</set>
-		<set type="response-header" name="Access-Control-Max-Age">70</set>
-		<from>^/api/.*</from>
-		<to last="true">-</to>
-	</rule>
-	<rule>
-		<condition name="host" next="and">^api.wiz.farm$</condition>
-		<condition name="origin">^https://dev.wiz.farm$</condition>
-		<set type="response-header" name="Strict-Transport-Security">max-age=10886400; preload</set>
-		<set type="response-header" name="Access-Control-Allow-Origin">https://dev.wiz.farm</set>
-		<set type="response-header" name="Access-Control-Allow-Methods">GET, POST, OPTIONS</set>
-		<set type="response-header" name="Access-Control-Allow-Headers">Access-Control-Allow-Origin, Cookie, Origin, Content-Type, Content-Range, Content-Disposition, Content-Description</set>
-		<set type="response-header" name="Access-Control-Allow-Credentials">true</set>
-		<set type="response-header" name="Access-Control-Max-Age">70</set>
-		<from>^/api/.*</from>
-		<to last="true">-</to>
-	</rule>
-	<rule>
-		<condition name="host" next="and">^api.dev.wiz.farm$</condition>
-		<condition name="origin">^https://dev.wiz.farm$</condition>
-		<set type="response-header" name="Strict-Transport-Security">max-age=10886400; preload</set>
-		<set type="response-header" name="Access-Control-Allow-Origin">https://dev.wiz.farm</set>
+		<set type="response-header" name="Access-Control-Allow-Origin">https://bisq.network</set>
 		<set type="response-header" name="Access-Control-Allow-Methods">GET, POST, OPTIONS</set>
 		<set type="response-header" name="Access-Control-Allow-Headers">Access-Control-Allow-Origin, Cookie, Origin, Content-Type, Content-Range, Content-Disposition, Content-Description</set>
 		<set type="response-header" name="Access-Control-Allow-Credentials">true</set>
@@ -40,25 +16,23 @@
 	</rule>
 	<!-- for API requests without Origin header, just pass it thru -->
 	<rule>
-		<condition name="host" next="or">^api.wiz.farm$</condition>
-		<condition name="host">^api.dev.wiz.farm$</condition>
+		<condition name="host">^markets.bisq.network$</condition>
 		<set type="response-header" name="Strict-Transport-Security">max-age=10886400; preload</set>
 		<from>^/api/.*</from>
 		<to last="true">-</to>
 	</rule>
-	<!-- for API request testing on appspot -->
+	<!-- for API request testing on appspot, don't add HSTS header -->
 	<rule>
-		<condition name="host" next="or">^wizfarm-development.appspot.com$</condition>
-		<condition name="host">^wizfarm-production.appspot.com$</condition>
+		<condition name="host">^bisq-markets.appspot.com$</condition>
 		<from>^/api/.*</from>
 		<to last="true">-</to>
 	</rule>
-	<!-- catchall 404 for other requests -->
+        <!-- redirect / to bisq markets website -->
 	<rule>
-		<condition name="host" next="or">^api.wiz.farm$</condition>
-		<condition name="host">^api.dev.wiz.farm$</condition>
-		<from>.*</from>
-		<set type="status">404</set>
-		<to last="true">null</to>
+		<condition name="host" next="or">^markets.bisq.network$</condition>
+		<condition name="host">^bisq-markets.appspot.com$</condition>
+		<from>/</from>
+		<set type="status">302</set>
+                <to last="true">https://bisq.network/markets</to>
 	</rule>
 </urlrewrite>

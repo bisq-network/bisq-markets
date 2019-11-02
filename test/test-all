@@ -3,15 +3,8 @@ PRODUCTION_HOSTNAME=markets.bisq.network
 DEVELOPMENT_HOSTNAME=bisq-markets.appspot.com
 
 for query in `cat tests`;do
-    echo "${query}"
-    curl -i -n -s "https://${DEVELOPMENT_HOSTNAME}${query}" | head -1
-done
-
-for query in `cat tests`;do
-    echo "${query}"
-    curl -n -s "https://${PRODUCTION_HOSTNAME}${query}" | jq -M . > ${PRODUCTION_HOSTNAME}.out
-    curl -n -s "https://${DEVELOPMENT_HOSTNAME}${query}" | jq -M . > ${DEVELOPMENT_HOSTNAME}.out
-    diff -w -u ${PRODUCTION_HOSTNAME}.out ${DEVELOPMENT_HOSTNAME}.out > diff
-    cat diff
-    rm diff
+    curl -i -n -s \
+        -w "%{url_effective} %{http_code} %{time_total}\n" \
+        -o /dev/null \
+        "https://${DEVELOPMENT_HOSTNAME}${query}" &
 done

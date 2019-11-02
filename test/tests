@@ -1,3 +1,4 @@
+/api/volumes?basecurrency=btc&milliseconds=true&timestamp=no&fillgaps=&interval=day
 /api/ticker
 /api/offers?market=btc_eur&limit=2000
 /api/offers?market=eth_btc&limit=2000

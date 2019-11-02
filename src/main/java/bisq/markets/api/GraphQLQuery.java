@@ -175,7 +175,7 @@ public abstract class GraphQLQuery {
                 "{ ticker(market: $market) { market: marketPair " +
                 "last: formattedLast high: formattedHigh "+
                 "low: formattedLow volume_left: formattedVolumeLeft " +
-                "volume_right: formattedVolumeRight } }";
+                "volume_right: formattedVolumeRight buy: formattedBuy sell: formattedSell } }";
         private final String query = tickerQuery;
         private final Map<String,String> variables;
 

@@ -114,7 +114,7 @@ public abstract class GraphQLQuery {
                         "amount: formattedAmount price: formattedPrice " +
                         "volume: formattedVolume payment_method: paymentMethodId " +
                         "offer_fee_txid: offerFeeTxId } ";
-        private static final String offersQuery = "query Offers($market: MarketPair, $direction: Direction)" +
+        private static final String offersQuery = "query Offers($market: MarketPair!, $direction: Direction)" +
                 "{ offers(market: $market, direction: $direction) { " +
                 "buys " + offerFields +
                 "sells " + offerFields + " } }";
@@ -128,7 +128,10 @@ public abstract class GraphQLQuery {
         @Override
         public Object translateResponse(String response) {
             GraphQLResponse<Map<String,List<OpenOffer>>> offers = gson.fromJson(response,new TypeToken<GraphQLResponse<Map<String,List<OpenOffer>>>>(){}.getType());
-            return offers.getData();
+            Map<String,List<OpenOffer>> buysAndSells = offers.getData();
+            Map<String, Map<String,List<OpenOffer>>> ret = new HashMap<>();
+            ret.put(variables.get("market"), buysAndSells);
+            return ret;
         }
     }
 

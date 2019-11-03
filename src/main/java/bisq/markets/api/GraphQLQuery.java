@@ -110,14 +110,14 @@ public abstract class GraphQLQuery {
         }
         private static final String offerFields = "{ " +
                 "market: marketPair offer_id: id offer_date: offerDate " +
-                        "direction min_amount: formattedMinAmount " +
+                        "direction: btcDirection min_amount: formattedMinAmount " +
                         "amount: formattedAmount price: formattedPrice " +
                         "volume: formattedVolume payment_method: paymentMethodId " +
                         "offer_fee_txid: offerFeeTxId } ";
         private static final String offersQuery = "query Offers($market: MarketPair!, $direction: Direction)" +
                 "{ offers(market: $market, direction: $direction) { " +
-                "buys " + offerFields +
-                "sells " + offerFields + " } }";
+                "buys: btcBuys " + offerFields +
+                "sells: btcSells " + offerFields + " } }";
         private final String query = offersQuery;
         private final Map<String,String> variables;
 

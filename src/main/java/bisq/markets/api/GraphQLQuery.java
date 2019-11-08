@@ -200,6 +200,7 @@ public abstract class GraphQLQuery {
 
     private static class TradesQuery extends GraphQLQuery {
         private static class Trade {
+            String market;
             String direction;
             String price;
             String amount;
@@ -213,7 +214,7 @@ public abstract class GraphQLQuery {
                 "$limit: Int $sort: Sort ) { " +
                 "trades(market: $market direction: $direction timestampFrom: $timestamp_from " +
                 "timestampTo: $timestamp_to limit: $limit sort: $sort) " +
-                "{ direction price: formattedPrice amount: formattedAmount volume: formattedVolume " +
+                "{ market: marketPair direction price: formattedPrice amount: formattedAmount volume: formattedVolume " +
                 "payment_method: paymentMethodId trade_id: offerId trade_date: tradeDate } }";
         private final String query = tradesQuery;
 

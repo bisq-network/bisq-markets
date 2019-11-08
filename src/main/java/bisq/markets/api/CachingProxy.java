@@ -122,7 +122,8 @@ public class CachingProxy extends HttpServlet
         String reqURI = req.getRequestURI().toString();
 
         // get query string, strip forceUpdate if present
-        String queryString = req.getQueryString().replaceAll("&forceUpdate=1", "");
+        String queryString = req.getQueryString();
+            if (queryString != null) queryString = queryString.replaceAll("&forceUpdate=1", "");
 
         // flag to force update of datastore/memcache
         boolean forceUpdate = false;

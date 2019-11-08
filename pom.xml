@@ -63,6 +63,11 @@ limitations under the License.
       <version>2.3.1</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+        <groupId>org.graalvm.compiler</groupId>
+        <artifactId>compiler</artifactId>
+        <version>1.0.0-rc9</version>
+    </dependency>
     <!-- [END servlet] -->
 
     <!-- [START_EXCLUDE] -->

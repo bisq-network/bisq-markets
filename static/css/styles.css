@@ -1,0 +1,155 @@
+
+/* -------
+ * widget
+ * -------
+ */
+div.widget, div.widget_action, div.widget_title {
+    border: solid #ccc 1px;
+    -webkit-box-shadow: 0 2px 2px #ccc; 
+    -moz-box-shadow: 0 2px 6px #ccc; 
+    box-shadow: 0 2px 6px #ccc;
+	background-color: white;
+	margin-bottom: 2em;
+	padding: 1em;
+}
+
+
+/* -------
+ * table
+ * -------
+ */
+table.bordered {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;    
+}
+
+table.bordered {
+    border: solid #ccc 1px;
+    box-shadow: 0 2px 6px #ccc;         
+}
+
+table.bordered tr.odd, table.bordered tr.even {
+}
+
+table.bordered tr.odd:hover, table.bordered tr.even:hover {
+    background-color: #efffff;
+}    
+    
+table.bordered td, table.bordered th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+
+table.bordered tr:first-child th {
+  border-top: 0;
+}
+table.bordered tr:last-child td {
+  border-bottom: 0;
+}
+table.bordered tr td:first-child,
+table.bordered tr th:first-child {
+  border-left: 0;
+}
+table.bordered tr td:last-child,
+table.bordered tr th:last-child {
+  border-right: 0;
+}
+
+table.bordered th {
+    background-color: #fff;
+    background-image: -webkit-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: -moz-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: -ms-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: -o-linear-gradient(top, #f2f2f2, #f2f2f2);
+    background-image: linear-gradient(top, #f2f2f2, #f2f2f2);
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    text-align: center;
+    color: #0f87c3;;
+    
+    font-weight: bold;
+}
+
+table.bordered tr.odd {
+    background-color: white;
+}
+table.bordered tr.even {
+    background-color: #f2f2f2;
+}
+
+
+/**
+ * unbordered table
+ */
+
+table.unbordered {
+    *border-collapse: separate; /* IE7 and lower */
+    width: 100%;
+}
+
+table.unbordered tr.odd, table.unbordered tr.even {
+    border-bottom: solid 1px transparent;
+}
+
+table.unbordered tr.odd:hover, table.unbordered tr.even:hover {
+    border-bottom: solid 1px #aaaaaa;
+}    
+    
+table.unbordered td, table.unbordered th {
+    padding: 1px;
+    vertical-align: bottom;
+}
+
+table.unbordered th {
+    background-color: #fff;
+    font-weight: bold;
+    color: #0f87c3;;
+}
+
+table.unbordered tr.odd {
+    background-color: #FFFFFF;
+}
+table.unbordered tr.even {
+    background-color: #f2f2f2;
+}
+
+
+
+input[type="submit"] {
+    width:100px;
+    background:#09C;
+    color:#fff;
+    font-family: Tahoma, Geneva, sans-serif;
+    height:30px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border: 1p solid #999;
+}
+input[type="submit"]:hover {
+    background:#fff;
+    color:#09C;
+}
+
+input, select    {
+    border: 1px solid #999;
+    background-color: white;
+    height: 30px;
+    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+input {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+textarea:focus, input:focus {
+    border: 1px solid #09C;
+}
+

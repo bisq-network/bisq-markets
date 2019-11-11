@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 2.6//EN" "http://www.tuckey.org/res/dtds/urlrewrite2.6.dtd">
 <urlrewrite>
+	<!-- redirect / to bisq markets website -->
+	<rule>
+		<from>^/$</from>
+		<to last="true" type="permanent-redirect">https://bisq.network/markets</to>
+	</rule>
+	<!-- redirect /api to /api/ -->
+	<rule>
+		<from>^/api$</from>
+		<to last="true" type="permanent-redirect">/api/</to>
+	</rule>
 	<!-- for API requests, if Origin header was passed, make sure it matches one of our hosts, if so let it through and add CORS headers -->
 	<rule>
 		<condition name="host" next="and">^markets.bisq.network$</condition>
@@ -12,27 +22,6 @@
 		<set type="response-header" name="Access-Control-Allow-Credentials">true</set>
 		<set type="response-header" name="Access-Control-Max-Age">70</set>
 		<from>^/api/.*</from>
-		<to last="true">-</to>
-	</rule>
-	<!-- for API requests without Origin header, just pass it thru -->
-	<rule>
-		<condition name="host">^markets.bisq.network$</condition>
-		<set type="response-header" name="Strict-Transport-Security">max-age=10886400; preload</set>
-		<from>^/api/.*</from>
-		<to last="true">-</to>
-	</rule>
-	<!-- for API request testing on appspot, don't add HSTS header -->
-	<rule>
-		<condition name="host">^bisq-markets.appspot.com$</condition>
-		<from>^/api/.*</from>
-		<to last="true">-</to>
-	</rule>
-        <!-- redirect / to bisq markets website -->
-	<rule>
-		<condition name="host" next="or">^markets.bisq.network$</condition>
-		<condition name="host">^bisq-markets.appspot.com$</condition>
-		<from>/</from>
-		<set type="status">302</set>
-                <to last="true">https://bisq.network/markets</to>
+		<to>-</to>
 	</rule>
 </urlrewrite>

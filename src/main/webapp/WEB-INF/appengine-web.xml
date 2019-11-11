@@ -22,18 +22,29 @@
 
   <instance-class>F1</instance-class>
   <automatic-scaling>
-	<min-idle-instances>1</min-idle-instances>
-	<max-idle-instances>automatic</max-idle-instances>
-	<min-pending-latency>30ms</min-pending-latency>
-	<max-pending-latency>automatic</max-pending-latency>
-	<max-concurrent-requests>10</max-concurrent-requests>
+    <min-idle-instances>1</min-idle-instances>
+    <max-idle-instances>automatic</max-idle-instances>
+    <min-pending-latency>30ms</min-pending-latency>
+    <max-pending-latency>automatic</max-pending-latency>
+    <max-concurrent-requests>10</max-concurrent-requests>
   </automatic-scaling>
 
   <system-properties>
-	<property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
-	<property name="file.encoding" value="UTF=8" />
-	<property name="DEFAULT_ENCODING" value="UTF=8" />
+    <property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
+    <property name="file.encoding" value="UTF=8" />
+    <property name="DEFAULT_ENCODING" value="UTF=8" />
   </system-properties>
 
+  <public-root>static</public-root>
+
+  <!-- static files which match these paths will take precedence over urlrewrite.xml -->
+  <static-files>
+
+    <!-- default -->
+    <include path="/**" expiration="10m">
+      <http-header name="Strict-Transport-Security" value="max-age=10886400; includeSubDomains; preload" />
+    </include>
+
+  </static-files>
 </appengine-web-app>
 <!-- [END config] -->

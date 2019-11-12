@@ -1,0 +1,65 @@
+#!/bin/bash
+set -e
+
+PROJECT_PRODUCTION="bisq-markets"
+HOSTNAME="https://markets.wiz.biz/"
+
+EXITCODE=0
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+deploy() #{{{
+{
+    echo "############################"
+    echo "Deploying to ${PROJECT_PRODUCTION}"
+    echo "############################"
+
+    gcloud config set project "${PROJECT_PRODUCTION}"
+    mvn appengine:deploy
+} #}}}
+update_data() #{{{ 
+{
+    curl -i "${HOSTNAME}/api/ticker&forceUpdate=1" &
+} #}}}
+cron_generate() #{{{ 
+{
+    echo """
+      <cron>
+        <url>/api/ticker?&amp;forceUpdate=1</url>
+        <target>default</target>
+        <description>update /api/ticker every 60 seconds</description>
+        <schedule>every 60 seconds</schedule>
+      </cron>"""
+} #}}}
+print_help() #{{{
+{
+    echo "Usage: $0 [command]"
+    echo "Commands:"
+    echo "deploy"
+    echo "update_data"
+    echo "cron_generate"
+    EXITCODE=1
+} #}}}
+
+case "$1" in #{{{
+    deploy) #{{{
+        deploy
+        ;;
+    #}}}
+    update_data) #{{{
+        update_data
+        ;;
+    #}}}
+    cron_generate) #{{{
+        cron_generate
+        ;;
+    #}}}
+    *) #{{{
+        print_help
+        ;;
+    #}}}
+esac #}}}
+#}}}
+
+exit ${EXITCODE}
+
+# vim: expandtab:foldmethod=marker wrap

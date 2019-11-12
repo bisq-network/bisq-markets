@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <cron>
+    <url>/api/BitcoinWizardRanking?peopleStart=0&amp;peopleEnd=125&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinWizardRanking job 1</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+  <cron>
+    <url>/api/BitcoinWizardRanking?peopleStart=125&amp;peopleEnd=250&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinWizardRanking job 2</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+  <cron>
+    <url>/api/BitcoinWizardRanking?peopleStart=250&amp;peopleEnd=375&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinWizardRanking job 3</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+  <cron>
+    <url>/api/BitcoinWizardRanking?peopleStart=375&amp;peopleEnd=500&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinWizardRanking job 4</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=0&amp;peopleEnd=250&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 1</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=250&amp;peopleEnd=500&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 2</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=500&amp;peopleEnd=750&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 3</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=750&amp;peopleEnd=1000&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 4</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=1000&amp;peopleEnd=1250&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 5</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=1250&amp;peopleEnd=1500&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 6</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=1500&amp;peopleEnd=1750&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 7</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=1750&amp;peopleEnd=2000&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 8</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=2000&amp;peopleEnd=2250&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 9</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=2250&amp;peopleEnd=2500&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 10</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=2500&amp;peopleEnd=2750&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 11</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=2750&amp;peopleEnd=3000&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 12</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=3000&amp;peopleEnd=3250&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 13</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=3250&amp;peopleEnd=3500&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 14</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=3500&amp;peopleEnd=3750&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 15</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=3750&amp;peopleEnd=4000&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 16</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=4000&amp;peopleEnd=4250&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 17</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=4250&amp;peopleEnd=4500&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 18</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=4500&amp;peopleEnd=4750&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 19</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/api/BitcoinerShitcoinerRanking?peopleStart=4750&amp;peopleEnd=5000&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>Hourly BitcoinerShitcoinerRanking job 20</description>
+    <schedule>every 60 minutes</schedule>
+  </cron>
+
+</cronentries>

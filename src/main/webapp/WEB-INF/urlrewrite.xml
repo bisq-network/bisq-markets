@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 2.6//EN" "http://www.tuckey.org/res/dtds/urlrewrite2.6.dtd">
+<urlrewrite>
+	<!-- redirect / to bisq markets website -->
+	<rule>
+		<from>^/$</from>
+		<to last="true" type="permanent-redirect">https://bisq.network/markets</to>
+	</rule>
+	<!-- redirect /api to /api/ -->
+	<rule>
+		<from>^/api$</from>
+		<to last="true" type="permanent-redirect">/api/</to>
+	</rule>
+	<!-- for API requests, if Origin header was passed, make sure it matches one of our hosts, if so let it through and add CORS headers -->
+	<rule>
+		<condition name="host" next="and">^markets.bisq.network$</condition>
+		<condition name="origin">^https://bisq.network$</condition>
+		<set type="response-header" name="Strict-Transport-Security">max-age=10886400; preload</set>
+		<set type="response-header" name="Access-Control-Allow-Origin">https://bisq.network</set>
+		<set type="response-header" name="Access-Control-Allow-Methods">GET, POST, OPTIONS</set>
+		<set type="response-header" name="Access-Control-Allow-Headers">Access-Control-Allow-Origin, Cookie, Origin, Content-Type, Content-Range, Content-Disposition, Content-Description</set>
+		<set type="response-header" name="Access-Control-Allow-Credentials">true</set>
+		<set type="response-header" name="Access-Control-Max-Age">70</set>
+		<from>^/api/.*</from>
+		<to>-</to>
+	</rule>
+</urlrewrite>

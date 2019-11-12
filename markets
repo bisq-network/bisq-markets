@@ -2,7 +2,7 @@
 set -e
 
 PROJECT_PRODUCTION="bisq-markets"
-HOSTNAME="https://markets.wiz.biz/"
+HOSTNAME="https://markets.bisq.network"
 
 EXITCODE=0
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -16,19 +16,52 @@ deploy() #{{{
     gcloud config set project "${PROJECT_PRODUCTION}"
     mvn appengine:deploy
 } #}}}
+deploy_cron() #{{{
+{
+    echo "############################"
+    echo "Deploying CRON to ${PROJECT_PRODUCTION}"
+    echo "############################"
+
+    gcloud config set project "${PROJECT_PRODUCTION}"
+    mvn appengine:deployCron
+} #}}}
 update_data() #{{{ 
 {
     curl -i "${HOSTNAME}/api/ticker&forceUpdate=1" &
 } #}}}
-cron_generate() #{{{ 
+cron_generate() #{{{
 {
-    echo """
-      <cron>
-        <url>/api/ticker?&amp;forceUpdate=1</url>
-        <target>default</target>
-        <description>update /api/ticker every 60 seconds</description>
-        <schedule>every 60 seconds</schedule>
-      </cron>"""
+    # /api/hloc for each pair using bisq.network/market parameters
+    echo """  <cron>
+    <url>/api/hloc?market=$1&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>update /api/hloc for $1 every 2 mins</description>
+    <schedule>every 2 mins</schedule>
+  </cron>"""
+
+#    # /api/trades for each pair using bisq.network/market parameters
+#    echo """  <cron>
+#    <url>/api/trades?market=$1&amp;forceUpdate=1</url>
+#    <target>default</target>
+#    <description>update /api/trades for $1 every 2 mins</description>
+#    <schedule>every 2 mins</schedule>
+#  </cron>"""
+} #}}}
+cron_generate_all() #{{{
+{
+    echo '<?xml version="1.0" encoding="UTF-8"?>'
+    echo "<cronentries>"
+
+    # /api/volumes for BTC using bisq.network/market parameters
+    echo """  <cron>
+    <url>/api/volumes?basecurrency=btc&amp;milliseconds=true&amp;timestamp=no&amp;fillgaps=&amp;interval=day&amp;forceUpdate=1</url>
+    <target>default</target>
+    <description>update volumes for BTC every 2 mins</description>
+    <schedule>every 2 mins</schedule>
+  </cron>"""
+
+    curl -s "${HOSTNAME}/api/markets"|grep pair|cut -d '"' -f4|sort|xargs -n 1 "$0" cron_generate
+    echo "</cronentries>"
 } #}}}
 print_help() #{{{
 {
@@ -36,7 +69,8 @@ print_help() #{{{
     echo "Commands:"
     echo "deploy"
     echo "update_data"
-    echo "cron_generate"
+    echo "cron_generate <market>"
+    echo "cron_generate_all"
     EXITCODE=1
 } #}}}
 
@@ -45,12 +79,22 @@ case "$1" in #{{{
         deploy
         ;;
     #}}}
+    deploy_cron) #{{{
+        deploy_cron
+        ;;
+    #}}}
     update_data) #{{{
         update_data
         ;;
     #}}}
     cron_generate) #{{{
-        cron_generate
+        cron_generate "$2"
+        ;;
+    #}}}
+    cron_generate_all) #{{{
+        CRONTAB=./src/main/webapp/WEB-INF/cron.xml
+        cron_generate_all > "${CRONTAB}"
+        cat "${CRONTAB}"
         ;;
     #}}}
     *) #{{{

@@ -22,7 +22,7 @@
 
   <instance-class>F1</instance-class>
   <automatic-scaling>
-    <min-idle-instances>1</min-idle-instances>
+    <min-idle-instances>5</min-idle-instances>
     <max-idle-instances>automatic</max-idle-instances>
     <min-pending-latency>30ms</min-pending-latency>
     <max-pending-latency>automatic</max-pending-latency>

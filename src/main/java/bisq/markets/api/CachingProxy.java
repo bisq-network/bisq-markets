@@ -590,10 +590,17 @@ public class CachingProxy extends HttpServlet
             if (useCache && !inMemcache)
             {
                 LOG.log(Level.WARNING, "Adding memcache key for "+dataKey);
-                if (forceUpdate)
-                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.SET_ALWAYS);
-                else
-                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+                try
+                {
+	                if (forceUpdate)
+	                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.SET_ALWAYS);
+	                else
+	                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+                }
+                catch (Exception e)
+                {
+                    LOG.log(Level.WARNING, "Unable to add memcache for "+dataKey+": "+e.toString());
+                }
             }
             if (useCache && !inDatastore)
             {

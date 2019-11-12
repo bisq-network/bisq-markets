@@ -592,10 +592,11 @@ public class CachingProxy extends HttpServlet
                 LOG.log(Level.WARNING, "Adding memcache key for "+dataKey);
                 try
                 {
-	                if (forceUpdate)
-	                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.SET_ALWAYS);
-	                else
-	                    mc.put(dataKey, response, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+                    String responseJsonString = gson.toJson(responseData);
+                    if (forceUpdate)
+                        mc.put(dataKey, responseJsonString, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.SET_ALWAYS);
+                    else
+                        mc.put(dataKey, responseJsonString, Expiration.byDeltaSeconds(secondsToMemcache), SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
                 }
                 catch (Exception e)
                 {

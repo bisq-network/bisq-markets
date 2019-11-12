@@ -79,7 +79,7 @@ public class CachingProxy extends HttpServlet
     // google cache should be >61 seconds and < 1 week
     private static final int API_CACHE_SECONDS = 180;
     // bisq markets node can sometimes be slow to respond
-    private static final double REQUEST_DEADLINE = 30.0;
+    private static final double REQUEST_DEADLINE = 5.0;
 
     // hostnames used by this CDN app
     private static final String FRONTEND_HOSTNAME_PRODUCTION = "markets.bisq.network";

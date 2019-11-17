@@ -578,7 +578,15 @@ public class CachingProxy extends HttpServlet
             }
             if (response != null)
             {
-                responseData = query.translateResponse(response);
+                try
+                {
+                    responseData = query.translateResponse(response);
+                }
+                catch (Exception e)
+                {
+                    responseData = null;
+                    LOG.log(Level.WARNING, "Unable to translate response for "+dataKey+": "+e.toString());
+                }
                 if (responseData == null)
                     LOG.log(Level.WARNING, "Failed parsing requested bisqMarkets response for "+backendURL);
             }

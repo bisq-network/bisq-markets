@@ -15,25 +15,45 @@ public abstract class GraphQLQuery {
     static bisq.markets.api.GraphQLQuery forRequest(String path, Map<String, String> params) {
         if (path.startsWith("/api/currencies")) {
             return new CurrenciesQuery();
-        }else if (path.startsWith("/api/markets")) {
+        } else if (path.startsWith("/api/markets")) {
             return new MarketsQuery();
-        }else if (path.startsWith("/api/offers")) {
+        } else if (path.startsWith("/api/offers")) {
             return new OffersQuery(params);
-        }else if (path.startsWith("/api/depth")) {
+        } else if (path.startsWith("/api/depth")) {
             return new DepthQuery(params);
-        }else if (path.startsWith("/api/ticker")) {
+        } else if (path.startsWith("/api/ticker")) {
             return new TickerQuery(params);
-        }else if (path.startsWith("/api/trades")) {
+        } else if (path.startsWith("/api/trades")) {
             return new TradesQuery(params);
-        }else if (path.startsWith("/api/hloc")) {
+        } else if (path.startsWith("/api/hloc")) {
             return new HlocQuery(params);
-        }else if (path.startsWith("/api/volumes")) {
+        } else if (path.startsWith("/api/volumes")) {
             return new VolumesQuery(params);
         } else {
             return null;
         }
     }
-    public abstract Object translateResponse(String response);
+
+    public Object translateResponse(String response) {
+        try {
+            return translateSuccessfulResponse(response);
+        } catch (Exception e) {
+            return translateErrorResponse(response);
+        }
+    }
+
+    private static class Error {
+        String message;
+    }
+    public static class ErrorResponse  {
+        List<Error> errors;
+    }
+    private Object translateErrorResponse(String response) {
+        return gson.fromJson(response,new TypeToken<ErrorResponse>(){}.getType());
+    }
+
+    protected abstract Object translateSuccessfulResponse(String response);
+
 
     private static class CurrenciesQuery extends GraphQLQuery {
         private static class Currency {
@@ -46,7 +66,7 @@ public abstract class GraphQLQuery {
         private final String query = currenciesQuery;
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<List<Currency>> currencies = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Currency>>>(){}.getType());
             Iterator<Currency> iter = currencies.getData().iterator();
             Map<String,Currency> ret = new HashMap();
@@ -74,7 +94,7 @@ public abstract class GraphQLQuery {
         private final String query = marketsQuery;
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<List<Market>> markets = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Market>>>(){}.getType());
             Iterator<Market> iter = markets.getData().iterator();
             Map<String,Market> ret = new HashMap();
@@ -126,7 +146,7 @@ public abstract class GraphQLQuery {
         }
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<Map<String,List<OpenOffer>>> offers = gson.fromJson(response,new TypeToken<GraphQLResponse<Map<String,List<OpenOffer>>>>(){}.getType());
             Map<String,List<OpenOffer>> buysAndSells = offers.getData();
             Map<String, Map<String,List<OpenOffer>>> ret = new HashMap<>();
@@ -151,7 +171,7 @@ public abstract class GraphQLQuery {
         }
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<Depth> markets = gson.fromJson(response,new TypeToken<GraphQLResponse<Depth>>(){}.getType());
             Depth depth = markets.getData();
             Map<String,Depth> ret = new HashMap<>();
@@ -184,7 +204,7 @@ public abstract class GraphQLQuery {
         }
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<List<Ticker>> markets = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Ticker>>>(){}.getType());
             List<Ticker> tickers = markets.getData();
             if (variables.get("market") != null){
@@ -233,7 +253,7 @@ public abstract class GraphQLQuery {
        }
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<List<Trade>> ret = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Trade>>>(){}.getType());
             return ret.getData();
         }
@@ -272,7 +292,7 @@ public abstract class GraphQLQuery {
         }
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<List<Hloc>> res = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Hloc>>>(){}.getType());
             List<Map<String,Object>> ret = new ArrayList<>();
             for (Hloc hloc : res.getData()) {
@@ -320,7 +340,7 @@ public abstract class GraphQLQuery {
         }
 
         @Override
-        public Object translateResponse(String response) {
+        protected Object translateSuccessfulResponse(String response) {
             GraphQLResponse<List<Volume>> res = gson.fromJson(response,new TypeToken<GraphQLResponse<List<Volume>>>(){}.getType());
             List<Map<String,Object>> ret = new ArrayList<>();
             for (Volume volume : res.getData()) {

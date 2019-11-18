@@ -181,6 +181,9 @@ public class CachingProxy extends HttpServlet
             res.sendError(503);
             return;
         }
+        if (responseData instanceof GraphQLQuery.ErrorResponse) {
+            // WIZ PLEASE ADD CORRECT RESPONSE CODE
+        }
 
         // set cache header if not a forced update
         if (!forceUpdate)
@@ -593,7 +596,7 @@ public class CachingProxy extends HttpServlet
         }
         // }}}
         // {{{ if successful, save response in memcache/datastore for next time
-        if (response != null && responseData != null)
+        if (response != null && responseData != null && (responseData instanceof GraphQLQuery.ErrorResponse == false))
         {
             if (useCache && !inMemcache)
             {

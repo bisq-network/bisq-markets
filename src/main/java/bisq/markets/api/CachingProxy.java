@@ -182,7 +182,8 @@ public class CachingProxy extends HttpServlet
             return;
         }
         if (responseData instanceof GraphQLQuery.ErrorResponse) {
-            // WIZ PLEASE ADD CORRECT RESPONSE CODE
+            res.sendError(400);
+            return;
         }
 
         // set cache header if not a forced update

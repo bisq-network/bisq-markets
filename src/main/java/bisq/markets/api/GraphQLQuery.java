@@ -13,6 +13,11 @@ public abstract class GraphQLQuery {
     private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
     static bisq.markets.api.GraphQLQuery forRequest(String path, Map<String, String> params) {
+        String sort = params.get("sort");
+        if (sort != null) {
+            params.put("sort", sort.toUpperCase());
+        }
+
         if (path.startsWith("/api/currencies")) {
             return new CurrenciesQuery();
         } else if (path.startsWith("/api/markets")) {

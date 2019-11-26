@@ -22,11 +22,11 @@
 
   <instance-class>F1</instance-class>
   <automatic-scaling>
-    <min-idle-instances>2</min-idle-instances>
+    <min-idle-instances>1</min-idle-instances>
     <max-idle-instances>automatic</max-idle-instances>
     <min-pending-latency>30ms</min-pending-latency>
     <max-pending-latency>automatic</max-pending-latency>
-    <max-concurrent-requests>30</max-concurrent-requests>
+    <max-concurrent-requests>50</max-concurrent-requests>
   </automatic-scaling>
 
   <system-properties>

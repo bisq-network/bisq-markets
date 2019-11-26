@@ -35,16 +35,16 @@ cron_generate() #{{{
     echo """  <cron>
     <url>/api/hloc?market=$1&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for $1 every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for $1 every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>"""
 
 #    # /api/trades for each pair using bisq.network/market parameters
 #    echo """  <cron>
 #    <url>/api/trades?market=$1&amp;forceUpdate=1</url>
 #    <target>default</target>
-#    <description>update /api/trades for $1 every 2 mins</description>
-#    <schedule>every 2 mins</schedule>
+#    <description>update /api/trades for $1 every 4 mins</description>
+#    <schedule>every 4 mins</schedule>
 #  </cron>"""
 } #}}}
 cron_generate_all() #{{{

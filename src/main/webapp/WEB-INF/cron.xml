@@ -9,1489 +9,1489 @@
   <cron>
     <url>/api/hloc?market=acm_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for acm_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for acm_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ade_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ade_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ade_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=aeon_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for aeon_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for aeon_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=aeur_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for aeur_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for aeur_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=amit_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for amit_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for amit_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=arq_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for arq_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for arq_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ask_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ask_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ask_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=aus_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for aus_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for aus_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=beam_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for beam_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for beam_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=blur_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for blur_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for blur_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=bsq_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for bsq_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for bsq_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_aed&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_aed every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_aed every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_afn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_afn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_afn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_all&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_all every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_all every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_amd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_amd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_amd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ang&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ang every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ang every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_aoa&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_aoa every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_aoa every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ars&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ars every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ars every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_aud&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_aud every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_aud every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_awg&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_awg every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_awg every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_azn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_azn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_azn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bam&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bam every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bam every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bbd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bbd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bbd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bdt&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bdt every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bdt every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bgn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bgn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bgn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bhd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bhd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bhd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bif&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bif every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bif every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bmd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bmd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bmd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bnd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bnd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bnd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bob&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bob every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bob every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_brl&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_brl every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_brl every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bsd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bsd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bsd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_btn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_btn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_btn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bwp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bwp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bwp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_byn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_byn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_byn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_bzd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_bzd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_bzd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_cad&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_cad every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_cad every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_cdf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_cdf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_cdf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_chf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_chf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_chf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_clp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_clp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_clp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_cny&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_cny every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_cny every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_cop&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_cop every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_cop every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_crc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_crc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_crc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_cup&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_cup every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_cup every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_cve&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_cve every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_cve every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_czk&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_czk every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_czk every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_djf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_djf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_djf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_dkk&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_dkk every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_dkk every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_dop&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_dop every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_dop every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_dzd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_dzd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_dzd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_egp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_egp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_egp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ern&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ern every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ern every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_etb&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_etb every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_etb every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_eur&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_eur every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_eur every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_fjd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_fjd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_fjd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_fkp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_fkp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_fkp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_gbp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_gbp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_gbp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_gel&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_gel every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_gel every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ghs&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ghs every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ghs every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_gip&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_gip every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_gip every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_gmd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_gmd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_gmd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_gnf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_gnf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_gnf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_gtq&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_gtq every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_gtq every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_gyd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_gyd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_gyd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_hkd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_hkd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_hkd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_hnl&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_hnl every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_hnl every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_hrk&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_hrk every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_hrk every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_htg&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_htg every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_htg every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_huf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_huf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_huf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_idr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_idr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_idr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ils&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ils every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ils every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_inr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_inr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_inr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_iqd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_iqd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_iqd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_irr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_irr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_irr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_isk&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_isk every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_isk every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_jmd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_jmd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_jmd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_jod&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_jod every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_jod every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_jpy&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_jpy every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_jpy every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_kes&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_kes every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_kes every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_kgs&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_kgs every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_kgs every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_khr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_khr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_khr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_kmf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_kmf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_kmf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_kpw&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_kpw every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_kpw every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_krw&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_krw every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_krw every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_kwd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_kwd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_kwd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_kyd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_kyd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_kyd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_kzt&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_kzt every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_kzt every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_lak&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_lak every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_lak every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_lbp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_lbp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_lbp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_lkr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_lkr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_lkr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_lrd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_lrd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_lrd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_lsl&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_lsl every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_lsl every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_lyd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_lyd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_lyd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mad&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mad every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mad every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mdl&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mdl every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mdl every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mga&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mga every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mga every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mkd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mkd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mkd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mmk&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mmk every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mmk every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mnt&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mnt every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mnt every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mop&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mop every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mop every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mro&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mro every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mro every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mur&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mur every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mur every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mvr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mvr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mvr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mwk&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mwk every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mwk every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mxn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mxn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mxn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_myr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_myr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_myr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_mzn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_mzn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_mzn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_nad&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_nad every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_nad every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ngn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ngn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ngn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_nio&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_nio every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_nio every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_nok&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_nok every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_nok every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_npr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_npr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_npr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_nzd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_nzd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_nzd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_omr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_omr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_omr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_pab&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_pab every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_pab every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_pen&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_pen every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_pen every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_pgk&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_pgk every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_pgk every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_php&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_php every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_php every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_pkr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_pkr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_pkr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_pln&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_pln every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_pln every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_pyg&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_pyg every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_pyg every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_qar&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_qar every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_qar every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ron&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ron every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ron every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_rsd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_rsd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_rsd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_rub&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_rub every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_rub every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_rwf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_rwf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_rwf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_sar&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_sar every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_sar every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_sbd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_sbd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_sbd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_scr&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_scr every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_scr every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_sdg&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_sdg every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_sdg every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_sek&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_sek every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_sek every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_sgd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_sgd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_sgd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_shp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_shp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_shp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_sll&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_sll every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_sll every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_sos&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_sos every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_sos every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_srd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_srd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_srd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ssp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ssp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ssp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_stn&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_stn every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_stn every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_svc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_svc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_svc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_syp&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_syp every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_syp every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_szl&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_szl every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_szl every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_thb&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_thb every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_thb every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_tjs&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_tjs every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_tjs every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_tmt&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_tmt every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_tmt every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_tnd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_tnd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_tnd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_top&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_top every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_top every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_try&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_try every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_try every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ttd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ttd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ttd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_twd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_twd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_twd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_tzs&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_tzs every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_tzs every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_uah&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_uah every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_uah every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_ugx&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_ugx every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_ugx every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_usd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_usd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_usd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_uyu&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_uyu every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_uyu every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_uzs&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_uzs every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_uzs every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_vef&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_vef every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_vef every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_vnd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_vnd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_vnd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_vuv&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_vuv every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_vuv every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_wst&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_wst every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_wst every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_xaf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_xaf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_xaf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_xcd&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_xcd every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_xcd every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_xof&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_xof every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_xof every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_xpf&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_xpf every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_xpf every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_yer&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_yer every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_yer every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_zar&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_zar every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_zar every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_zmw&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_zmw every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_zmw every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btc_zwl&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btc_zwl every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btc_zwl every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=btm_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for btm_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for btm_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=bzc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for bzc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for bzc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=cash2_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for cash2_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for cash2_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=cha_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for cha_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for cha_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=cloak_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for cloak_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for cloak_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=crcl_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for crcl_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for crcl_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=crds_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for crds_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for crds_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=croat_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for croat_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for croat_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=dai_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for dai_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for dai_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=darx_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for darx_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for darx_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=dash_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for dash_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for dash_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=dcr_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for dcr_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for dcr_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=doge_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for doge_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for doge_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=doi_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for doi_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for doi_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=drgl_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for drgl_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for drgl_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=dst_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for dst_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for dst_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=dxo_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for dxo_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for dxo_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=etc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for etc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for etc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=eth_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for eth_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for eth_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=eths_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for eths_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for eths_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=fjc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for fjc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for fjc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=frty_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for frty_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for frty_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=gali_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for gali_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for gali_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=gbyte_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for gbyte_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for gbyte_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=gmcn_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for gmcn_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for gmcn_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=grin_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for grin_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for grin_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=hatch_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for hatch_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for hatch_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=hlm_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for hlm_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for hlm_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ida_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ida_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ida_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ird_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ird_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ird_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=kek_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for kek_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for kek_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=lcp_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for lcp_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for lcp_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ltc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ltc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ltc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ltz_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ltz_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ltz_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=lytx_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for lytx_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for lytx_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=mai_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for mai_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for mai_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=mask_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for mask_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for mask_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=mbgl_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for mbgl_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for mbgl_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=mile_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for mile_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for mile_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=mox_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for mox_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for mox_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=mqx_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for mqx_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for mqx_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=mue_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for mue_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for mue_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=nav_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for nav_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for nav_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=neos_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for neos_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for neos_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=nmc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for nmc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for nmc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=nor_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for nor_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for nor_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=onion_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for onion_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for onion_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=pink_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for pink_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for pink_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=pivx_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for pivx_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for pivx_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ple_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ple_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ple_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=prsn_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for prsn_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for prsn_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=pzdc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for pzdc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for pzdc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=qbs_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for qbs_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for qbs_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=qmcoin_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for qmcoin_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for qmcoin_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=qwc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for qwc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for qwc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=rads_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for rads_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for rads_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=rmx_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for rmx_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for rmx_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ryo_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ryo_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ryo_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=scp_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for scp_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for scp_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=sf_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for sf_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for sf_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=space_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for space_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for space_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=sub1x_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for sub1x_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for sub1x_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=trtl_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for trtl_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for trtl_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=tusd_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for tusd_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for tusd_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=ucc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for ucc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for ucc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=uno_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for uno_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for uno_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=usdc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for usdc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for usdc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=veil_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for veil_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for veil_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=vxv_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for vxv_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for vxv_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=web_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for web_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for web_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=wrkz_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for wrkz_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for wrkz_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=xcp_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for xcp_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for xcp_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=xdr0_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for xdr0_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for xdr0_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=xmr_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for xmr_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for xmr_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=xrc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for xrc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for xrc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=xspec_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for xspec_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for xspec_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=xzc_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for xzc_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for xzc_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=zec_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for zec_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for zec_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=zel_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for zel_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for zel_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=zen_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for zen_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for zen_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
   <cron>
     <url>/api/hloc?market=zer_btc&amp;timestamp=no&amp;interval=minute&amp;timestamp_from=&amp;timestamp_to=&amp;forceUpdate=1</url>
     <target>default</target>
-    <description>update /api/hloc for zer_btc every 2 mins</description>
-    <schedule>every 2 mins</schedule>
+    <description>update /api/hloc for zer_btc every 4 mins</description>
+    <schedule>every 4 mins</schedule>
   </cron>
 </cronentries>

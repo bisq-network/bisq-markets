@@ -12,9 +12,9 @@ Full API documentation: https://markets.bisq.network/api/
 
 There are 2 ways to get the Bisq Markets data:
 
-1) Bisq Statsnode (generates local JSON files)
+1) Bisq with `--dumpStatistics=true` (generates local JSON files)
 
-If you just want local data saved to static JSON files on-disk, you don't need this repo, you can just run the Bisq app in statsnode mode. Follow the instructions to [build Bisq from source](https://github.com/bisq-network/bisq/blob/master/docs/build.md) and run `./bisq-statsnode` - after it syncs to the network, you will get your generated JSON files in `$HOME/.local/share/Bisq/btc_mainnet/db/`
+If you just want a dump of all data saved to local JSON files, you don't need this repo, you can just run the Bisq app with `--dumpStatistics=true` option. After it starts up, you will get your generated JSON files in `$HOME/.local/share/Bisq/btc_mainnet/db/`
 
 2) Risq GraphQL + Appengine Proxy (high performance cloud API service)
 

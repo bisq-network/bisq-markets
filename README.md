@@ -16,27 +16,30 @@ more efficient strategies.
 
 # Requirements
 
-* Apache or other webserver with php 5.5+
-* opcache extension.  ( for data caching. will run without, but much slower. )
+* Ubuntu 18.04 LTS
 
 # Installation
 
-On ubuntu apcu can be installed with:
+First, [setup your Bisq Seednode](https://github.com/bisq-network/bisq/tree/master/seednode#bisq-seed-node) so you have Bisq running and fully synced. Then, run the intallation script from this repo to install Bisq Markets API into the Apache webroot.
 
-   apt-get install php5-apcu
-
-The website code can then be installed by:
-
-1. git clone this repository to your docroot or somewhere beneath it.
-2. cp settings.json.example settings.json
-3. edit settings.json and edit the value of "data_dir" to reflect the location of
-the Bisq data files on your system.
-4. Make sure that Bisq is running with flag --dumpStatistics true
-
+```bash
+curl -s https://raw.githubusercontent.com/bisq-network/bisq-markets/master/install_bisq_markets_debian.sh | sudo bash
+```
 Navigate in your browser to your webserver docroot.
 
-That's it!
+# Let's Encrypt
 
+You'll need to open ports 80 and 443 on your firewall for HTTP and HTTPS
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+Request an SSL certificate for your server's hostname using certbot
+```bash
+sudo apt-get install -y python-certbot-apache
+sudo certbot --apache -d markets.example.com
+```
 
 # API
 

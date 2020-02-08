@@ -41,6 +41,18 @@ sudo apt-get install -y python-certbot-apache
 sudo certbot --apache -d markets.example.com
 ```
 
+# CORS headers (optional)
+
+If necessary, add this to your apache2.conf in the `<VirtualHost>` section:
+```
+Header always set Access-Control-Allow-Origin "*"
+```
+
+If not already enabled, you will need to enable the Headers module by doing
+```
+ln -s /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
+```
+
 # API
 
 For now, just check out the API subdirectory.  docs are todo.

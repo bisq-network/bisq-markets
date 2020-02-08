@@ -53,6 +53,24 @@ If not already enabled, you will need to enable the Headers module by doing
 ln -s /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
 ```
 
+# Tweaks for scaling (optional)
+
+Recommended to set in /etc/php/7.2/apache2/php.ini
+```
+memory_limit = 512M
+```
+
+Recommended to set in /etc/apache2/mods-available/mpm_prefork.conf
+```
+<IfModule mpm_prefork_module>
+        StartServers             20
+        MinSpareServers          10
+        MaxSpareServers          20
+        MaxRequestWorkers        50
+        MaxConnectionsPerChild   0
+</IfModule>
+```
+
 # API
 
 For now, just check out the API subdirectory.  docs are todo.

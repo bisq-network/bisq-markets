@@ -1,5 +1,4 @@
 <?php
-header('Access-Control-Allow-Origin: *');
 
 require_once( __DIR__ . '/../../lib/offers.class.php');
 require_once( __DIR__ . '/../../lib/primary_market.class.php');

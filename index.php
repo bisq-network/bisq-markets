@@ -1,4 +1,4 @@
 <?php
-    header("Location: https://markets.bisq.network/api/");
+    header("Location: https://bisq.network/markets/");
     die();
 ?>

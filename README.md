@@ -66,7 +66,7 @@ Recommended to set in /etc/apache2/mods-available/mpm_prefork.conf
         StartServers             20
         MinSpareServers          10
         MaxSpareServers          20
-        MaxRequestWorkers        50
+        MaxRequestWorkers        30
         MaxConnectionsPerChild   0
 </IfModule>
 ```

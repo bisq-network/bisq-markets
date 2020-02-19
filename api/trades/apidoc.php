@@ -57,7 +57,7 @@ END
                 'this api will return a maximum of 2000 trades per call',
                 'if trade_id_from or trade_id_to is used and a matching trade is not found for each, then no results are returned',
                 'The Bisq app does not presently use a trade_id internally.  The trade_id in this api is actually the bisq offerId.',
-                'Possible values for payment_method can change over time.  For most current, see [PaymentMethod.java](https://raw.githubusercontent.com/bisq-network/bisq-core/master/src/main/java/bisq/core/payment/payload/PaymentMethod.java)',
+                'Possible values for payment_method can change over time.  For most current, see [PaymentMethod.java](https://github.com/bisq-network/bisq/blob/master/core/src/main/java/bisq/core/payment/payload/PaymentMethod.java)',
                 ];
     }
     

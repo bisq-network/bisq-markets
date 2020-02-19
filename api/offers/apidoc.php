@@ -87,7 +87,7 @@ END
     
     static function get_notes() {
        // Note: these are found at:
-       //  https://github.com/bitsquare/bitsquare/blob/master/core/src/main/java/io/bitsquare/payment/PaymentMethod.java
+       // https://github.com/bisq-network/bisq/blob/master/core/src/main/java/bisq/core/payment/payload/PaymentMethod.java
        $payment_methods = [ 
                             "OK_PAY",
                             "PERFECT_MONEY",
@@ -104,7 +104,7 @@ END
                          ];
         
         return ['payment_method in response will be one of: ' . implode( ', ', $payment_methods ),
-                'payment_method values are defined in this file: https://github.com/bitsquare/bitsquare/blob/master/core/src/main/java/io/bitsquare/payment/PaymentMethod.java',
+                'payment_method values are defined in this file: https://github.com/bisq-network/bisq/blob/master/core/src/main/java/bisq/core/payment/payload/PaymentMethod.java',
                 'offer_fee_txid in response is the offer fee transaction ID in the bitcoin block chain',
                 'offer_date in response is provided in milliseconds since 1970, not seconds. To get seconds, divide by 1000',
                ];

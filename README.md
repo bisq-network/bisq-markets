@@ -1,76 +1,25 @@
-# Bisq Markets Website+API
-A simple web interface to view Bisq markets.
+# Bisq Markets API+Website
 
-This is a bare-bones implementation that reads the JSON files created by Bisq
-and publishes an API for web clients to access them.
+A website to visualize and explore Bisq Markets data, powered by the Mempool backend which can serve Bisq Markets API data.
 
-# Performance, or lack thereof.
+Bisq Markets API documentation: https://bisq.markets/api
 
-At present, no database is used and backend operations are very inefficient.
+## API Backend
 
-This is OK for the moment as there is little Bisq data, but the implementation
-will need to be optimized when Bisq volume picks up.
+First, build [Bisq](https://github.com/bisq-network/bisq) from source as normal, and run the `./bisq-statsnode` entrypoint with `--dumpStatistics=true --dumpBlockchainData=true` - after it finishes syncing the Bisq data, it should create some JSON files in your `./btc_mainnet/db/json/` folder such as `trade_statistics.json`.
 
-I have separated the data access classes such that it should be simple to plugin
-more efficient strategies.
+Then, install the [Mempool Explorer](https://github.com/mempool/mempool)'s production configuration as normal, and assuming your Bisq home directory is `/bisq`, enable the Bisq Markets API in your backend `mempool-config.json` as follows:
 
-# Requirements
-
-* Ubuntu 18.04 LTS
-
-# Installation
-
-First, [setup your Bisq Seednode](https://github.com/bisq-network/bisq/tree/master/seednode#bisq-seed-node) so you have Bisq running and fully synced. Then, run the intallation script from this repo to install Bisq Markets API into the Apache webroot.
-
-```bash
-curl -s https://raw.githubusercontent.com/bisq-network/bisq-markets/master/install_bisq_markets_debian.sh | sudo bash
 ```
-Navigate in your browser to your webserver docroot.
-
-# Let's Encrypt
-
-You'll need to open ports 80 and 443 on your firewall for HTTP and HTTPS
-```bash
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
+  "BISQ_ENABLED": true,
+  "BISQ_BLOCKS_DATA_PATH": "/bisq/statsnode-data/btc_mainnet/db/json",
+  "BISQ_MARKET_ENABLED": true,
+  "BISQ_MARKETS_DATA_PATH": "/bisq/statsnode-data",
 ```
 
-Request an SSL certificate for your server's hostname using certbot
-```bash
-sudo apt-get install -y python-certbot-apache
-sudo certbot --apache -d markets.example.com
-```
+Mempool will get the Bisq Markets data from your bisq-statsnode in the JSON files and serve it over the API. You should be able to access `/api/offers?market=bsq_btc` or other Bisq Market APIs.
 
-# CORS headers (optional)
+## Angular web frontend
 
-If necessary, add this to your apache2.conf in the `<VirtualHost>` section:
-```
-Header always set Access-Control-Allow-Origin "*"
-```
+TBD as part of https://github.com/bisq-network/projects/issues/41
 
-If not already enabled, you will need to enable the Headers module by doing
-```
-ln -s /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
-```
-
-# Tweaks for scaling (optional)
-
-Recommended to set in /etc/php/7.2/apache2/php.ini
-```
-memory_limit = 512M
-```
-
-Recommended to set in /etc/apache2/mods-available/mpm_prefork.conf
-```
-<IfModule mpm_prefork_module>
-        StartServers             20
-        MinSpareServers          10
-        MaxSpareServers          20
-        MaxRequestWorkers        30
-        MaxConnectionsPerChild   0
-</IfModule>
-```
-
-# API
-
-For now, just check out the API subdirectory.  docs are todo.

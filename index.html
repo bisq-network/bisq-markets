@@ -1,0 +1,846 @@
+
+<html>
+<head>
+  <link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="css/css.css" id="opensans-css" media="all" rel="stylesheet" type="text/css">
+  <link href="css/styles.css" rel="stylesheet" type="text/css">
+  <link href="../favicon.ico" rel="icon" type="image/x-icon">
+        
+<style>
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 12px;
+    margin-bottom: 10px;
+}
+#apiversion {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+div.api, div.toc, div.errors {
+    width: 80%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+div.method {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+div.description {
+    margin-left: 25px;
+}
+div.requestexample {
+    margin-left: 25px;
+    margin-right: 25px;
+    border: grey dashed 1px;
+    background-color: white;
+    padding: 10px;
+}
+div.responseexample {
+    margin-left: 25px;
+    margin-right: 25px;
+    white-space: pre;
+    margin-bottom: 10px;
+    border: grey dashed 1px;
+    background-color: white;
+    padding: 10px;
+}
+div.params div {
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<div class="toc widget">
+    <h4>Bisq public webservice APIs:</h4>
+    <p id="apiversion">Version: bisq-webservice-api-0.9.14
+</p>
+    <ul>
+        <li><a href="#currencies">currencies</a></li>
+        <li><a href="#depth">depth</a></li>
+        <li><a href="#hloc">hloc</a></li>
+        <li><a href="#markets">markets</a></li>
+        <li><a href="#offers">offers</a></li>
+        <li><a href="#ticker">ticker</a></li>
+        <li><a href="#trades">trades</a></li>
+        <li><a href="#volumes">volumes</a></li>
+    </ul>
+    
+    Error responses are documented <a href="#errors">here</a>.
+    
+</div>
+
+
+<div class="api widget">
+    <div class="method" id="currencies">/api/currencies</div>
+    <div class="description">Provides list of available currencies for a given base currency.</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/currencies">https://bisq.markets/api/currencies</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">{
+    &quot;AED&quot;: {
+        &quot;code&quot;: &quot;AED&quot;,
+        &quot;name&quot;: &quot;United Arab Emirates Dirham&quot;,
+        &quot;precision&quot;: 8,
+        &quot;type&quot;: &quot;fiat&quot;
+    },
+    &quot;AIB&quot;: {
+        &quot;code&quot;: &quot;AIB&quot;,
+        &quot;name&quot;: &quot;Advanced Internet Blocks&quot;,
+        &quot;precision&quot;: 8,
+        &quot;type&quot;: &quot;crypto&quot;
+    },
+    ...
+}</div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>required</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >basecurrency</td>
+<td class='td-desc' >base currency identifier</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >BTC</td>
+</tr>
+<tr class='cnt-2 even' >
+<td class='td-param' >type</td>
+<td class='td-desc' >type of currencies to include in results</td>
+<td class='td-required' >No</td>
+<td class='td-values' >crypto | fiat | all</td>
+<td class='td-default' >all</td>
+</tr>
+<tr class='cnt-3 odd' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data</td>
+<td class='td-required' >No</td>
+<td class='td-values' >json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        <div class="notes">
+        <h4>Notes</h4>
+        <ul>
+                <li class="noteitem">In practice, the same currencies are available for every basecurrency so this API can be called just once, omitting the basecurrency parameter.</li>
+                </ul>
+    </div>
+        
+        
+</div>
+<div class="api widget">
+    <div class="method" id="depth">/api/depth</div>
+    <div class="description">Provides list of open offer prices for a single market.</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/depth?market=xmr_btc">https://bisq.markets/api/depth?market=xmr_btc</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">{
+    &quot;xmr_btc&quot;: {
+        &quot;buys&quot;: [
+            &quot;0.01432700&quot;,
+            &quot;0.01403166&quot;,
+            &quot;0.01403018&quot;,
+        ],
+        &quot;sells&quot;: [
+            &quot;0.01523659&quot;,
+            &quot;0.01523956&quot;,
+        ]
+    }
+}                          </div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>required</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >market</td>
+<td class='td-desc' >market identifier</td>
+<td class='td-required' >Yes</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-2 even' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data</td>
+<td class='td-required' >No</td>
+<td class='td-values' >json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        
+        <div class="seealso">
+        <h4>See Also</h4>
+        <ul>
+                <li class="seealsoitem"><a href="#offers">offers</a></li>
+                </ul>
+    </div>
+        
+</div>
+<div class="api widget">
+    <div class="method" id="hloc">/api/hloc</div>
+    <div class="description">Provides hi/low/open/close data for a given market.  This can be used to generate a candlestick chart.</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/hloc?market=xmr_btc">https://bisq.markets/api/hloc?market=xmr_btc</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">[
+    {
+        &quot;period_start&quot;: 1463875200,
+        &quot;open&quot;: &quot;0.00198039&quot;,
+        &quot;high&quot;: &quot;0.00198039&quot;,
+        &quot;low&quot;: &quot;0.00180809&quot;,
+        &quot;close&quot;: &quot;0.00180809&quot;,
+        &quot;volume_left&quot;: &quot;528.73200000&quot;,
+        &quot;volume_right&quot;: &quot;1.04300000&quot;,
+        &quot;avg&quot;: &quot;0.00197264&quot;
+    },
+    ...
+    {
+        &quot;period_start&quot;: 1472342400,
+        &quot;open&quot;: &quot;0.00982318&quot;,
+        &quot;high&quot;: &quot;0.01911520&quot;,
+        &quot;low&quot;: &quot;0.00982318&quot;,
+        &quot;close&quot;: &quot;0.01530002&quot;,
+        &quot;volume_left&quot;: &quot;3412.86880000&quot;,
+        &quot;volume_right&quot;: &quot;47.21000000&quot;,
+        &quot;avg&quot;: &quot;0.01383294&quot;
+    }
+]                          </div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>required</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >market</td>
+<td class='td-desc' >market identifier</td>
+<td class='td-required' >Yes</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-2 even' >
+<td class='td-param' >interval</td>
+<td class='td-desc' >length of time blocks to summarize. auto will pick appropriate interval based on total time range</td>
+<td class='td-required' >No</td>
+<td class='td-values' >minute | half_hour | hour | half_day | day | week | month | year | auto</td>
+<td class='td-default' >auto</td>
+</tr>
+<tr class='cnt-3 odd' >
+<td class='td-param' >timestamp_from</td>
+<td class='td-desc' >start time, in seconds since 1970</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >2016-01-01</td>
+</tr>
+<tr class='cnt-4 even' >
+<td class='td-param' >timestamp_to</td>
+<td class='td-desc' >end time, in seconds since 1970</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >now</td>
+</tr>
+<tr class='cnt-5 odd' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data. csv provides the most compact format.</td>
+<td class='td-required' >No</td>
+<td class='td-values' >csv | json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        
+        
+</div>
+<div class="api widget">
+    <div class="method" id="markets">/api/markets</div>
+    <div class="description">Provides list of available markets.</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/markets">https://bisq.markets/api/markets</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">
+{
+    &quot;1cr_btc&quot;: {
+        &quot;pair&quot;: &quot;1cr_btc&quot;,
+        &quot;lname&quot;: &quot;1CRedit&quot;,
+        &quot;rname&quot;: &quot;Bitcoin&quot;,
+        &quot;lsymbol&quot;: &quot;1CR&quot;,
+        &quot;rsymbol&quot;: &quot;BTC&quot;,
+        &quot;lprecision&quot;: 8,
+        &quot;rprecision&quot;: 8,
+        &quot;ltype&quot;: &quot;crypto&quot;,
+        &quot;rtype&quot;: &quot;crypto&quot;,
+        &quot;name&quot;: &quot;1CRedit\/Bitcoin&quot;
+    },
+    &quot;btc_aud&quot;: {
+        &quot;pair&quot;: &quot;btc_aud&quot;,
+        &quot;lname&quot;: &quot;Bitcoin&quot;,
+        &quot;rname&quot;: &quot;Australian Dollar&quot;,
+        &quot;lsymbol&quot;: &quot;BTC&quot;,
+        &quot;rsymbol&quot;: &quot;AUD&quot;,
+        &quot;lprecision&quot;: 8,
+        &quot;rprecision&quot;: 2,
+        &quot;ltype&quot;: &quot;crypto&quot;,
+        &quot;rtype&quot;: &quot;fiat&quot;,
+        &quot;name&quot;: &quot;Bitcoin\/Australian Dollar&quot;
+    },    
+    ...
+}</div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>required</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data</td>
+<td class='td-required' >No</td>
+<td class='td-values' >json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        
+        
+</div>
+<div class="api widget">
+    <div class="method" id="offers">/api/offers</div>
+    <div class="description">Provides list of open offer details for a single market.</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/offers?market=xmr_btc">https://bisq.markets/api/offers?market=xmr_btc</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">
+{
+    &quot;xmr_btc&quot;: {
+        &quot;buys&quot;: [
+            {
+                &quot;offer_id&quot;: &quot;b2ab53d4-8ffd-4138-aa8a-c7143d7fb123_0.4.9.4&quot;,
+                &quot;offer_date&quot;: 1472239477119,
+                &quot;direction&quot;: &quot;BUY&quot;,
+                &quot;min_amount&quot;: &quot;0.10000000&quot;,
+                &quot;amount&quot;: &quot;6.77840000&quot;,
+                &quot;price&quot;: &quot;0.01475266&quot;,
+                &quot;volume&quot;: &quot;0.10000000&quot;,
+                &quot;payment_method&quot;: &quot;BLOCK_CHAINS&quot;,
+                &quot;offer_fee_txid&quot;: &quot;64ae7b5863c509ed0cb5ef9ec3ec4a197b4f77705fc7b2d3b82fb96bc3f3e872&quot;
+            },
+            ...
+        ],
+        &quot;sells&quot;: [
+            {
+                &quot;offer_id&quot;: &quot;6a31771b-3c1b-49f4-b403-12f8749646fa_0.4.9.4&quot;,
+                &quot;offer_date&quot;: 1472570540023,
+                &quot;direction&quot;: &quot;SELL&quot;,
+                &quot;min_amount&quot;: &quot;0.40000000&quot;,
+                &quot;amount&quot;: &quot;25.54280000&quot;,
+                &quot;price&quot;: &quot;0.01565994&quot;,
+                &quot;volume&quot;: &quot;0.40000000&quot;,
+                &quot;payment_method&quot;: &quot;BLOCK_CHAINS&quot;,
+                &quot;offer_fee_txid&quot;: &quot;ee0bd1d55ba37bf14de59fd6a42263200b6485d2d5aff493ffeb82513c0b2637&quot;
+            },
+            ...
+        ]
+    }
+}</div>
+        </div>
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/offers?market=xmr_btc&amp;direction=BUY">https://bisq.markets/api/offers?market=xmr_btc&amp;direction=BUY</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">{
+    &quot;xmr_btc&quot;: {
+        &quot;buys&quot;: [
+            {
+                &quot;offer_id&quot;: &quot;b2ab53d4-8ffd-4138-aa8a-c7143d7fb123_0.4.9.4&quot;,
+                &quot;offer_date&quot;: 1472239477119,
+                &quot;direction&quot;: &quot;BUY&quot;,
+                &quot;min_amount&quot;: &quot;0.10000000&quot;,
+                &quot;amount&quot;: &quot;6.68520000&quot;,
+                &quot;price&quot;: &quot;0.01495824&quot;,
+                &quot;volume&quot;: &quot;0.10000000&quot;,
+                &quot;payment_method&quot;: &quot;BLOCK_CHAINS&quot;
+                &quot;offer_fee_txid&quot;: &quot;64ae7b5863c509ed0cb5ef9ec3ec4a197b4f77705fc7b2d3b82fb96bc3f3e872&quot;
+            },
+            ...
+        ],
+        &quot;sells&quot;: null
+    }
+}                          </div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>required</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >market</td>
+<td class='td-desc' >market identifier</td>
+<td class='td-required' >Yes</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-2 even' >
+<td class='td-param' >direction</td>
+<td class='td-desc' >offer direction, omit or set null for both</td>
+<td class='td-required' >No</td>
+<td class='td-values' >BUY | SELL</td>
+<td class='td-default' >null</td>
+</tr>
+<tr class='cnt-3 odd' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data</td>
+<td class='td-required' >No</td>
+<td class='td-values' >json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        <div class="notes">
+        <h4>Notes</h4>
+        <ul>
+                <li class="noteitem">payment_method in response will be one of: OK_PAY, PERFECT_MONEY, SEPA, NATIONAL_BANK, SAME_BANK, SPECIFIC_BANKS, SWISH, ALI_PAY, CLEAR_X_CHANGE, US_POSTAL_MONEY_ORDER, CASH_DEPOSIT, BLOCK_CHAINS</li>
+                <li class="noteitem">payment_method values are defined in this file: https://github.com/bitsquare/bitsquare/blob/master/core/src/main/java/io/bitsquare/payment/PaymentMethod.java</li>
+                <li class="noteitem">offer_fee_txid in response is the offer fee transaction ID in the bitcoin block chain</li>
+                <li class="noteitem">offer_date in response is provided in milliseconds since 1970, not seconds. To get seconds, divide by 1000</li>
+                </ul>
+    </div>
+        
+        <div class="seealso">
+        <h4>See Also</h4>
+        <ul>
+                <li class="seealsoitem"><a href="#depth">depth</a></li>
+                </ul>
+    </div>
+        
+</div>
+<div class="api widget">
+    <div class="method" id="ticker">/api/ticker</div>
+    <div class="description">Provides 24 hour price ticker for single market or all markets</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/ticker?market=btc_eur">https://bisq.markets/api/ticker?market=btc_eur</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">{
+    &quot;btc_eur&quot;: {
+        &quot;last&quot;: &quot;524.17550000&quot;,
+        &quot;high&quot;: &quot;529.56210000&quot;,
+        &quot;low&quot;: &quot;510.20000000&quot;,
+        &quot;volume_left&quot;: &quot;2.76560000&quot;,
+        &quot;volume_right&quot;: &quot;1454.42950000&quot;,
+        &quot;buy&quot;: &quot;513.88580000&quot;,
+        &quot;sell&quot;: &quot;529.17120000&quot;
+    }
+}                          </div>
+        </div>
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/ticker">https://bisq.markets/api/ticker</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">
+{
+    &quot;1cr_btc&quot;: null,
+    &quot;btc_aud&quot;: {
+        &quot;last&quot;: &quot;728.89000000&quot;,
+        &quot;high&quot;: &quot;728.89000000&quot;,
+        &quot;low&quot;: &quot;728.89000000&quot;,
+        &quot;volume_left&quot;: 0,
+        &quot;volume_right&quot;: 0,
+        &quot;buy&quot;: null,
+        &quot;sell&quot;: null
+    },
+    &quot;btc_eur&quot;: {
+        &quot;last&quot;: &quot;524.17550000&quot;,
+        &quot;high&quot;: &quot;529.56210000&quot;,
+        &quot;low&quot;: &quot;510.20000000&quot;,
+        &quot;volume_left&quot;: &quot;2.76560000&quot;,
+        &quot;volume_right&quot;: &quot;1454.42950000&quot;,
+        &quot;buy&quot;: &quot;513.88580000&quot;,
+        &quot;sell&quot;: &quot;529.17120000&quot;
+    },
+    &quot;xmr_btc&quot;: {
+        &quot;last&quot;: &quot;0.01437401&quot;,
+        &quot;high&quot;: &quot;0.01530723&quot;,
+        &quot;low&quot;: &quot;0.01437401&quot;,
+        &quot;volume_left&quot;: &quot;269.79720000&quot;,
+        &quot;volume_right&quot;: &quot;4.00000000&quot;,
+        &quot;buy&quot;: &quot;0.01427006&quot;,
+        &quot;sell&quot;: &quot;0.01545144&quot;
+    }
+}</div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>required</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >market</td>
+<td class='td-desc' >market identifier</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-2 even' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data</td>
+<td class='td-required' >No</td>
+<td class='td-values' >json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        <div class="notes">
+        <h4>Notes</h4>
+        <ul>
+                <li class="noteitem">the response data can indicate the following market states: never traded, traded prior to 24 hours, traded within 24 hours</li>
+                <li class="noteitem">a null value for a market key indicates 'never traded'</li>
+                <li class="noteitem">volume_left or volume_right is 0 indicates 'traded prior to 24 hours'</li>
+                <li class="noteitem">volume_left or volume_right is &gt; 0 indicates  'traded within 24 hours'</li>
+                <li class="noteitem">buy represents the highest buy offer at present, sell represents the lowest sell offer at present</li>
+                <li class="noteitem">either buy or sell may be null if there are not presently any respective offers</li>
+                </ul>
+    </div>
+        
+        
+</div>
+<div class="api widget">
+    <div class="method" id="trades">/api/trades</div>
+    <div class="description">Provides list of completed trades for a single market.</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/trades?market=btc_eur&amp;limit=2">https://bisq.markets/api/trades?market=btc_eur&amp;limit=2</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">[
+    {
+        &quot;direction&quot;: &quot;SELL&quot;,
+        &quot;price&quot;: &quot;2375.72500000&quot;,
+        &quot;amount&quot;: &quot;0.05000000&quot;,
+        &quot;volume&quot;: &quot;118.78620000&quot;,
+        &quot;payment_method&quot;: &quot;SEPA&quot;,
+        &quot;trade_id&quot;: &quot;BLBJHGL-b644851d-f822-418a-8035-955f7a02eff9-051&quot;,
+        &quot;trade_date&quot;: 1501095828824
+    },
+    {
+        &quot;direction&quot;: &quot;SELL&quot;,
+        &quot;price&quot;: &quot;2148.50230000&quot;,
+        &quot;amount&quot;: &quot;0.20000000&quot;,
+        &quot;volume&quot;: &quot;429.70040000&quot;,
+        &quot;payment_method&quot;: &quot;SEPA&quot;,
+        &quot;trade_id&quot;: &quot;dcwyx9-1a89dece-5039-4ff7-89c9-7ed52b84bc88-051&quot;,
+        &quot;trade_date&quot;: 1501088841011
+    }
+]</div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>required</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >market</td>
+<td class='td-desc' >market identifier</td>
+<td class='td-required' >Yes</td>
+<td class='td-values' >&lt;market pair&gt; | all</td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-2 even' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data</td>
+<td class='td-required' >No</td>
+<td class='td-values' >json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+<tr class='cnt-3 odd' >
+<td class='td-param' >timestamp_from</td>
+<td class='td-desc' >start time, in seconds since 1970</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >2016-01-01</td>
+</tr>
+<tr class='cnt-4 even' >
+<td class='td-param' >timestamp_to</td>
+<td class='td-desc' >end time, in seconds since 1970</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >now</td>
+</tr>
+<tr class='cnt-5 odd' >
+<td class='td-param' >trade_id_from</td>
+<td class='td-desc' >identifies first trade to include</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-6 even' >
+<td class='td-param' >trade_id_to</td>
+<td class='td-desc' >identifies last trade to include</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-7 odd' >
+<td class='td-param' >direction</td>
+<td class='td-desc' >trade direction: buy or sell. omit or leave null for both.</td>
+<td class='td-required' >No</td>
+<td class='td-values' >buy | sell</td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-8 even' >
+<td class='td-param' >limit</td>
+<td class='td-desc' >maximum trades to return.  max is 2000.</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >100</td>
+</tr>
+<tr class='cnt-9 odd' >
+<td class='td-param' >sort</td>
+<td class='td-desc' >Sort by date</td>
+<td class='td-required' >No</td>
+<td class='td-values' >asc | desc</td>
+<td class='td-default' >desc</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        <div class="notes">
+        <h4>Notes</h4>
+        <ul>
+                <li class="noteitem">trade_date in response is provided in milliseconds since 1970, not seconds.  To get seconds, divide by 1000</li>
+                <li class="noteitem">if the market parameter is &quot;all&quot; then up to limit trades will be returned, date sorted, across all markets. Also a &quot;market&quot; field is added to each trade result.</li>
+                <li class="noteitem">this api will return a maximum of 2000 trades per call</li>
+                <li class="noteitem">if trade_id_from or trade_id_to is used and a matching trade is not found for each, then no results are returned</li>
+                <li class="noteitem">The Bisq app does not presently use a trade_id internally.  The trade_id in this api is actually the bisq offerId.</li>
+                <li class="noteitem">Possible values for payment_method can change over time.  For most current, see <a href="https://raw.githubusercontent.com/bisq-network/bisq-core/master/src/main/java/bisq/core/payment/payload/PaymentMethod.java">PaymentMethod.java</a></li>
+                </ul>
+    </div>
+        
+        
+</div>
+<div class="api widget">
+    <div class="method" id="volumes">/api/volumes</div>
+    <div class="description">Provides periodic volume data in terms of base currency for one or all markets.</div>
+    <div class="examples">
+                        <div class="example">
+            <h4>Sample Request</h4>
+            <div class="requestexample"><a href="https://bisq.markets/api/volumes?basecurrency=BTC">https://bisq.markets/api/volumes?basecurrency=BTC</a></div>
+            <h4>Sample Response</h4>
+            <div class="responseexample">[
+    {
+        &quot;period_start&quot;: 1451606400,
+        &quot;volume&quot;: &quot;1128.38570000&quot;,
+        &quot;num_trades&quot;: 2009
+    },
+    {
+        &quot;period_start&quot;: 1483228800,
+        &quot;volume&quot;: &quot;1322.77960000&quot;,
+        &quot;num_trades&quot;: 2376
+    }
+]                          </div>
+        </div>
+            </div>
+    
+    <div class="params">
+        <h4>Parameters</h4>
+        <div>
+        <table class="bordered">
+<thead><tr class='tr-header' >
+<th class='td-header-0'>param</th>
+<th class='td-header-1'>desc</th>
+<th class='td-header-2'>optional</th>
+<th class='td-header-3'>values</th>
+<th class='td-header-4'>default</th>
+</tr></thead>
+<tbody>
+<tr class='cnt-1 odd' >
+<td class='td-param' >basecurrency</td>
+<td class='td-desc' >base currency identifier.</td>
+<td class='td-optional' >Yes</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-2 even' >
+<td class='td-param' >market</td>
+<td class='td-desc' >market identifier.</td>
+<td class='td-optional' >Yes</td>
+<td class='td-values' ></td>
+<td class='td-default' ></td>
+</tr>
+<tr class='cnt-3 odd' >
+<td class='td-param' >interval</td>
+<td class='td-desc' >length of time blocks to summarize. auto will pick appropriate interval based on total time range</td>
+<td class='td-required' >No</td>
+<td class='td-values' >minute | half_hour | hour | half_day | day | week | month | year | auto</td>
+<td class='td-default' >auto</td>
+</tr>
+<tr class='cnt-4 even' >
+<td class='td-param' >timestamp_from</td>
+<td class='td-desc' >start time, in seconds since 1970</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >2016-01-01</td>
+</tr>
+<tr class='cnt-5 odd' >
+<td class='td-param' >timestamp_to</td>
+<td class='td-desc' >end time, in seconds since 1970</td>
+<td class='td-required' >No</td>
+<td class='td-values' ></td>
+<td class='td-default' >now</td>
+</tr>
+<tr class='cnt-6 even' >
+<td class='td-param' >format</td>
+<td class='td-desc' >format of return data. csv provides the most compact format.</td>
+<td class='td-required' >No</td>
+<td class='td-values' >csv | json | jsonpretty</td>
+<td class='td-default' >jsonpretty</td>
+</tr>
+</tbody>
+</table>
+        </div>
+    </div>
+    
+        <div class="notes">
+        <h4>Notes</h4>
+        <ul>
+                <li class="noteitem">A Base currency is a blockchain (eg Bitcoin) that is traded against other currencies utilizing the base currency's multisig capability.  eg XMR/BTC, LTC/BTC, BTC/USD, and BTC/EUR all use the base currency BTC.  In contrast, XMR/LTC, BTC/LTC, LTC/EUR, LTC/USD all use the base currency LTC.</li>
+                <li class="noteitem">Either basecurrency or market param must be specified.</li>
+                <li class="noteitem">basecurrency must be supported by Bisq app.</li>
+                <li class="noteitem">As of 2017-07-24, supported basecurrency are BTC, DOGE, LTC, DASH</li>
+                </ul>
+    </div>
+        
+        
+</div>
+
+<div class="errors widget" id="errors">
+    <h4>Error Responses</h4>
+    
+    <p>Any errors such as invalid parameters will be in the following format</p>
+    <div class="responseexample">{
+    "success": 0,
+    "error": "market parameter missing"
+}</div>
+    
+</div>
+
+</body>
+  
+  <!-- SCHEMA.ORG MICRODATA FOR SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "WebAPI",
+    "name": "Bisq Markets API service",
+    "description": "This public API serves data on Bisq offers, trades, and historical statistics.",
+    "documentation": "https://bisq.markets/api/",
+    "provider": {
+      "@type": "Project",
+      "name": "Bisq Network",
+      "url": "https://bisq.network/"
+    }
+  }
+  </script>
+</html>
